@@ -1,0 +1,16 @@
+<BOUCLE_contenu_rubrique(RUBRIQUES){lang}{0,1}>
+<div class="contenu-principal">
+
+	<div class="cartouche">
+		[(#LOGO_RUBRIQUE||image_reduire{200,200})]
+		<h1 class="h1 #EDIT{titre}">[(#TITRE)]</h1>
+	</div>
+
+	[<div class="#EDIT{descriptif} chapo">(#DESCRIPTIF)</div>]
+	[<div class="#EDIT{texte} texte">(#TEXTE|image_reduire{500,0})</div>]
+</div>
+
+[<div class="notes"><h2 class="h2"><:info_notes:></h2>(#NOTES)</div>]
+[(#REM) Gestion du portfolio et des documents ]
+[(#INCLURE{fond=inclure/documents}{id_rubrique})]
+</BOUCLE_contenu_rubrique>

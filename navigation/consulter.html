@@ -1,0 +1,39 @@
+<div style="text-align:center;"><img src="#CHEMIN{img/consulter_dictionnaire.png}" /></div>
+<p class='nettoyeur' />
+
+[(#REM) Secteurs du site ]
+<B_secteurs>
+<div class="menu rubriques">
+	<h3 class="h3"><:demopaedia:langue_interface:></h3>
+	<ul class="menu-liste">
+	<BOUCLE_secteurs(RUBRIQUES) {racine} {par lang}>
+		<li class="menu-entree">
+			<a href="[(#SELF||parametre_url{lang,#LANG})]" rel="alternate" hreflang="#LANG"[ title="(#TITRE|attribut_html|couper{80})"] [(#LANG|=={#ENV{lang}}) class="on"]> [(#LANG|traduire_nom_langue)] [#LANG]</a>
+		</li>
+	</BOUCLE_secteurs>
+	</ul>
+</div>
+</B_secteurs>
+
+[(#REM) Formulaire changement d'édition]
+<div class="menu rubriques">
+	<h3 class="h3"><:demopaedia:changer_edition:></h3>
+	<form method="get" action="spip.php">
+	<input type='hidden' name='page' value='consulter' />
+	[<input type='hidden' name='section' value='(#ENV{section})' />]
+	[(#REM) On ne propose que les éditions ayant cette section ]
+	<select name="edition" class="select" id="edition" onchange='submit()'>
+	<BOUCLE_editions1(DEMODEF){section=#ENV{section}}{fusion edition}{par edition}>
+		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+	</BOUCLE_editions1>
+	<BOUCLE_editions2(DEMOINFO){type=#ENV{section}}{fusion edition}{par edition}>
+		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+	</BOUCLE_editions2>
+	<BOUCLE_editions3(DEMODEF){fusion edition}{par edition}>
+		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+	</BOUCLE_editions3>
+	<//B_editions2>
+	<//B_editions1>
+	</select>
+	</form>
+</div>

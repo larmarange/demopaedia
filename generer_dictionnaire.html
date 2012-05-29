@@ -1,0 +1,1 @@
+[(#SET{fond,[generateurs/dictionnaire_(#ENV{format})]})][(#SET{lang,[(#ENV{edition}|lg_code)]})][(#SET{header,[(#ENV{format}|=={html}|?{'Content-Type: text/html',''})]})][(#HTTP_HEADER{#GET{header}})]<INCLURE{fond=#GET{fond}}{edition=#ENV{edition}}{lang=#GET{lang}}>

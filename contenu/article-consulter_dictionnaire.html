@@ -1,0 +1,61 @@
+<BOUCLE_contenu_article(ARTICLES){id_article}>
+
+<div class="contenu-principal">
+	<div class="cartouche">
+		[(#LOGO_ARTICLE||image_reduire{200,200})]
+		[<p class="#EDIT{surtitre} surtitre">(#SURTITRE)</p>]
+		<h1 class="h1 #EDIT{titre}">[(#TITRE)]</h1>
+		[<p class="#EDIT{soustitre} soustitre">(#SOUSTITRE)</p>]
+	</div>
+
+	<div class="surlignable">
+		[<div class="#EDIT{chapo} chapo">(#CHAPO|image_reduire{500,0})</div>]
+		[<div class="#EDIT{texte} texte">(#TEXTE|image_reduire{500,0})</div>]
+	</div>
+
+	[<p class="#EDIT{hyperlien} hyperlien"><:voir_en_ligne:> : <a href="(#URL_SITE)" class="spip_out">[(#NOM_SITE|sinon{[(#URL_SITE|couper{80})]})]</a></p>]
+
+	[<div class="ps">
+		<h2 class="h2"><:info_ps:></h2>
+		<div class="#EDIT{ps} surlignable">(#PS|image_reduire{500,0})</div>
+	</div>]
+
+	[<div class="notes surlignable"><h2 class="h2 pas_surlignable"><:info_notes:></h2>(#NOTES)</div>]
+
+	[(#REM) Formulaire de sélection de l'édition à consulter ]
+	<div class='formulaire_spip formulaire_consulter' id='formulaire_consulter'>
+		<form method="get" action="spip.php">
+		<input type='hidden' name='page' value='consulter' />
+		<ul>
+			<li class='edition'>
+				<B_editions>
+				<label for="edition"><:demopaedia:label_edition:></label>
+				[(#REM) On ne propose que les éditions présentes en base ]
+				<select name="edition" class="select" id="edition">
+				<BOUCLE_editions(DEMODEF){fusion edition}{par edition}>
+					<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+				</BOUCLE_editions>
+				</select>
+				</B_editions>
+			</li>
+		</ul>
+		<p class='boutons'><input class='submit' type="submit" value="<:demopaedia:consulter:>" /></p>
+		</form>
+	</div>
+
+[(#REM) Gestion du portfolio et des documents ]
+[(#INCLURE{fond=inclure/documents}{id_article})]
+
+</div>
+
+[(#REM) Petition :
+La petition ayant une PAGINATION il faut absolument {env}
+et pourquoi pas ajax
+][(#PETITION|oui)<INCLURE{fond=inclure/petition}{id_article}{env}{ajax}>]
+
+[(#REM) Forum de l'article ]
+<a href="#forum" name="forum" id="forum"></a>
+<INCLURE{fond=inclure/forum}{id_article} />
+[<p class="repondre"><a href="(#PARAMETRES_FORUM|url_reponse_forum)" rel="noindex nofollow"><:repondre_article:></a></p>]
+
+</BOUCLE_contenu_article>

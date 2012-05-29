@@ -1,0 +1,151 @@
+<!-- titre=Demop&aelig;dia -->
+<!-- boite=Demop&aelig;dia - <:demopaedia:demopaedia_termes:> -->
+<!-- icone=img/demopaedia-24.png -->
+<!-- autoriser=configurer-->
+<!-- nom=demopaedia-->
+<!-- depot=metapack -->
+<!-- onglet=demopaedia -->
+<!-- liens*=demopaedia:demopaedia -->
+<!-- liens*=demopaedia:demopaedia_edition -->
+<!-- liens*=demopaedia:demopaedia_termes -->
+#CACHE{0}
+<div class="ajax">
+
+<div class='formulaire_spip formulaire_configurer formulaire_configurer_forums_contenu' id='formulaire_configurer_forums_contenu'>
+	[(#SET{editions,[(#CONFIG{demopaedia/editions}|explode{','}|serialize)]})]
+	<h3 class='titrem'><:demopaedia:cfg_selection_edition:></h3>
+
+
+	<form method="post" action="#SELF"><div>
+		[(#ENV{_cfg_}|form_hidden)]
+		<input type="hidden" class="cfg_id" name="cfg_id" id="cfg_id" value="#ENV{cfg_id}" />
+		[(#REM) On masque l'erreur qui apparait lorsqu'aucune édition n'est sélectionnée.]
+		[(#ENV{cfg_id}|?{'',' '})
+			[<p style="display:none;">(#ENV*{message_erreur})</p>]
+		]
+		<ul>
+			<li class='configurer_annee'>
+				<label for="annee"><:demopaedia:label_choix_edition:></label>
+				<select class="select" name="cfg_id" id="cfg_id">
+					<option value=''> </option>
+					<BOUCLE_editions(POUR){tableau #GET{editions}}{par valeur}>
+						<option value="#VALEUR" [(#ENV{cfg_id}|=={#VALEUR}|?{selected="selected"})]>#VALEUR - [(#VALEUR|lg_txt)] [(#VALEUR|ed_txt)]</option>
+					</BOUCLE_editions>
+				</select>
+			</li>
+		</ul>
+		<p class='boutons'><input class='submit' type="submit" name="_cfg_affiche" value="<:demopaedia:cfg_afficher:>" /></p>
+	</div></form>
+</div>
+
+[(#ENV{cfg_id}|?{' ',''})
+<div class='formulaire_spip formulaire_configurer formulaire_configurer_forums_contenu' id='formulaire_configurer_forums_contenu'>
+	<h3 class='titrem'><:demopaedia:cfg_termes:> [(#ENV{cfg_id}|lg_txt)] [(#ENV{cfg_id}|ed_txt)]</h3>
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+	<div class='explication'><:demopaedia:cfg_termes_details:></div>
+
+	<form method="post" action="#SELF"><div>
+		[(#ENV{_cfg_}|form_hidden)]
+		<input type="hidden" class="cfg_id" name="cfg_id" id="cfg_id" value="#ENV{id}" />
+		<ul>
+			<li class='configurer_titre_dico'>
+				<label for="titre_dico"><:demopaedia:label_titre_dico:></label>
+				<div class='explication'><:demopaedia:label_titre_dico_details:></div>
+				<input type="text" name="titre_dico" value="[(#ENV{titre_dico})]" id="titre_dico" class="text" />
+			</li>
+			<li class='configurer_annee'>
+				<label for="annee"><:demopaedia:label_annee:></label>
+				<input type="text" name="annee" value="[(#ENV{annee})]" id="annee" class="text" />
+			</li>
+			<li class='configurer_details_edition'>
+				<label for="details_edition"><:demopaedia:label_details_edition:></label>
+				<div class='explication'><:demopaedia:label_details_edition_details:></div>
+				<input type="text" name="details_edition" value="[(#ENV{details_edition})]" id="details_edition" class="text" />
+			</li>
+			<li class='configurer_titre_index'>
+				<label for="titre_index"><:demopaedia:label_titre_index:></label>
+				<div class='explication'><:demopaedia:label_titre_index_details:></div>
+				<input type="text" name="titre_index" value="[(#ENV{titre_index})]" id="titre_index" class="text" />
+			</li>
+			<li class='configurer_introduction'>
+				<label for="introduction"><:demopaedia:label_introduction:></label>
+				<input type="text" name="introduction" value="[(#ENV{introduction})]" id="introduction" class="text" />
+			</li>
+			<li class='configurer_preface'>
+				<label for="preface"><:demopaedia:label_preface:></label>
+				<input type="text" name="preface" value="[(#ENV{preface})]" id="preface" class="text" />
+			</li>
+			<li class='configurer_chapitre'>
+				<label for="chapitre"><:demopaedia:label_chapitre:></label>
+				<input type="text" name="chapitre" value="[(#ENV{chapitre})]" id="chapitre" class="text" />
+			</li>
+			<li class='configurer_chapitre1'>
+				<label for="chapitre1"><:demopaedia:label_chapitre1:></label>
+				<input type="text" name="chapitre1" value="[(#ENV{chapitre1})]" id="chapitre1" class="text" />
+			</li>
+			<li class='configurer_chapitre2'>
+				<label for="chapitre2"><:demopaedia:label_chapitre2:></label>
+				<input type="text" name="chapitre2" value="[(#ENV{chapitre2})]" id="chapitre2" class="text" />
+			</li>
+			<li class='configurer_chapitre3'>
+				<label for="chapitre3"><:demopaedia:label_chapitre3:></label>
+				<input type="text" name="chapitre3" value="[(#ENV{chapitre3})]" id="chapitre3" class="text" />
+			</li>
+			<li class='configurer_chapitre4'>
+				<label for="chapitre4"><:demopaedia:label_chapitre4:></label>
+				<input type="text" name="chapitre4" value="[(#ENV{chapitre4})]" id="chapitre4" class="text" />
+			</li>
+			<li class='configurer_chapitre5'>
+				<label for="chapitre5"><:demopaedia:label_chapitre5:></label>
+				<input type="text" name="chapitre5" value="[(#ENV{chapitre5})]" id="chapitre5" class="text" />
+			</li>
+			<li class='configurer_chapitre6'>
+				<label for="chapitre6"><:demopaedia:label_chapitre6:></label>
+				<input type="text" name="chapitre6" value="[(#ENV{chapitre6})]" id="chapitre6" class="text" />
+			</li>
+			<li class='configurer_chapitre7'>
+				<label for="chapitre7"><:demopaedia:label_chapitre7:></label>
+				<input type="text" name="chapitre7" value="[(#ENV{chapitre7})]" id="chapitre7" class="text" />
+			</li>
+			<li class='configurer_chapitre8'>
+				<label for="chapitre8"><:demopaedia:label_chapitre8:></label>
+				<input type="text" name="chapitre8" value="[(#ENV{chapitre8})]" id="chapitre8" class="text" />
+			</li>
+			<li class='configurer_chapitre9'>
+				<label for="chapitre9"><:demopaedia:label_chapitre9:></label>
+				<input type="text" name="chapitre9" value="[(#ENV{chapitre9})]" id="chapitre9" class="text" />
+			</li>
+			<li class='configurer_index'>
+				<label for="index"><:demopaedia:label_index:></label>
+				<input type="text" name="index" value="[(#ENV{index})]" id="index" class="text" />
+			</li>
+			<li class='configurer_sommaire'>
+				<label for="sommaire"><:demopaedia:label_sommaire:></label>
+				<input type="text" name="sommaire" value="[(#ENV{sommaire})]" id="sommaire" class="text" />
+			</li>
+			<li class='configurer_termes_correspondants'>
+				<label for="termes_correspondants"><:demopaedia:label_termes_correspondants:></label>
+				<div class='explication'><:demopaedia:label_termes_correspondants_details:></div>
+				<input type="text" name="termes_correspondants" value="[(#ENV{termes_correspondants})]" id="termes_correspondants" class="text" />
+			</li>
+			<li class='configurer_licence'>
+				<label for="licence"><:demopaedia:label_licence:></label>
+				<input type="text" name="licence" value="[(#ENV{licence})]" id="licence" class="text" />
+			</li>
+			<li class='configurer_details_licence'>
+				<label for="details_licence"><:demopaedia:label_details_licence:></label>
+				<div class='explication'><:demopaedia:label_details_licence_details:></div>
+				<textarea name="details_licence" id="details_licence" class="textarea">[(#ENV{details_licence})]</textarea>
+			</li>
+			<li class='configurer_date_document'>
+				<label for="date_document"><:demopaedia:label_date_document:></label>
+				<div class='explication'><:demopaedia:label_date_document_details:></div>
+				<textarea name="date_document" id="date_document" class="textarea">[(#ENV{date_document})]</textarea>
+			</li>
+		</ul>
+		<p class='boutons'><input class='submit' type="submit" name="_cfg_ok" value="<:bouton_enregistrer:>" /></p>
+	</div></form>
+</div>
+]
+</div>

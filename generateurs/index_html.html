@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" [xml:lang="(#ENV{edition}|lg_code)"] [lang="(#ENV{edition}|lg_code)"] [dir="(#ENV{edition}|lg_code|lang_dir)"]>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	[<meta http-equiv="Content-Language" content="(#ENV{edition}|lg_code)" />]
+	<title>Demopædia[ - (#CONFIG{demopaedia/[(#EDITION)]/titre_index}|textebrut)][ - (#CONFIG{demopaedia/[(#EDITION)]/details_edition}|textebrut)]</title>
+	<BOUCLE_head_description(DEMOINFO){edition=#ENV{edition}}{type='introduction'}{0,1}>[<meta name="description" content="(#TEXTE**|textebrut)" />]</BOUCLE_head_description>
+	<meta name="copyright" content="demopaedia.org - http://#ENV{edition}.#CONFIG{demopaedia/domaine}" />
+	<style type="text/css" media="all">
+		body {width:800px; margin:0 auto;padding:0; text-align: justify; font-family: FreeSerif, Constantia, Georgia, "Times New Roman", Times, serif; font-size:90%}
+		.surtitre {text-align:center; font-size:1.5em; font-variant: small-caps; margin-top:5px;}
+		.titre {text-align:center; font-size:2.5em; font-weight:bold; margin:10px 0;}
+		.soustitre {text-align:center; font-size:1.5em; font-weight:bold; margin:5px 0;}
+		.corr {text-align:center; font-size:1.15em; font-style:italic; margin:15px 0;}
+		.logo {text-align:center;}
+		.logo img {border:0;}
+		.lien {text-align:center; font-style:italic; font-size:1.1em; margin:5px 0;}
+		a {color:#333333; text-decoration:none;}
+		a:hover {text-decoration:underline;}
+		.date {text-align:center; margin:5px 0;}
+		.licence {text-align:center; margin:5px 0;}
+		h2 {margin:40px 0 5px; border-bottom:1px solid black;}
+		h3 {margin:25px 0 5px;}
+		dl.index {}
+		[(#ENV{corr}|oui)
+			span.terme {font-weight:bold;}
+			dl.index dt {margin-top:10px;}
+			dl.index dd {padding:0; margin:0;}
+			table {border:none;}
+			td.edition {font-style:italic; vertical-align:top;}
+			td.termes {padding-left:5px; vertical-align:top;}
+		]
+	</style>
+</head>
+<body>
+<div class="surtitre">DemopædiA</div>
+<h1 class="titre">[(#CONFIG{demopaedia/[(#EDITION)]/titre_index})]</h1>
+[<div class="soustitre">(#CONFIG{demopaedia/[(#EDITION)]/details_edition})</div>]
+<B_termes_correspondants>
+<div class="corr">
+	[(#CONFIG{demopaedia/[(#EDITION)]/termes_correspondants})<br />]
+	<BOUCLE_termes_correspondants(POUR){tableau #ENV{corr}}{par valeur}>
+	<span lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];" >[(#CONFIG{demopaedia/[(#VALEUR)]/details_edition})] (#VALEUR)</span><br />
+	</BOUCLE_termes_correspondants>
+</div>
+</B_termes_correspondants>
+<div class="logo">
+<!--[if IE]>
+	[<img src="#URL_SITE_SPIP/(#CHEMIN{img/demopaedia.png}||image_reduire{250}||extraire_attribut{src})" width="250" height="250" alt="" />]
+<![endif]-->
+<!--[if !IE]> <-->
+   [<img src="(#CHEMIN{img/demopaedia.png}||image_reduire{250}||extraire_attribut{src}|insere_data_URI)" width="250" height="250" alt="" />]
+<!--> <![endif]-->
+</div>
+<div class="lien"><a href='http://#EDITION.#CONFIG{demopaedia/domaine}' >http://#EDITION.#CONFIG{demopaedia/domaine}</a></div>
+<div class="date">[(#CONFIG{demopaedia/[(#EDITION)]/date_document}|ajoute_date)]</div>
+<div class="licence">[(#CONFIG{demopaedia/[(#EDITION)]/details_licence}|norm_liens)]</div>
+
+[(#SET{interclassement,[(#CONFIG{demopaedia/[(#EDITION)]/interclassement}|?{[(#CONFIG{demopaedia/[(#EDITION)]/interclassement})],'utf8_unicode_ci'})]})]
+<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}>
+[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<dl class="index">]
+][[(#COMPTEUR_BOUCLE|=={1}|non)</dl>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
+<dl class="index">]
+	<dt><span class="terme">#TERME</span> (#SECTION-#NUMTERME)</dt>
+	<B_editions_corr>
+	<dd><table border='0'>
+		<BOUCLE_editions_corr(POUR){tableau #ENV{corr}}{par valeur}>
+		<tr lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];">
+			[<td class="edition">#VALEUR</td>
+			<td class="termes">(#VALEUR|termes_correspondants{#SECTION,#NUMTERME,<br />})</td>]
+		</BOUCLE_index_corr>
+		</tr>
+		</BOUCLE_editions_corr>
+	</table></dd>
+	</B_editions_corr>
+</BOUCLE_index>
+</dl>
+</B_index>
+
+</body>
+</html>

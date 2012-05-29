@@ -1,0 +1,34 @@
+<div style="text-align:center;"><img src="#CHEMIN{img/generer_index.png}" /></div>
+<p class='nettoyeur' />
+
+[(#REM) Secteurs du site ]
+<B_secteurs>
+<div class="menu rubriques">
+	<h3 class="h3"><:demopaedia:langue_interface:></h3>
+	<ul class="menu-liste">
+	<BOUCLE_secteurs(RUBRIQUES) {racine} {par lang}>
+		<li class="menu-entree">
+			<a href="[(#SELF||parametre_url{lang,#LANG})]" rel="alternate" hreflang="#LANG"[ title="(#TITRE|attribut_html|couper{80})"] [(#LANG|=={#ENV{lang}}|oui) class="on"]> [(#LANG|traduire_nom_langue)] [#LANG]</a>
+		</li>
+	</BOUCLE_secteurs>
+	</ul>
+</div>
+</B_secteurs>
+
+[(#REM) Formulaire changement d'édition]
+<B_editions>
+<div class="menu rubriques">
+	<h3 class="h3"><:demopaedia:changer_edition:></h3>
+	<form method="get" action="spip.php">
+	<input type='hidden' name='page' value='terme' />
+	[<input type='hidden' name='section' value='(#ENV{section})' />]
+	[<input type='hidden' name='numterme' value='(#ENV{numterme})' />]
+	[(#REM) On ne propose que les éditions ayant ce terme ]
+	<select name="edition" class="select" id="edition" onchange='submit()'>
+	<BOUCLE_editions(DEMOINDEX){section=#ENV{section}}{numterme=#ENV{numterme}}{fusion edition}{par edition}>
+		[(#EDITION|ed_code|=={#ENV{edition}|ed_code}|oui)<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>]
+	</BOUCLE_editions>
+	</select>
+	</form>
+</div>
+</B_editions>

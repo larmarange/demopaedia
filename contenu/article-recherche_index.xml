@@ -1,0 +1,5 @@
+<composition>
+	<nom><:demopaedia:recherche_index:></nom>
+	<description><:demopaedia:recherche_index_description:></description>
+	<icon>img/recherche_index.png</icon>
+</composition>

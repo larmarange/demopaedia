@@ -1,0 +1,17 @@
+<div style="text-align:center;">[(#LOGO_SITE_SPIP||image_reduire{128})]</div>
+<p class='nettoyeur' />
+
+[(#REM)
+	Secteurs du site ]
+<B_secteurs>
+<div class="menu rubriques">
+	<h3 class="h3"><:demopaedia:langue_interface:></h3>
+	<ul class="menu-liste">
+	<BOUCLE_secteurs(RUBRIQUES) {racine} {par lang}>
+		<li class="menu-entree">
+			<a href="[(#SELF||parametre_url{lang,#LANG})]" rel="alternate" hreflang="#LANG"[ title="(#TITRE|attribut_html|couper{80})"] [(#LANG|=={#ENV{lang}}|oui) class="on"]> [(#LANG|traduire_nom_langue)] [#LANG]</a>
+		</li>
+	</BOUCLE_secteurs>
+	</ul>
+</div>
+</B_secteurs>

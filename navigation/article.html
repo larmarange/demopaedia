@@ -1,0 +1,20 @@
+[(#ENV{composition}|?{' ',''})<div style="text-align:center;"><img src="[(#CHEMIN{img/[(#ENV{composition})].png})]" alt=''/></div>]
+[(#ENV{composition}|?{'',' '})<div style="text-align:center;">[(#LOGO_SITE_SPIP||image_reduire{128})]</div>]
+<p class='nettoyeur' />
+
+[(#REM)
+	Traduction ]
+<BOUCLE_article(ARTICLES){id_article}>
+<B_traduction>
+<div class="menu articles">
+	<h3 class="h3"><:demopaedia:langue_interface:></h3>
+	<ul class="menu-liste">
+	<BOUCLE_traduction(ARTICLES) {traduction} {par lang}>
+		<li class="menu-entree">
+			<a href="#URL_ARTICLE" rel="alternate" hreflang="#LANG"[ title="(#TITRE|attribut_html|couper{80})"] [(#LANG|=={#ENV{lang}}|oui) class="on"]> [(#LANG|traduire_nom_langue)] [#LANG]</a>
+		</li>
+	</BOUCLE_traduction>
+	</ul>
+</div>
+</B_traduction>
+</BOUCLE_article>

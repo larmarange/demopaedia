@@ -1,0 +1,5 @@
+<composition>
+	<nom><:demopaedia:generer_dictionnaire:></nom>
+	<description><:demopaedia:generer_dictionnaire_description:></description>
+	<icon>img/generer_dictionnaire.png</icon>
+</composition>

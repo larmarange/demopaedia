@@ -1,0 +1,89 @@
+<div class="contenu-principal pas_surlignable">
+	<div class="cartouche">
+		[<p class="surtitre"><a href="[(#SELF|parametre_url{section,''})]">(#ENV{edition}|lg_ed_txt) [(#CONFIG{demopaedia/[(#ENV{edition})]/annee})]</a></p>]
+		<BOUCLE_test_sommaire_titre(CONDITION){si #ENV{section}|non}>
+		<h1 class="h1" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)];  text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">[(#CONFIG{demopaedia/[(#ENV{edition})]/sommaire})]</h1>
+		</BOUCLE_test_sommaire_titre>
+		<BOUCLE_test_section_num_titre(CONDITION){si #ENV{section}|is_numeric}>
+		<h1 class="h1" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)];  text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">#ENV{section}</h1>
+		<p class="soustitre" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)];  text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">[(#CONFIG{demopaedia/[(#EDITION)]/chapitre}) ][(#ENV{section}|substr{0,-2})][ • (#CONFIG{demopaedia/[(#EDITION)]/chapitre[(#ENV{section}|substr{0,-2})]})]</p>
+		</BOUCLE_test_section_num_titre>
+		<h1 class="h1" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)];  text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">[(#CONFIG{demopaedia/[(#ENV{edition})]/[(#ENV{section})]})]</h1>
+		<//B_test_section_num_titre>
+		<//B_test_sommaire_titre>
+	</div>
+
+	[(#REM) Affichage du sommaire ]
+	<BOUCLE_test_sommaire(CONDITION){si #ENV{section}|non}>
+	#SET{chapitres, #ARRAY{1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9}} 
+	<div class="sommaire" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)];  text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];" >
+		<BOUCLE_sommaire_introduction(DEMOINFO){edition=#ENV{edition}}{type='introduction'}{0,1}>
+		<h2 class="h2"><a href="[(#SELF|parametre_url{section,introduction})]">[(#CONFIG{demopaedia/[(#EDITION)]/introduction})]</a></h2>
+			[(#TEXTE**|sommaire_sous_elements{non,h3,h3})]
+		</BOUCLE_sommaire_introduction>
+		<BOUCLE_sommaire_preface(DEMOINFO){edition=#ENV{edition}}{type='preface'}{0,1}>
+		<h2 class="h2"><a href="[(#SELF|parametre_url{section,preface})]">[(#CONFIG{demopaedia/[(#EDITION)]/preface})]</a></h2>
+			[(#TEXTE**|sommaire_sous_elements{non,h3,h3})]
+		</BOUCLE_sommaire_preface>
+		<BOUCLE_sommaire_chapitres(POUR){tableau #GET{chapitres}}{par valeur}>
+		<h2 class="h2">[(#CONFIG{demopaedia/[(#EDITION)]/chapitre}) ]#VALEUR[ • (#CONFIG{demopaedia/[(#EDITION)]/chapitre#VALEUR})]</h2>
+		#SET{section_min,#EVAL{100*#VALEUR}} #SET{section_max,#EVAL{100*(#VALEUR+1)}}
+		<B_section_chapitres>
+		<BOUCLE_section_chapitres(DEMODEF){section >= #GET{section_min}}{section < #GET{section_max}}{edition=#ENV{edition}}{par section}{' | '}>
+			<a href="[(#SELF|parametre_url{section,#SECTION})]">#SECTION</a>
+		</BOUCLE_section_chapitres>
+		</B_section_chapitres>
+		</BOUCLE_sommaire_chapitres>
+		<BOUCLE_article_index(ARTICLES){composition=recherche_index}{lang}{0,1}>
+		<h2 class="h2"><a href="[(#URL_ARTICLE|parametre_url{edition,#ENV{edition}}|parametre_url{voir_tous,on})]">[(#CONFIG{demopaedia/[(#EDITION)]/index})]</a></h2>
+		<B_index_chapitres>
+		<ul>
+		<BOUCLE_index_chapitres(POUR){tableau #GET{chapitres}}{par valeur}>
+		<li><a href="[(#URL_ARTICLE|parametre_url{edition,#ENV{edition}}|parametre_url{voir_tous,on}|parametre_url{chapitre,#VALEUR}|parametre_url{connect,''})]">[(#CONFIG{demopaedia/[(#EDITION)]/chapitre})] #VALEUR[ • (#CONFIG{demopaedia/[(#EDITION)]/index})]</a></li>
+		</BOUCLE_index_chapitres>
+		</ul>
+		</B_index_chapitres>
+		</BOUCLE_article_index>
+	</div>
+	</BOUCLE_test_sommaire>
+	
+	[(#REM) Affichage d'une section numérique]
+	<BOUCLE_test_section_num(CONDITION){si #ENV{section}|is_numeric}>
+	<BOUCLE_def(DEMODEF){edition=#ENV{edition}}{section=#ENV{section}}>
+		<div class="texte">
+		<p lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" >[(#TEXTE**|ajoute_liens_termes{#EDITION,#SECTION})]</p>
+		<B_notes>
+			<div class="notes"><h3 class="h3"><:info_notes:></h3>
+		<BOUCLE_notes(DEMONOTES){edition=#ENV{edition}}{section=#ENV{section}}{par note}>
+			<p lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" > 
+			<sup>#NOTE</sup> [(#TEXTE**|ajoute_liens_termes{#EDITION,#SECTION})]
+			</p>
+		</BOUCLE_notes>
+		</div>
+		</B_notes>
+		<p class="hyperlien"><a href="http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/[(#SECTION|page_section)#]#SECTION" class="spip_out"><:demopaedia:lire_sur_demopaedia:></a></p>
+		</div>
+	</BOUCLE_def>
+	</B_def>
+	
+	<div style='text-align:center;margin-top:10px;'>
+	<BOUCLE_section_prec(DEMODEF){section < #ENV{section}}{par section}{inverse}{0,1}><a href="[(#SELF|parametre_url{section,#SECTION})]" style="float:left;"><<< #SECTION</a></BOUCLE_section_prec>
+	<a href="[(#SELF|parametre_url{section,''})]">[(#CONFIG{demopaedia/[(#ENV{edition})]/sommaire})]</a>
+	<BOUCLE_section_suiv(DEMODEF){section > #ENV{section}}{par section}{0,1}><a href="[(#SELF|parametre_url{section,#SECTION})]" style="float:right;">#SECTION >>></a></BOUCLE_section_suiv>
+	</div>
+	</BOUCLE_test_section_num>
+	
+	[(#REM) Affichage d'une section non numérique ]
+	<BOUCLE_info(DEMOINFO){edition=#ENV{edition}}{type=#ENV{section}}>
+	<div class="texte">
+	<p lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" >[(#TEXTE**)]</p>
+	<p class="hyperlien"><a href="http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/[(#CONFIG{demopaedia/[(#EDITION)]/page_[(#TYPE)]})]" class="spip_out"><:demopaedia:lire_sur_demopaedia:></a></p>
+	</div>
+	<div style='text-align:center;margin-top:10px;'>
+	<a href="[(#SELF|parametre_url{section,''})]">[(#CONFIG{demopaedia/[(#ENV{edition})]/sommaire})]</a>
+	</div>
+	</BOUCLE_info>
+	
+	<//B_test_section_num>
+	<//B_test_sommaire>
+</div>

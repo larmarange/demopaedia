@@ -1,0 +1,18 @@
+[(#SET{tri_num, #ENV{tri_num}|ou{#ENV{tri_alpha}}|?{#ENV{tri_num},'titre'}})]
+[(#SET{tri_alpha, #ENV{tri_num}|ou{#ENV{tri_alpha}}|?{#ENV{tri_alpha},'titre'}})]
+
+[(#ENV{appel_formulaire}|oui)
+	<div class="titre"><:demopaedia:nom_menu_articlessecteurlangue:></div>
+	<div class="infos">
+		<:menus:info_tri:> [(#GET{tri_num}) <:menus:info_tri_num:>][(#GET{tri_num}|et{GET{tri_alpha}}), ][(#GET{tri_alpha}) <:menus:info_tri_alpha:>]
+	</div>
+]
+<BOUCLE_appel(CONDITION){si #ENV{appel_menu}|oui}>
+	<BOUCLE_secteur(RUBRIQUES){racine}{lang}{0,1}>
+		<BOUCLE_articles(ARTICLES){id_rubrique=#ID_RUBRIQUE}{par num #GET{tri_num}}{par #GET{tri_alpha}}>
+			<li class="menu-entree[ (#ID_ARTICLE|menus_exposer{article,#ENV*{env}})]">
+				<a href="#URL_ARTICLE">[(#TITRE)]</a>
+			</li>
+		</BOUCLE_articles>
+	</BOUCLE_secteur>
+</BOUCLE_appel>

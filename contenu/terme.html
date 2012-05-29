@@ -1,0 +1,64 @@
+<div class="contenu-principal pas_surlignable">
+	<div class="cartouche">
+		[<p class="surtitre"><a href="#URL_PAGE{consulter,edition=#ENV{edition}}">(#ENV{edition}|lg_ed_txt) [(#CONFIG{demopaedia/[(#ENV{edition})]/annee})]</a></p>]
+		<BOUCLE_test(CONDITION){si #ENV{terme}}>
+		<h1 class="h1" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)]; text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">#ENV{terme}</h1>
+		</BOUCLE_test>
+		<BOUCLE_titre(DEMOINDEX){edition=#ENV{edition}}{section=#ENV{section}}{numterme=#ENV{numterme}}{entree='principale'}{par terme}{0,1}>
+		<h1 class="h1" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)]; text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">#TERME</h1>
+		</BOUCLE_titre>
+		<//B_test>
+		<p class="soustitre" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)];  text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">[(#CONFIG{demopaedia/[(#EDITION)]/chapitre}) ][(#ENV{section}|substr{0,-2})][ • (#CONFIG{demopaedia/[(#EDITION)]/chapitre[(#ENV{section}|substr{0,-2})]})]</p>
+		<p class="soustitre">[<:demopaedia:section:> <a href="[(#URL_PAGE{consulter,edition=[(#ENV{edition})]&section=[(#ENV{section})]})]">(#ENV{section})</a>][ • <:demopaedia:numero_reference:> (#ENV{numterme})]</p>
+	</div>
+
+	<B_princ>
+	<p><b><:demopaedia:entrees_principales:></b></p>
+	<ul lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)]; text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];" >
+	<BOUCLE_princ(DEMOINDEX){edition=#ENV{edition}}{section=#ENV{section}}{numterme=#ENV{numterme}}{entree='principale'}{par terme}>
+		<li style="direction:[(#EDITION|lg_code|lang_dir)];">#TERME</li>
+	</BOUCLE_princ>
+	</ul>
+	</B_princ>
+	<B_sec>
+	<p><b><:demopaedia:entrees_secondaires:></b></p>
+	<ul lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)]; text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];" >
+	<BOUCLE_sec(DEMOINDEX){edition=#ENV{edition}}{section=#ENV{section}}{numterme=#ENV{numterme}}{entree='secondaire'}{par terme}>
+		<li style="direction:[(#EDITION|lg_code|lang_dir)];">#TERME</li>
+	</BOUCLE_sec>
+	</ul>
+	</B_sec>
+	
+	<B_def>
+	<h2 class="h2"><:demopaedia:terme_dans_contexte:></h2>
+	<BOUCLE_def(DEMODEF){edition=#ENV{edition}}{section=#ENV{section}}>
+		<div class="texte">
+		<p lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" >[(#TEXTE**|ajoute_liens_termes{#EDITION,#SECTION})]</p>
+		<B_notes>
+			<div class="notes"><h3 class="h3"><:info_notes:></h3>
+		<BOUCLE_notes(DEMONOTES){edition=#ENV{edition}}{section=#ENV{section}}{par note}>
+			<p lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" > 
+			<sup>#NOTE</sup> [(#TEXTE**|ajoute_liens_termes{#EDITION,#SECTION})]
+			</p>
+		</BOUCLE_notes>
+		</div>
+		</B_notes>
+		<p class="hyperlien"><a href="http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/[(#SECTION|page_section)#]#SECTION" class="spip_out"><:demopaedia:lire_sur_demopaedia:></a></p>
+		</div>
+	</BOUCLE_def>
+	</B_def>
+
+	[(#SET{ed,[-(#ENV{edition}|ed_code)$]})]
+	<B_term_equ>
+	<h2 class="h2"><:demopaedia:termes_correspondants_autres_editions:></h2>
+	<BOUCLE_term_equ(DEMOINDEX){edition!=#ENV{edition}}{edition==#GET{ed}}{section=#ENV{section}}{numterme=#ENV{numterme}}{entree='principale'}{par edition, terme}>
+		[[(#COMPTEUR_BOUCLE|=={1}|non)</ul>
+		]<h3 class="h3">(#EDITION|unique|lg_ed_txt)[ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</h3>
+		<ul lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" >]
+			<li style="direction:[(#EDITION|lg_code|lang_dir)];"><a href="[(#URL_PAGE{terme,edition=#EDITION&section=#SECTION&numterme=#NUMTERME&terme=[(#TERME|urlencode)]})]">#TERME</a></li>
+	</BOUCLE_term_equ>
+	</ul>
+	</B_term_equ>
+	
+	
+</div>

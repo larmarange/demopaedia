@@ -1,0 +1,56 @@
+<div class="contenu-principal">
+	<div class="cartouche">
+		<h1 class="h1">Tools for redactors</h1>
+	</div>
+
+	<div class="texte"></div>
+
+	<h3 class="h3">Index entries by number</h3>
+	
+	[(#REM) Formulaire du générateur ]
+	<div class='formulaire_spip formulaire_index_by_number' id='formulaire_index_by_number'>
+		<form method="get" action="#URL_SITE_SPIP/spip.php">
+		<input type='hidden' name='page' value='index_by_number' />
+		<input type='hidden' name='lang' value='en' />
+		<ul>
+			<li class='edition obligatoire'>
+				<label for="edition"><:demopaedia:label_edition:></label>
+				[(#REM) On ne propose que les éditions présentes en base ]
+				<B_editions>
+				<select name="edition" class="select" id="edition">
+				<BOUCLE_editions(DEMODEF){fusion edition}{par edition}>
+					<option value='#EDITION'>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+				</BOUCLE_editions>
+				</select>
+				</B_editions>
+			</li>
+		</ul>
+		<p class='boutons'><input class='submit' type="submit" value="<:demopaedia:generer:>" /></p>
+		</form>
+	</div>
+
+	<h3 class="h3">Missing terms</h3>
+	
+	[(#REM) Formulaire du générateur ]
+	<div class='formulaire_spip formulaire_missing_terms' id='formulaire_missing_terms'>
+		<form method="get" action="#URL_SITE_SPIP/spip.php">
+		<input type='hidden' name='page' value='missing_terms' />
+		<input type='hidden' name='lang' value='en' />
+		<ul>
+			<li class='edition obligatoire'>
+				<label for="edition"><:demopaedia:label_edition:></label>
+				[(#REM) On ne propose que les éditions présentes en base ]
+				<B_editions2>
+				<select name="edition" class="select" id="edition">
+				<BOUCLE_editions2(DEMODEF){fusion edition}{par edition}>
+					<option value='#EDITION'>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+				</BOUCLE_editions2>
+				</select>
+				</B_editions2>
+			</li>
+		</ul>
+		<p class='boutons'><input class='submit' type="submit" value="<:demopaedia:generer:>" /></p>
+		</form>
+	</div>
+
+</div>

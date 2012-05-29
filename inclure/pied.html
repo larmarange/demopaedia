@@ -1,0 +1,8 @@
+
+<a href="http://www.spip.net/" title="<:site_realise_avec_spip:>"><img src="#CHEMIN{spip.png}" alt="SPIP" width="48" height="16" /></a>[
+(#SESSION{id_auteur}|?{' '})| <a href="#URL_LOGOUT" rel="nofollow"><:icone_deconnecter:></a>
+][(#SESSION{id_auteur}|?{'',' '})| <a href="[(#URL_PAGE{login}|parametre_url{url,#SELF})]" rel="nofollow" class='login_modal'><:lien_connecter:></a>][
+(#AUTORISER{ecrire})| <a href="#EVAL{_DIR_RESTREINT_ABS}"><:espace_prive:></a>] |
+<a rel="contents" href="#URL_PAGE{plan}"><:plan_site:></a> |
+<a href="http://www.#CONFIG{demopaedia/domaine}" title="#CONFIG{demopaedia/domaine}">www.#CONFIG{demopaedia/domaine}</a> | 
+<a href="#URL_PAGE{tools}" title="Specific tools for redactors" ><img src="#CHEMIN{img/tools_icon.png}" height="16" width="16" border="0" alt="Specific tools for redactors" /></a>

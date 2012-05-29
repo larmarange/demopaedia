@@ -1,0 +1,54 @@
+<!-- titre=Demop&aelig;dia -->
+<!-- icone=img/demopaedia-24.png -->
+<!-- autoriser=configurer-->
+<!-- nom=demopaedia-->
+<!-- depot=metapack -->
+<!-- liens*=demopaedia:demopaedia -->
+<!-- liens*=demopaedia:demopaedia_edition -->
+<!-- liens*=demopaedia:demopaedia_termes -->
+#CACHE{0}
+
+<div class="ajax">
+
+<div class='formulaire_spip formulaire_configurer formulaire_configurer_forums_contenu' id='formulaire_configurer_forums_contenu'>
+	<h3 class='titrem'><:demopaedia:cfg_demopaedia:></h3>
+	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
+	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
+
+	<form method="post" action="#SELF"><div>
+		[(#ENV{_cfg_}|form_hidden)]
+		<ul>
+			<li class='configurer_domaine'>
+				<label for="domaine"><:demopaedia:label_domaine:></label>
+				<div class='explication'><:demopaedia:label_domaine_details:></div>
+				<input type="text" name="domaine" value="[(#ENV{domaine})]" id="domaine" class="text" />
+			</li>
+			<li class='configurer_editions'>
+				<label for="editions"><:demopaedia:label_editions:></label>
+				<div class='explication'><:demopaedia:label_editions_details:></div>
+				<textarea name="editions" id="editions" class="textarea">[(#ENV{editions})]</textarea>
+			</li>
+			<li class='configurer_pages_i'>
+				<label for="pages_i"><:demopaedia:label_pages_i:></label>
+				<div class='explication'><:demopaedia:label_pages_details:></div>
+				<textarea name="pages_i" id="pages_i" class="textarea">[(#ENV{pages_i})]</textarea>
+			</li>
+			<li class='configurer_pages_ii'>
+				<label for="pages_ii"><:demopaedia:label_pages_ii:></label>
+				<div class='explication'><:demopaedia:label_pages_details:></div>
+				<textarea name="pages_ii" id="pages_ii" class="textarea">[(#ENV{pages_ii})]</textarea>
+			</li>
+		</ul>
+		<p class='boutons'><input class='submit' type="submit" name="_cfg_ok" value="<:bouton_enregistrer:>" /></p>
+	</div>
+	</form>
+
+
+</div>
+
+
+	<h3><:demopaedia:cfg_config:></h3>
+	<p style="padding:5px;">#CFG_ARBO{demopaedia}</p>
+
+
+</div>

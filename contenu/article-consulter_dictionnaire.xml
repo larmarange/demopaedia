@@ -1,0 +1,5 @@
+<composition>
+	<nom><:demopaedia:consulter_dictionnaire:></nom>
+	<description><:demopaedia:consulter_dictionnaire_description:></description>
+	<icon>img/consulter_dictionnaire.png</icon>
+</composition>
