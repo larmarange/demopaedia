@@ -62,7 +62,8 @@ function demopaedia_declarer_tables_principales($tables_principales){
 		"entree" => "ENUM('principale', 'secondaire') DEFAULT 'principale' NOT NULL",
 		"terme" => "longtext DEFAULT '' NOT NULL",
 		"maj"	=> "TIMESTAMP",
-		"intexte" => "longtext DEFAULT '' NOT NULL"
+		"intexte" => "longtext DEFAULT '' NOT NULL",
+		"nouveau" => "ENUM('non', 'oui') DEFAULT 'non'"
 	);
 	
 	$demoindex_cles = array(

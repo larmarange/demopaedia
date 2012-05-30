@@ -64,7 +64,7 @@ function demopaedia_maj_edition($edition){
 		// Dans le cas où il s'agit d'une section du dictionnaire
 		if (is_numeric($title[1][0])) {
 			// Echappement des TextTerm
-			$texte = preg_replace('/\{\{NewTextTerm\|(.*)\}\}/U','{TextTerm|$1}',$texte); // Les NewTextTerm sont traités comme des TextTerm
+			$texte = preg_replace('/\{\{NewTextTerm\|(.*)\|(.*)\}\}/U','{TextTerm|$1|nouveau=oui|$2}',$texte); // Les NewTextTerm sont traités comme des TextTerm
 			$texte = preg_replace('/\{\{TextTerm\|(.*)\}\}/U','{TextTerm|$1}',$texte);
 			$texte = preg_replace('/IndexEntry=/U','IndexEntry:',$texte);
 			$texte = preg_replace('/OtherIndexEntry=/U','OtherIndexEntry:',$texte);
@@ -103,12 +103,17 @@ function demopaedia_maj_edition($edition){
 					$entree_principale = '';
 					$intexte = trim($textterm[0]);
 					$numterme = trim($textterm[1]);
+					$nouveau = 'non';
 					
 					// On traite chacun des éléments (car l'ordre des IndexEntry ou des OtherIndexEntry n'est pas uniforme)
 					foreach ($textterm as $entree) {
 						// Est-ce une entrée principale ?
 						if(substr($entree,0,10)=='IndexEntry')
 							$entree_principale = trim(substr($entree,11));
+						
+						// Est-ce un NewTextTerm ?
+						if($entree=='nouveau=oui')
+							$nouveau = 'oui';
 						
 						// Est-ce une entrée secondaire d'index ?
 						$entree_secondaire = '';
@@ -128,6 +133,7 @@ function demopaedia_maj_edition($edition){
 						elseif(substr($entree,0,15)=='OtherIndexEntry')
 							$entree_secondaire = substr($entree,16);
 						
+						
 						// Nettoyage des entrées secondaires
 						// On essaye d'harmoniser la présentation 
 						$entree_secondaire = trim($entree_secondaire);
@@ -144,7 +150,8 @@ function demopaedia_maj_edition($edition){
 								'numterme' => $numterme,
 								'terme' => $entree_secondaire,
 								'entree' => 'secondaire',
-								'intexte' => $intexte
+								'intexte' => $intexte,
+								'nouveau' => $nouveau
 							);
 						}
 					}
@@ -158,11 +165,15 @@ function demopaedia_maj_edition($edition){
 						'numterme' => $textterm[1],
 						'terme' => $entree_principale,
 						'entree' => 'principale',
-						'intexte' => $intexte
+						'intexte' => $intexte,
+						'nouveau' => $nouveau
 					);
 				}
 				// On remplace les TextTerm par leur version en HTML simplifié
-				$section = preg_replace('/\{TextTerm\|(.+)\|([0-9]+)(.*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section);
+				if ($nouveau=='oui')
+					$section = preg_replace('/\{TextTerm\|(.+)\|([0-9]+)(.*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2★</sup>',$section);
+				else
+					$section = preg_replace('/\{TextTerm\|(.+)\|([0-9]+)(.*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section);
 				
 				// Traitement des notes
 				preg_match_all('/\{Note\|(.+)\}/U',$section,$notes);

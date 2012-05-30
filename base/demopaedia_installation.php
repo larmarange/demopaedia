@@ -24,14 +24,14 @@ function demopaedia_upgrade($nom_meta_version_base, $version_cible){
 			ecrire_meta($nom_meta_version_base, $version_actuelle=$version_cible, 'non');
 		}
 		
-		if (version_compare($version_actuelle,'0.2','<')){
+		if (version_compare($version_actuelle,'0.3','<')){
 			// Création des tables
 			include_spip('base/create');
 			include_spip('base/abstract_sql');
 			maj_tables('spip_demoindex');
 			
 			echo "Mise à jour des tables du plugin Demopaedia<br/>";
-			ecrire_meta($nom_meta_version_base, $version_actuelle='0.2', 'non');
+			ecrire_meta($nom_meta_version_base, $version_actuelle='0.3', 'non');
 		}
 	
 	}
