@@ -61,7 +61,7 @@
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<dl class="index">]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</dl>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <dl class="index">]
-	<dt><span class="terme">#TERME</span> (#SECTION-#NUMTERME)</dt>
+	<dt><span class="terme">#TERME</span> (#SECTION-#NUMTERME[(#NOUVEAU|=={oui}|?{★,''})])</dt>
 	<B_editions_corr>
 	<dd><table border='0'>
 		<BOUCLE_editions_corr(POUR){tableau #ENV{corr}}{par valeur}>
