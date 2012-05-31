@@ -45,13 +45,15 @@
 		<form method="get" action="#URL_SITE_SPIP/spip.php">
 		<input type='hidden' name='page' value='generate_index' />
 		<ul>
+			<input type="hidden" name="format" value="html" />
+			<!--
 			<li class='format obligatoire'>
 				<label for="format"><:demopaedia:label_format:></label>
 				<select name="format" class="select" id="format">
 					<option value='html' >HTML</option>
-					<!-- <option value='pdf' >PDF</option> -->
 				</select>
 			</li>
+			-->
 			<li class='edition obligatoire'>
 				<label for="edition"><:demopaedia:label_edition:></label>
 				[(#REM) On ne propose que les éditions présentes en base ]
