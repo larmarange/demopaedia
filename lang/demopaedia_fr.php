@@ -22,6 +22,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'texte_recherche' => 'Texte recherché :',
 	'recherche_aucun_resultat' => 'Votre recherche n\'a produit aucun résultat.',
 	'terme' => 'Terme',
+	'termes' => 'Termes',
 	'section' => 'Section :',
 	'numero_reference' => 'Numéro de référence :',
 	'terme_dans_contexte' => 'Terme dans son contexte',
