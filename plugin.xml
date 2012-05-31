@@ -3,7 +3,7 @@
 	<icon>img/demopaedia-64.png</icon>
 	<auteur>Joseph Larmarange [->http://joseph.larmarange.net]</auteur>
 	<licence>GNU/GLP</licence>
-	<version>0.4.0</version>
+	<version>0.4.1</version>
 	<version_base>0.3</version_base>
 	<description>Ce plugin permet de g&eacute;n&eacute;rer diff&eacute;rents documents &agrave; partir des dictionnaires d&eacute;mographiques multilingues.</description>
 	<etat>dev</etat>

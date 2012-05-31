@@ -64,7 +64,8 @@ function demopaedia_maj_edition($edition){
 		// Dans le cas où il s'agit d'une section du dictionnaire
 		if (is_numeric($title[1][0])) {
 			// Echappement des TextTerm
-			$texte = preg_replace('/\{\{NewTextTerm\|(.*)\|(.*)\}\}/U','{TextTerm|$1|nouveau=oui|$2}',$texte); // Les NewTextTerm sont traités comme des TextTerm
+			$texte = preg_replace('/\{\{NewTextTerm\|([^}|]*)\|([0-9]+)\|([^}]*)\}\}/U','{TextTerm|$1|$2|nouveau=oui|$3}',$texte); // Les NewTextTerm sont traités comme des TextTerm
+			$texte = preg_replace('/\{\{NewTextTerm\|([^}|]*)\|([0-9]+)\}\}/U','{TextTerm|$1|$2|nouveau=oui}',$texte); // Cas court
 			$texte = preg_replace('/\{\{TextTerm\|(.*)\}\}/U','{TextTerm|$1}',$texte);
 			$texte = preg_replace('/IndexEntry=/U','IndexEntry:',$texte);
 			$texte = preg_replace('/OtherIndexEntry=/U','OtherIndexEntry:',$texte);
@@ -170,7 +171,7 @@ function demopaedia_maj_edition($edition){
 					);
 				}
 				// On remplace les TextTerm par leur version en HTML simplifié
-				$section = preg_replace('/\{TextTerm\|([^}]+)\|nouveau=oui\|([0-9]+)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2★</sup>',$section);
+				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|nouveau=oui\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2★</sup>',$section);
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section);
 				
 				// Traitement des notes
