@@ -23,6 +23,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'recherche_aucun_resultat' => 'Your search produced no result.',
 	'terme' => 'Term',
 	'termes' => 'Terms',
+	'termes_notes' => 'Notes\' terms',
 	'section' => 'Section:',
 	'numero_reference' => 'Reference number:',
 	'terme_dans_contexte' => 'Term in context',

@@ -27,6 +27,15 @@ if (!function_exists('mb_ucfirst')) {
 	}
 }
 
+if (!function_exists('mb_lcfirst')) {
+	function mb_lcfirst($str, $encoding = "UTF-8") {
+		$first_letter = mb_strtolower(mb_substr($str, 0, 1, $encoding), $encoding);
+		$str_end = mb_substr($str, 1, mb_strlen($str, $encoding), $encoding);
+		$str = $first_letter . $str_end;
+		return $str;
+	}
+}
+
 function demopaedia_maj_edition($edition){
 	include_spip('base/abstract_sql');
 	include_spip('inc/flock');
@@ -39,8 +48,8 @@ function demopaedia_maj_edition($edition){
 		$url .= '%0A'.urlencode(lire_config("demopaedia/$edition/page_introduction"));
 	if (lire_config("demopaedia/$edition/page_preface")!='')
 		$url .= '%0A'.urlencode(lire_config("demopaedia/$edition/page_preface"));
-	if (lire_config("demopaedia/$edition/page_copyright")!='')
-		$url .= '%0A'.urlencode(lire_config("demopaedia/$edition/page_copyright"));
+	if (lire_config("demopaedia/$edition/page_avertissement")!='')
+		$url .= '%0A'.urlencode(lire_config("demopaedia/$edition/page_avertissement"));
 	
 	// Récupération du flux
 	$xml = spip_file_get_contents($url);
@@ -69,6 +78,18 @@ function demopaedia_maj_edition($edition){
 			$texte = preg_replace('/\{\{TextTerm\|(.*)\}\}/U','{TextTerm|$1}',$texte);
 			$texte = preg_replace('/IndexEntry=/U','IndexEntry:',$texte);
 			$texte = preg_replace('/OtherIndexEntry=/U','OtherIndexEntry:',$texte);
+			$texte = preg_replace('/OtherIndexEntry2=/U','OtherIndexEntry2:',$texte);
+			$texte = preg_replace('/OtherIndexEntry3=/U','OtherIndexEntry3:',$texte);
+			$texte = preg_replace('/OtherIndexEntry4=/U','OtherIndexEntry4:',$texte);
+			$texte = preg_replace('/OtherIndexEntry5=/U','OtherIndexEntry5:',$texte);
+			$texte = preg_replace('/OtherIndexEntry6=/U','OtherIndexEntry6:',$texte);
+			$texte = preg_replace('/OtherIndexEntry7=/U','OtherIndexEntry7:',$texte);
+			$texte = preg_replace('/OtherIndexEntry8=/U','OtherIndexEntry8:',$texte);
+			$texte = preg_replace('/OtherIndexEntry9=/U','OtherIndexEntry9:',$texte);
+			$texte = preg_replace('/OtherIndexEntryTwo=/U','OtherIndexEntryTwo:',$texte);
+			$texte = preg_replace('/OtherIndexEntryThree=/U','OtherIndexEntryThree:',$texte);
+			$texte = preg_replace('/OtherIndexEntryFour=/U','OtherIndexEntryFour:',$texte);
+			$texte = preg_replace('/OtherIndexEntryFive=/U','OtherIndexEntryFive:',$texte);
 			
 			// On traite les NonRefTerm
 			$texte = preg_replace('/\{\{NonRefTerm\|(.+)\}\}/U','<em>$1</em>',$texte);
@@ -76,8 +97,8 @@ function demopaedia_maj_edition($edition){
 			// On traite les RefNumber
 			$texte = preg_replace('/\{\{RefNumber\|([0-9]+)\|([0-9]+)\|([0-9]+)\}\}/U','$1$2-$3',$texte);
 			
-			// On traite les NoteTerm
-			$texte = preg_replace('/\{\{NoteTerm\|(.+)\}\}/U','<strong>$1</strong>',$texte);
+			// Echappement des NoteTerm avec des crochets et suppression du pipe pour éviter interférences avec le traitement des Notes
+			$texte = preg_replace('/\{\{NoteTerm\|(.+)\}\}/U','[*NoteTerm$1*]',$texte);
 			
 			// On supprime commentaires, sommaire, (après avoir protégé les Notes et les titres de section) etc.
 			// Note : ajout de *** pour repérer les fins de section
@@ -96,6 +117,7 @@ function demopaedia_maj_edition($edition){
 			$i=0;
 			foreach($sections[2] as $section) {
 				$num_section = $sections[1][$i];
+				$doublons = array(); // tableau qui servira à stocker les termes pour essayer de filtrer les doublons dans les NoteTerm
 				
 				// Traitement des TextTerm
 				preg_match_all('/\{TextTerm\|(.*)\}/U',$section,$textterms);
@@ -105,12 +127,15 @@ function demopaedia_maj_edition($edition){
 					$intexte = trim($textterm[0]);
 					$numterme = trim($textterm[1]);
 					$nouveau = 'non';
+					$doublons[] = mb_strtolower($intexte);
 					
 					// On traite chacun des éléments (car l'ordre des IndexEntry ou des OtherIndexEntry n'est pas uniforme)
 					foreach ($textterm as $entree) {
 						// Est-ce une entrée principale ?
-						if(substr($entree,0,10)=='IndexEntry')
+						if(substr($entree,0,10)=='IndexEntry') {
 							$entree_principale = trim(substr($entree,11));
+							$doublons[] = mb_strtolower($entree_principale);
+						}
 						
 						// Est-ce un NewTextTerm ?
 						if($entree=='nouveau=oui')
@@ -133,7 +158,6 @@ function demopaedia_maj_edition($edition){
 							$entree_secondaire = substr($entree,20);
 						elseif(substr($entree,0,15)=='OtherIndexEntry')
 							$entree_secondaire = substr($entree,16);
-						
 						
 						// Nettoyage des entrées secondaires
 						// On essaye d'harmoniser la présentation 
@@ -178,11 +202,28 @@ function demopaedia_maj_edition($edition){
 				preg_match_all('/\{Note\|(.+)\}/U',$section,$notes);
 				foreach($notes[1] as $note) {
 					$note = explode ('|',$note);
+					$texte_note = $note[1];
+					// Traitement des NoteTerm
+					preg_match_all('/\[\*NoteTerm(.*)\*\]/U',$texte_note,$noteterms);
+					foreach ($noteterms[1] as $noteterm) {
+						$noteterm = trim($noteterm);
+						if (!in_array(mb_strtolower($noteterm),$doublons)) // Seulement si le terme n'est pas deja renseigne en entree principale
+							$demoindex[] = array(
+								'edition' => $edition,
+								'section' => $num_section,
+								'numterme' => $note[0],
+								'terme' => $noteterm,
+								'entree' => 'note',
+								'intexte' => $noteterm,
+								'nouveau' => 'non'
+							);
+					}
+					$texte_note = preg_replace('/\[\*NoteTerm(.+)\*\]/U','<strong>$1</strong>',$texte_note); // mise en forme avant enregistrement de la note
 					$demonotes[] = array(
 						'edition' => $edition,
 						'section' => $num_section,
 						'note' => $note[0],
-						'texte' => $note[1]
+						'texte' => $texte_note
 					);
 				}
 				// Nettoyage du texte de la section
@@ -201,12 +242,12 @@ function demopaedia_maj_edition($edition){
 		// Traitement des autres pages
 		else {
 			$type = '';
-			if ($title[1][0]==lire_config("demopaedia/$edition/page_introduction"))
+			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia/$edition/page_introduction")))
 				$type = 'introduction';
-			if ($title[1][0]==lire_config("demopaedia/$edition/page_preface"))
+			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia/$edition/page_preface")))
 				$type = 'preface';
-			if ($title[1][0]==lire_config("demopaedia/$edition/page_copyright"))
-				$type = 'copyright';
+			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia/$edition/page_avertissement")))
+				$type = 'avertissement';
 			// Si on récupère la page
 			if ($type !='') {
 				// On redéfini l'édition en cours à chaque page à cause des redirections possibles
@@ -313,10 +354,10 @@ function demopaedia_maj_edition($edition){
 	}
 	
 	if (count($demodef)>0 and count($demoindex)>0) {
-		// On passe la première lettre des entrées d'index en majuscule (pour certaines langues seulement)
+		// On passe la première lettre des entrées d'index en minuscule (pour certaines langues seulement)
 		if (in_array(lg_code($edition),array('fr','en','es','it','de','pl','pt','cs','ru'))) {
 			foreach($demoindex as $cle => $terme)
-				$demoindex[$cle]['terme'] = mb_ucfirst($demoindex[$cle]['terme']);
+				$demoindex[$cle]['terme'] = mb_lcfirst($demoindex[$cle]['terme']);
 		}
 		// On supprime les anciennes entrées
 		demopaedia_effacer_edition($edition);

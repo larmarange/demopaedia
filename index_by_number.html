@@ -20,7 +20,8 @@
 		h2 {margin:40px 0 5px; border-bottom:1px solid black;}
 		h3 {margin:25px 0 5px;}
 		ul {margin-top: 0;}
-		.secondaire {font-style:italic;}
+		.principale {font-weight:bold;}
+		.note {font-style:italic;}
 		.section { -moz-column-width: 380px; -moz-column-gap: 20px; -webkit-column-width: 380px; -webkit-column-gap: 20px; column-width: 380px; column-gap: 20px;}
 	</style>
 </head>
@@ -38,7 +39,7 @@
 [<div class="soustitre">(#EDITION|lg_ed_txt)</div>]
 <div class="lien"><a href='http://#EDITION.#CONFIG{demopaedia/domaine}' >http://#EDITION.#CONFIG{demopaedia/domaine}</a></div>
 [<div class="date">(#VAL{This document has been generated the @date@.}|ajoute_date)</div>]
-<div class="information">Secondary index entries are indicated in italic.</div>
+<div class="information">Text terms are indicated in bold.<br />Secondary index entries are indicated with a normal weight.<br />Note terms are indicated in italic.</div>
 
 <B_index>
 <div id="index" [lang="(#ENV{edition}|lg_code)"] [dir="(#ENV{edition}|lg_code|lang_dir)"]>
@@ -47,7 +48,7 @@
 [[(#COMPTEUR_BOUCLE|=={1}|non)</div>]<h2><a href='http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/[(#SECTION|page_section)#]#SECTION' >(#SECTION|unique)</a></h2><div class="section">]
 <h3>(#SECTION|concat{'-',#NUMTERME}|unique)</h3>
 <ul class="index">]
-	<li class="terme #ENTREE">#TERME</li>
+	<li class="terme #ENTREE">#TERME[(#NOUVEAU|=={oui}|?{★,''})][(#ENTREE|=={note}|?{*,''})]</li>
 </BOUCLE_index>
 </ul>
 </div>

@@ -21,6 +21,7 @@
 		h2 {margin:40px 0 5px; border-bottom:1px solid black;}
 		h3 {margin:25px 0 5px;}
 		.asterisme {text-align:center; width:100%; font-size:2em;}
+		.noteterm {font-style:italic;}
 	</style>
 </head>
 <body>
@@ -54,6 +55,11 @@
 			[(#TEXTE**|sommaire_sous_elements{preface,h3,h4})]
 		</li>
 		</BOUCLE_sommaire_preface>
+		<BOUCLE_sommaire_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
+		<li><a href="#avertissement">[(#CONFIG{demopaedia/[(#EDITION)]/avertissement})]</a>
+			[(#TEXTE**|sommaire_sous_elements{avertissement,h3,h4})]
+		</li>
+		</BOUCLE_sommaire_avertissement>
 		<BOUCLE_sommaire_chapitres(POUR){tableau #GET{chapitres}}>
 		<li><a href="#chapitre#VALEUR">[(#CONFIG{demopaedia/[(#EDITION)]/chapitre}) ]#VALEUR[ • (#CONFIG{demopaedia/[(#EDITION)]/chapitre#VALEUR})]</a></li>
 		</BOUCLE_sommaire_chapitres>
@@ -76,6 +82,14 @@
 	[(#TEXTE**|ajoute_name{preface}|typo)]
 </div>
 </BOUCLE_preface>
+
+<B_avertissement>
+<h2><a name="avertissement"></a>[(#CONFIG{demopaedia/[(#EDITION)]/avertissement})]</h2>
+<BOUCLE_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
+<div class="texte">
+	[(#TEXTE**|ajoute_name{avertissement}|typo)]
+</div>
+</BOUCLE_avertissement>
 
 <BOUCLE_chapitres(POUR){tableau #GET{chapitres}}>
 #SET{section_min,#EVAL{100*#VALEUR}} #SET{section_max,#EVAL{100*(#VALEUR+1)}}
@@ -105,7 +119,7 @@
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h3>(#TERME|initiale{#EDITION}|unique)</h3>
 <ul class="index" >]
-	<li>#TERME (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#NOUVEAU|=={oui}|?{★,''})])</li>
+	<li [(#ENTREE|=={note}|oui)class="noteterm"]>#TERME (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#NOUVEAU|=={oui}|?{★,''})][(#ENTREE|=={note}|?{*,''})])</li>
 </BOUCLE_index>
 </ul>
 </B_index>

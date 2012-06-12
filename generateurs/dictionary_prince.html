@@ -151,12 +151,15 @@
 			string-set: indexinitials attr(class);
 			text-indent:-0.25cm;
 			padding-left:0.25cm;
+			font-size: 8pt;
+			line-height:100%;
 		}
 		span.indent { width: 0.25cm; display: inline-block; margin:0; padding:0;}
 		ul.index a::after { content: leader(" .") attr(title);}
 		span.num_index {
 			leader(" ");
 		}
+		.noteterm {font-style:italic;}
 	</style>
 </head>
 <body>
@@ -187,6 +190,11 @@
 			<a href="#preface">[(#CONFIG{demopaedia/[(#EDITION)]/preface})]</a>
 		</li>
 		</BOUCLE_sommaire_preface>
+		<BOUCLE_sommaire_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
+		<li>
+			<a href="#avertissement">[(#CONFIG{demopaedia/[(#EDITION)]/avertissement})]</a>
+		</li>
+		</BOUCLE_sommaire_avertissement>
 		<BOUCLE_sommaire_chapitres(POUR){tableau #GET{chapitres}}>
 		<li>
 			<a href="#chapitre#VALEUR">[(#CONFIG{demopaedia/[(#EDITION)]/chapitre}) ]#VALEUR[ • (#CONFIG{demopaedia/[(#EDITION)]/chapitre#VALEUR})]</a>
@@ -217,6 +225,16 @@
 </div>
 </div>
 </BOUCLE_preface>
+
+<B_avertissement>
+<div class="avertissement chapitre">
+<h1><a name="avertissement"></a>[(#CONFIG{demopaedia/[(#EDITION)]/avertissement}|typo)]</h1>
+<BOUCLE_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
+<div class="texte">
+	[(#TEXTE**|ajoute_name{avertissement}|typo|replace{h3,h2}|replace{h4,h3}|replace{h5,h4}|replace{h5,h5})]
+</div>
+</div>
+</BOUCLE_avertissement>
 
 <BOUCLE_chapitres(POUR){tableau #GET{chapitres}}>
 #SET{section_min,#EVAL{100*#VALEUR}} #SET{section_max,#EVAL{100*(#VALEUR+1)}}
@@ -249,7 +267,7 @@
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <ul class="index" >]
-	<li class="[(#TERME|initiale{#EDITION})][(#TERME|initiale{#EDITION,1}|mb_strtolower)]"><a href="##SECTION" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index)[(#NOUVEAU|=={oui}|?{&nbsp;★,''})]]</a></li>
+	<li class="[(#TERME|initiale{#EDITION})][(#TERME|initiale{#EDITION,1}|mb_strtolower)]"><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)[(#NOUVEAU|=={oui}|?{&nbsp;★,''})]]</a></li>
 </BOUCLE_index>
 </ul>
 </div>

@@ -76,7 +76,7 @@
 	[(#SET{recherche,[(#ENV{terme_recherche}|replace{' ','%'})]})]
 	[(#ENV{voir_tous}|oui)[(#SET{recherche,''})]]
 	[(#ENV{entrees_secondaires}|!={'non'}|?{' ',''})
-		#SET{entrees,#ARRAY{1,principale,2,secondaire}}
+		#SET{entrees,#ARRAY{1,principale,2,secondaire,3,note}}
 	]
 	[(#ENV{entrees_secondaires}|=={'non'}|?{' ',''})
 		#SET{entrees,#ARRAY{1,principale}}

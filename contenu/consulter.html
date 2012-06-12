@@ -25,6 +25,10 @@
 		<h2 class="h2"><a href="[(#SELF|parametre_url{section,preface})]">[(#CONFIG{demopaedia/[(#EDITION)]/preface})]</a></h2>
 			[(#TEXTE**|sommaire_sous_elements{non,h3,h3})]
 		</BOUCLE_sommaire_preface>
+		<BOUCLE_sommaire_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
+		<h2 class="h2"><a href="[(#SELF|parametre_url{section,avertissement})]">[(#CONFIG{demopaedia/[(#EDITION)]/avertissement})]</a></h2>
+			[(#TEXTE**|sommaire_sous_elements{non,h3,h3})]
+		</BOUCLE_sommaire_avertissement>
 		<BOUCLE_sommaire_chapitres(POUR){tableau #GET{chapitres}}{par valeur}>
 		<h2 class="h2">[(#CONFIG{demopaedia/[(#EDITION)]/chapitre}) ]#VALEUR[ • (#CONFIG{demopaedia/[(#EDITION)]/chapitre#VALEUR})]</h2>
 		#SET{section_min,#EVAL{100*#VALEUR}} #SET{section_max,#EVAL{100*(#VALEUR+1)}}
@@ -51,12 +55,12 @@
 	<BOUCLE_test_section_num(CONDITION){si #ENV{section}|is_numeric}>
 	<BOUCLE_def(DEMODEF){edition=#ENV{edition}}{section=#ENV{section}}>
 		<div class="texte">
-		<p lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" >[(#TEXTE**|ajoute_liens_termes{#EDITION,#SECTION})]</p>
+		<p lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" >[(#TEXTE**|ajoute_liens_termes{#EDITION,#SECTION}|typo)]</p>
 		<B_notes>
 			<div class="notes"><h3 class="h3"><:info_notes:></h3>
 		<BOUCLE_notes(DEMONOTES){edition=#ENV{edition}}{section=#ENV{section}}{par note}>
 			<p lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" > 
-			<sup>#NOTE</sup> [(#TEXTE**|ajoute_liens_termes{#EDITION,#SECTION})]
+			<sup>#NOTE</sup> [(#TEXTE**|ajoute_liens_termes{#EDITION,#SECTION}|typo)]
 			</p>
 		</BOUCLE_notes>
 		</div>
@@ -71,6 +75,14 @@
 		</BOUCLE_termes>
 		</ul>
 		</B_termes>
+		<B_termes_notes>
+		<h3 class="h3"><:demopaedia:termes_notes:></h3>
+		<ul>
+		<BOUCLE_termes_notes(DEMOINDEX){edition=#EDITION}{section}{entree='note'}{par terme}{collecte #GET{interclassement}}>
+			<li><a href="[(#URL_PAGE{terme,edition=#EDITION&section=#SECTION&numterme=#NUMTERME&terme=[(#TERME|urlencode)]})]">#TERME</a> (#SECTION-#NUMTERME[(#NOUVEAU|=={oui}|?{★,''})])</li>
+		</BOUCLE_termes_notes>
+		</ul>
+		</B_termes_notes>
 		</div>
 	</BOUCLE_def>
 	</B_def>

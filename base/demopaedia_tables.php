@@ -59,7 +59,7 @@ function demopaedia_declarer_tables_principales($tables_principales){
 		"edition" => "varchar(10) not null",
 		"section" => "int DEFAULT '0' NOT NULL",
 		"numterme" => "int DEFAULT '0' NOT NULL",
-		"entree" => "ENUM('principale', 'secondaire') DEFAULT 'principale' NOT NULL",
+		"entree" => "ENUM('principale', 'secondaire', 'note') DEFAULT 'principale' NOT NULL",
 		"terme" => "longtext DEFAULT '' NOT NULL",
 		"maj"	=> "TIMESTAMP",
 		"intexte" => "longtext DEFAULT '' NOT NULL",
@@ -82,7 +82,7 @@ function demopaedia_declarer_tables_principales($tables_principales){
 	//-- Table demoinfo -----------------------------------------------------------
 	$demoinfo = array(
 		"edition" => "varchar(10) not null",
-		"type" => "ENUM('introduction', 'preface', 'copyright') DEFAULT 'preface' NOT NULL",
+		"type" => "varchar(25) not null",
 		"texte" => "longtext DEFAULT '' NOT NULL",
 		"maj"	=> "TIMESTAMP"
 	);

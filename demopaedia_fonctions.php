@@ -575,7 +575,7 @@ function filtre_termes_manquants($edition) {
 	$all = sql_allfetsel (
 			"CONCAT( section, '-', numterme )",
 			'spip_demoindex',
-			"SUBSTRING(edition FROM 4) = ".sql_quote(ed_code($edition)), #'edition = '.sql_quote($edition),
+			"SUBSTRING(edition FROM 4) = ".sql_quote(ed_code($edition))." AND entree='principale'", #'edition = '.sql_quote($edition),
 			'section, numterme',
 			'section, numterme'
 		);
@@ -585,7 +585,7 @@ function filtre_termes_manquants($edition) {
 	$this_ed = sql_allfetsel (
 			array("CONCAT( section, '-', numterme )"),
 			'spip_demoindex',
-			'edition = '.sql_quote($edition),
+			'edition = '.sql_quote($edition)." AND entree='principale'",
 			'section, numterme',
 			'section, numterme'
 		);
