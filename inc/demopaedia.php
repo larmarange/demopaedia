@@ -98,7 +98,12 @@ function demopaedia_maj_edition($edition){
 			$texte = preg_replace('/\{\{RefNumber\|([0-9]+)\|([0-9]+)\|([0-9]+)\}\}/U','$1$2-$3',$texte);
 			
 			// Echappement des NoteTerm avec des crochets et suppression du pipe pour éviter interférences avec le traitement des Notes
-			$texte = preg_replace('/\{\{NoteTerm\|(.+)\}\}/U','[*NoteTerm$1*]',$texte);
+			// Les pipes liés aux IndexEntry et OtherIndexEntry sont transformés en double point d'exclamation
+			$texte = preg_replace('/\{\{NoteTerm\|([^|{}]+)\|([^|{}]+)\|([^|{}]+)\|([^|{}]+)\|([^|{}]+)\}\}/U','[*NoteTerm!!$1!!$2!!$3!!$4!!$5*]',$texte);
+			$texte = preg_replace('/\{\{NoteTerm\|([^|{}]+)\|([^|{}]+)\|([^|{}]+)\|([^|{}]+)\}\}/U','[*NoteTerm!!$1!!$2!!$3!!$4*]',$texte);
+			$texte = preg_replace('/\{\{NoteTerm\|([^|{}]+)\|([^|{}]+)\|([^|{}]+)\}\}/U','[*NoteTerm!!$1!!$2!!$3*]',$texte);
+			$texte = preg_replace('/\{\{NoteTerm\|([^|{}]+)\|([^|{}]+)\}\}/U','[*NoteTerm!!$1!!$2*]',$texte);
+			$texte = preg_replace('/\{\{NoteTerm\|([^|{}]+)\}\}/U','[*NoteTerm!!$1*]',$texte);
 			
 			// On supprime commentaires, sommaire, (après avoir protégé les Notes et les titres de section) etc.
 			// Note : ajout de *** pour repérer les fins de section
@@ -204,21 +209,77 @@ function demopaedia_maj_edition($edition){
 					$note = explode ('|',$note);
 					$texte_note = $note[1];
 					// Traitement des NoteTerm
-					preg_match_all('/\[\*NoteTerm(.*)\*\]/U',$texte_note,$noteterms);
+					preg_match_all('/\[\*NoteTerm\!\!(.*)\*\]/U',$texte_note,$noteterms);
 					foreach ($noteterms[1] as $noteterm) {
-						$noteterm = trim($noteterm);
-						if (!in_array(mb_strtolower($noteterm),$doublons)) // Seulement si le terme n'est pas deja renseigne en entree principale
+						if (!strpos($noteterm,'!')) {
+							$note_terme = trim($noteterm);
+							$note_intexte = trim($noteterm);
+						} else {
+							$noteterm = explode('!!',$noteterm);
+							$note_terme = trim($noteterm[0]);
+							$note_intexte = trim($noteterm[0]);
+						}
+						
+						// On traite chacun des éléments (car l'ordre des IndexEntry ou des OtherIndexEntry n'est pas uniforme)
+						foreach ($noteterm as $entree) {
+							// Est-ce une entrée principale ?
+							if(substr($entree,0,10)=='IndexEntry')
+								$note_terme = trim(substr($entree,11));
+							
+							// Est-ce une entrée secondaire d'index ?
+							$note_secondaire = '';
+							if(substr($entree,0,16)=='OtherIndexEntry2' OR substr($entree,0,16)=='OtherIndexEntry3' 
+							  OR substr($entree,0,16)=='OtherIndexEntry4' OR substr($entree,0,16)=='OtherIndexEntry5'
+							  OR substr($entree,0,16)=='OtherIndexEntry8' OR substr($entree,0,16)=='OtherIndexEntry7'
+							  OR substr($entree,0,16)=='OtherIndexEntry9')
+								$note_secondaire = substr($entree,17);
+							elseif(substr($entree,0,18)=='OtherIndexEntryTwo')
+								$note_secondaire = substr($entree,19);
+							elseif(substr($entree,0,20)=='OtherIndexEntryThree')
+								$note_secondaire = substr($entree,21);
+							elseif(substr($entree,0,19)=='OtherIndexEntryFour')
+								$note_secondaire = substr($entree,20);
+							elseif(substr($entree,0,19)=='OtherIndexEntryFive')
+								$note_secondaire = substr($entree,20);
+							elseif(substr($entree,0,15)=='OtherIndexEntry')
+								$note_secondaire = substr($entree,16);
+							
+							// Nettoyage des entrées secondaires
+							// On essaye d'harmoniser la présentation 
+							$note_secondaire = trim($note_secondaire);
+							$note_secondaire = str_replace('...','—',$note_secondaire);
+							$note_secondaire = str_replace(' . ',' / ',$note_secondaire);
+							$note_secondaire = str_replace(' , ',' / ',$note_secondaire);
+							$note_secondaire = str_replace('. ',' / ',$note_secondaire);
+							$note_secondaire = str_replace(', ',' / ',$note_secondaire);
+							
+							if ($note_secondaire != '' && !in_array(mb_strtolower($note_secondaire),$doublons)) {
+								$demoindex[] = array(
+									'edition' => $edition,
+									'section' => $num_section,
+									'numterme' => $note[0],
+									'terme' => $note_secondaire,
+									'entree' => 'note',
+									'intexte' => $note_intexte,
+									'nouveau' => 'non'
+								);
+							}
+						}
+						
+						// On sauvegarde l'entrée principale de la note
+						if (!in_array(mb_strtolower($note_terme),$doublons)) // Seulement si le terme n'est pas deja renseigne en entree principale
 							$demoindex[] = array(
 								'edition' => $edition,
 								'section' => $num_section,
 								'numterme' => $note[0],
-								'terme' => $noteterm,
+								'terme' => $note_terme,
 								'entree' => 'note',
-								'intexte' => $noteterm,
+								'intexte' => $note_intexte,
 								'nouveau' => 'non'
 							);
 					}
-					$texte_note = preg_replace('/\[\*NoteTerm(.+)\*\]/U','<strong>$1</strong>',$texte_note); // mise en forme avant enregistrement de la note
+					$texte_note = preg_replace('/\[\*NoteTerm\!\!([^![\]]+)\!\!(.+)\*\]/U','<strong>$1</strong>',$texte_note); // mise en forme avant enregistrement de la note
+					$texte_note = preg_replace('/\[\*NoteTerm\!\!([^![\]]+)\*\]/U','<strong>$1</strong>',$texte_note);
 					$demonotes[] = array(
 						'edition' => $edition,
 						'section' => $num_section,
@@ -355,10 +416,11 @@ function demopaedia_maj_edition($edition){
 	
 	if (count($demodef)>0 and count($demoindex)>0) {
 		// On passe la première lettre des entrées d'index en minuscule (pour certaines langues seulement)
-		if (in_array(lg_code($edition),array('fr','en','es','it','de','pl','pt','cs','ru'))) {
+		// ANNULER car certains mots commencent volontaire avec une majuscule => correction de l'index préférable
+		/* if (in_array(lg_code($edition),array('fr','en','es','it','de','pl','pt','cs','ru'))) {
 			foreach($demoindex as $cle => $terme)
 				$demoindex[$cle]['terme'] = mb_lcfirst($demoindex[$cle]['terme']);
-		}
+		} */
 		// On supprime les anciennes entrées
 		demopaedia_effacer_edition($edition);
 		// On met à jour la base de données
