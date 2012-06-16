@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+#HTTP_HEADER{Content-Type: text/html; charset=#CHARSET}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" [xml:lang="(#ENV{edition}|lg_code)"] [lang="(#ENV{edition}|lg_code)"] [dir="(#ENV{edition}|lg_code|lang_dir)"]>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -121,10 +121,10 @@
 			string-set: chaptertitle ""; /* Pour ne pas avoir d'en-tête au début d'une section */
 		}
 		p { margin: 0.25cm 0; }
-		div.texte a[href ^="http:"]::after {content: " (" attr(href) ")";}
+		/* div.texte a[href ^="http:"]::after {content: " (" attr(href) ")";} */
 		ol, ul {margin: 0 0 0 1cm;}
-		li {margin: 0; padding:0.125cm 0;}
-		ol.notes { margin: 0.5cm 0.5cm 0 1cm; padding:0;}
+		li {margin: 0; padding:0.1cm 0;}
+		ol.notes { margin: 0.25cm 1cm 0 1cm; padding:0; font-size: 9pt;}
 		ul.toc a::after { content: leader(" . ") target-counter(attr(href), page);}
 		ul.toc {
 			margin-top: 0.5cm;
@@ -160,6 +160,7 @@
 			leader(" ");
 		}
 		.noteterm {font-style:italic;}
+		table {width: 100%;}
 	</style>
 </head>
 <body>
