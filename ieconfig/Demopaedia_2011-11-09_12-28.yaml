@@ -1,0 +1,405 @@
+nom: 'Demopædia - 2011/11/09'
+description: 'Sauvegarde de sécurité'
+spip_contenu:
+  articles_surtitre: non
+  articles_soustitre: non
+  articles_descriptif: non
+  articles_chapeau: non
+  articles_texte: oui
+  articles_ps: non
+  articles_redac: non
+  articles_urlref: non
+  post_dates: non
+  articles_redirection: non
+  rubriques_descriptif: oui
+  rubriques_texte: oui
+  activer_breves: non
+  articles_mots: non
+  config_precise_groupes: non
+  mots_cles_forums: non
+  activer_logos: oui
+  activer_logos_survol: non
+  documents_article: oui
+  documents_rubrique: oui
+  documents_date: non
+  activer_sites: non
+  activer_syndic: oui
+  proposer_sites: '0'
+  moderation_sites: non
+spip_interactivite:
+  forums_publics: non
+  forums_titre: oui
+  forums_texte: oui
+  forums_urlref: non
+  forums_afficher_barre: oui
+  accepter_inscriptions: non
+  accepter_visiteurs: non
+  forum_prive_objets: oui
+  forum_prive: oui
+  forum_prive_admin: non
+  messagerie_agenda: oui
+  suivi_edito: non
+  adresse_suivi: ''
+  adresse_suivi_inscription: ''
+  quoi_de_neuf: non
+  adresse_neuf: ''
+  jours_neuf: ''
+  email_envoi: ''
+  prevenir_auteurs: non
+menus:
+  barrenav:
+    titre: 'Barre Horizontale'
+    css: ''
+    entrees:
+      -
+        type_entree: accueil
+        parametres:
+          titre: ''
+          css: ''
+      -
+        type_entree: articlessecteurlangue
+        parametres:
+          tri_num: ''
+          tri_alpha: ''
+dublin_core:
+  dublin_core:
+    dc_creator: nom_site_spip
+    dc_subject: motscles
+    dc_subject_groupe_mot: null
+    dc_description_abstract: descriptif
+    issn: ''
+    dc_rights_license: ''
+    dc_rights_rightsholder: nom_site_spip
+demopaedia:
+  demopaedia:
+    domaine: demopaedia.org
+    editions: 'fr-i,fr-ii,es-i,es-ii,ar-i,ar-ii,ru-i,ru-ii,pl-i,cs-i,cs-ii,pt-i,pt-ii,it-i,it-ii,sv-i,et-ii,zh-ii,ja-ii,de-i,de-ii,en-i,en-ii'
+    pages_i: '10,11,12,13,14,15,16,20,21,22,23,30,31,32,33,34,35,40,41,42,43,50,51,52,60,61,62,63,70,71,72,80,81,90,91,92,93'
+    pages_ii: '10,11,12,13,14,15,16,20,21,22,23,30,31,32,33,34,35,40,41,42,43,50,51,52,60,61,62,63,70,71,72,73,80,81,90,91,92,93'
+    fr-ii:
+      titre_dico: 'Dictionnaire démographique multilingue'
+      details_edition: 'seconde édition française de 1981'
+      titre_index: 'Index français du dictionnaire démographique multilingue'
+      introduction: Introduction
+      preface: Préface
+      chapitre1: Généralités
+      chapitre2: 'Élaboration des statistiques démographiques'
+      chapitre3: 'État de la population'
+      chapitre4: 'Mortalité et morbidité'
+      chapitre5: Nuptialité
+      chapitre6: Fécondité
+      chapitre7: 'Mouvement général de la population, reproduction'
+      chapitre8: 'Mobilité spatiale'
+      chapitre9: 'Démographie économique et sociale'
+      index: Index
+      sommaire: Sommaire
+      termes_correspondants: 'avec les termes correspondants des éditions suivantes :'
+      chapitre: Chapitre
+      page_introduction: Introduction
+      page_preface: Préface
+      page_copyright: ''
+      droit_auteur: ''
+      licence: Licence
+      details_licence: 'Contenu disponible sous Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
+      interclassement: utf8_unicode_ci
+      annee: '1981'
+      date_document: 'Ce document a été généré le @date@.'
+    fr-i:
+      page_introduction: Introduction
+      page_preface: Préface
+      page_copyright: ''
+      interclassement: utf8_unicode_ci
+      titre_dico: 'Dictionnaire démographique multilingue'
+      annee: '1958'
+      details_edition: 'première édition française de 1958'
+      titre_index: 'Index français du dictionnaire démographique multilingue'
+      introduction: Introduction
+      preface: Préface
+      chapitre: Chapitre
+      chapitre1: Généralités
+      chapitre2: 'Élaboration des statistiques démographiques'
+      chapitre3: 'État de la population'
+      chapitre4: 'Mortalité et morbidité'
+      chapitre5: Nuptialité
+      chapitre6: Fécondité
+      chapitre7: 'Mouvement général de la population, reproduction'
+      chapitre8: Migrations
+      chapitre9: 'Démographie économique et sociale'
+      index: Index
+      sommaire: Sommaire
+      termes_correspondants: 'avec les termes correspondants des éditions suivantes :'
+      licence: Licence
+      details_licence: 'Contenu disponible sous Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
+      date_document: 'Ce document a été généré le @date@.'
+    en-ii:
+      page_introduction: Introduction
+      page_preface: Preface
+      page_copyright: ''
+      interclassement: utf8_unicode_ci
+      titre_dico: 'Multilingual Demographic Dictionary'
+      annee: '1982'
+      details_edition: 'english second edition 1982'
+      titre_index: 'English index of the Multilingual Demographic Dictionary'
+      introduction: Introduction
+      preface: Preface
+      chapitre: Chapter
+      chapitre1: 'General concepts'
+      chapitre2: 'The treatment and processing of population statistics'
+      chapitre3: 'Distribution and classification of the population'
+      chapitre4: 'Mortality and morbidity'
+      chapitre5: Nuptiality
+      chapitre6: Fertility
+      chapitre7: 'Population growth and replacement'
+      chapitre8: 'Spatial mobility'
+      chapitre9: 'Economic and social aspects of demography'
+      index: Index
+      sommaire: 'Table of contents'
+      termes_correspondants: 'with corresponding terms from:'
+      droit_auteur: ''
+      licence: License
+      details_licence: 'Content is available under Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/). '
+      date_document: 'This document has been generated the @date@.'
+    ru-ii:
+      page_introduction: Введение
+      page_preface: Вступление
+      page_copyright: ''
+      interclassement: utf8_unicode_ci
+      titre_dico: 'Многоязычный демографический словарь'
+      annee: '2008'
+      details_edition: 'Русский второго издания 2008'
+      titre_index: 'Указатель Многоязычный демографический словарь'
+      introduction: Введение
+      preface: Вступление
+      chapitre: Главе
+      chapitre1: 'Общие положения'
+      chapitre2: 'Обработка демографических данных'
+      chapitre3: 'Состав и размещение населения'
+      chapitre4: 'Смертность и заболеваемость'
+      chapitre5: Брачность
+      chapitre6: Плодовитость
+      chapitre7: 'Естественное движение и воспроизводство населения'
+      chapitre8: Миграция
+      chapitre9: 'Экономическая и социальная демография'
+      index: Указатель
+      sommaire: Резюме
+      termes_correspondants: 'с соответствующими условиями следующей редакции:'
+      licence: Лицензии
+      details_licence: 'Содержимое доступно в соответствии с Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
+      date_document: 'Этот документ был создан на дату @date@.'
+    zh-ii:
+      page_introduction: ''
+      page_preface: 序文
+      page_copyright: ''
+      interclassement: utf8_unicode_ci
+    cs-ii:
+      page_introduction: Úvod
+      page_preface: Předmluva
+      page_copyright: ''
+      interclassement: utf8_slovak_ci
+      titre_dico: 'Mnohojazyčný demografický slovník'
+      annee: '2005'
+      details_edition: 'Čeština - druhé vydání 2005'
+      titre_index: 'Česká index Demografické Vícejazyčný slovník'
+      introduction: Úvod
+      preface: Předmluva
+      chapitre: Kapitola
+      chapitre1: 'Základní pojmy'
+      chapitre2: 'Zpracování demografických statistik'
+      chapitre3: 'Stav obyvatelstva'
+      chapitre4: 'Úmrtnost a nemocnost'
+      chapitre5: 'Sňatečnost a rozvodovost'
+      chapitre6: Porodnost
+      chapitre7: 'Populační růst a demografická reprodukce'
+      chapitre8: Migrace
+      chapitre9: 'Ekonomické a sociální aspekty populačního vývoje'
+      index: Rejstřík
+      sommaire: Shrnutí
+      termes_correspondants: 's odpovídajícími podmínkami od:'
+      licence: Licence
+      details_licence: 'Obsah je dostupný pod Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/). '
+      date_document: 'Stránka byla vygenerována v den @date@.'
+    cs-i:
+      page_introduction: Úvod
+      page_preface: Předmluva
+      page_copyright: ''
+      interclassement: utf8_slovak_ci
+      titre_dico: 'Mnohojazyčný demografický slovník'
+      annee: '1965'
+      details_edition: 'Čeština - první vydání 1965'
+      titre_index: 'Česká index Demografické Vícejazyčný slovník'
+      introduction: Úvod
+      preface: Předmluva
+      chapitre: Kapitola
+      chapitre1: 'Základní a obecné pojmy'
+      chapitre2: 'Pojmy a metody statistiky ob yvatelstva'
+      chapitre3: 'Stav a struktura obyvatelstva'
+      chapitre4: 'Úmrtnost a nemocnost'
+      chapitre5: Sňategnost
+      chapitre6: Plodnost
+      chapitre7: 'Měna a reprodukce obyvatelstva'
+      chapitre8: Migrace
+      chapitre9: 'Ekonomické a sociální aspekty demografie'
+      index: Rejstřík
+      sommaire: Shrnutí
+      termes_correspondants: 's odpovídajícími podmínkami od:'
+      licence: Licence
+      details_licence: 'Obsah je dostupný pod Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/). '
+      date_document: 'Stránka byla vygenerována v den @date@.'
+    en-i:
+      page_introduction: Introduction
+      page_preface: Preface
+      page_copyright: ''
+      interclassement: utf8_unicode_ci
+      titre_dico: 'Multilingual Demographic Dictionary'
+      annee: '1958'
+      details_edition: 'english first edition 1958'
+      titre_index: 'English index of the Multilingual Demographic Dictionary'
+      introduction: Introduction
+      preface: Preface
+      chapitre: Chapter
+      chapitre1: 'General concepts'
+      chapitre2: 'The treatment and processing of population statistics'
+      chapitre3: 'Distribution and classification of the population'
+      chapitre4: 'Mortality and morbidity'
+      chapitre5: Nuptiality
+      chapitre6: Fertility
+      chapitre7: 'Population growth and replacement'
+      chapitre8: Migration
+      chapitre9: 'Economic and social aspects of demography'
+      index: Index
+      sommaire: 'Table of contents'
+      termes_correspondants: 'with corresponding terms from:'
+      droit_auteur: ''
+      licence: Licence
+      details_licence: 'Content is available under Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/). '
+      date_document: 'This document has been generated the @date@.'
+    es-ii:
+      page_introduction: Introducción
+      page_preface: Prefacio
+      interclassement: utf8_spanish_ci
+      titre_dico: 'Diccionario demografico multilingüe'
+      annee: '1982'
+      details_edition: 'Español segunda edición 1982'
+      titre_index: 'Índice español del Diccionario demografico multilingüe'
+      introduction: Introducción
+      preface: Prefacio
+      chapitre: Capítulo
+      chapitre1: Generalidades
+      chapitre2: 'Elaboración de las estadísticas demográficas'
+      chapitre3: 'Estado de la población'
+      chapitre4: 'Mortalidad y morbilidad'
+      chapitre5: Nupcialidad
+      chapitre6: Fecundidad
+      chapitre7: 'Crecimiento y reemplazo de la poblacion'
+      chapitre8: 'Movilidad espacial'
+      chapitre9: 'Aspectos económicos y sociales de la dinámica demográfica'
+      index: Índice
+      sommaire: Sumario
+      termes_correspondants: 'con los términos correspondientes de:'
+      licence: Licencia
+      details_licence: 'El contenido está disponible bajo los términos de la Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
+      date_document: 'Este documento ha sido generado la fecha @date@.'
+    es-i:
+      page_introduction: Introducción
+      page_preface: Prefacio
+      interclassement: utf8_spanish_ci
+      titre_dico: 'Diccionario demografico multilingüe'
+      annee: '1959'
+      details_edition: 'Español primera edición 1959'
+      titre_index: 'Índice español del Diccionario demografico multilingüe'
+      introduction: Introducción
+      preface: Prefacio
+      chapitre: Capítulo
+      chapitre1: 'Ideas generales'
+      chapitre2: 'Elaboración de las estadísticas demográficas'
+      chapitre3: 'Estado de la población'
+      chapitre4: 'Mortalidad y morbilidad'
+      chapitre5: Nupcialidad
+      chapitre6: Fecundidad
+      chapitre7: 'Movimiento general y reproducción de la población'
+      chapitre8: Migraciones
+      chapitre9: 'Demografía económica y social'
+      index: Índice
+      sommaire: Sumario
+      termes_correspondants: 'con los términos correspondientes de:'
+      licence: Licencia
+      details_licence: 'El contenido está disponible bajo los términos de la Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
+      date_document: 'Este documento ha sido generado la fecha @date@.'
+    ru-i:
+      page_introduction: Введение
+      page_preface: Вступление
+      interclassement: utf8_unicode_ci
+      titre_dico: 'Многоязычный демографический словарь'
+      annee: '1964'
+      details_edition: 'первое русское издание 1964'
+      titre_index: 'Указатель Многоязычный демографический словарь'
+      introduction: Введение
+      preface: Вступление
+      chapitre: Главе
+      chapitre1: 'Общие положения'
+      chapitre2: 'Обработка демографических данных'
+      chapitre3: 'Состав и размещение населения'
+      chapitre4: 'Смертность и заболеваемость'
+      chapitre5: Брачность
+      chapitre6: Плодовитость
+      chapitre7: 'Естественное движение и воспроизводство населения'
+      chapitre8: Миграция
+      chapitre9: 'Экономическая и социальная демография'
+      index: Указатель
+      sommaire: Резюме
+      termes_correspondants: 'с соответствующими условиями следующей редакции:'
+      licence: Лицензии
+      details_licence: 'Содержимое доступно в соответствии с Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
+      date_document: 'Этот документ был создан на дату @date@.'
+    it-ii:
+      titre_dico: 'Dizionario demografico multilingue'
+      annee: '2011'
+      details_edition: 'traduzione della seconda edizione'
+      titre_index: 'Indice italiano del dizionario demografico multilingue'
+      introduction: Introduzione
+      preface: Prefazione
+      chapitre: Capitolo
+      chapitre1: Generalità
+      chapitre2: 'Elaborazione delle statistiche demografiche'
+      chapitre3: 'Stato della popolazione'
+      chapitre4: 'Mortalità e morbosità'
+      chapitre5: 'Nuzialità '
+      chapitre6: 'Fecondità e fertilità'
+      chapitre7: 'Movimento generale della popolazione e riproduttività'
+      chapitre8: Migrazioni
+      chapitre9: 'Demografia e problemi economico-sociali'
+      index: Indice
+      sommaire: Sommario
+      termes_correspondants: 'con i termini corrispondenti delle seguenti edizioni:'
+      licence: Licenza
+      details_licence: 'Il contenuto è disponibile tramite Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
+      date_document: 'Questo documento è stato generato il @date@.'
+      page_introduction: Introduzione
+      page_preface: Prefazione
+      interclassement: utf8_unicode_ci
+    it-i:
+      page_introduction: Prefazione
+      page_preface: Introduzione
+      interclassement: utf8_unicode_ci
+      titre_dico: 'Dizionario demografico multilingue'
+      annee: '1959'
+      details_edition: 'prima edizione del 1959'
+      titre_index: 'Indice italiano del dizionario demografico multilingue'
+      introduction: Introduzione
+      preface: Prefazione
+      chapitre: Capitolo
+      chapitre1: Generalità
+      chapitre2: 'Elaborazione delle statistiche demografiche'
+      chapitre3: 'Stato della popolazione'
+      chapitre4: 'Mortalità e morbosità'
+      chapitre5: Nuzialità
+      chapitre6: 'Fecondità e fertilità'
+      chapitre7: 'Movimento generale della popolazione e riproduttività'
+      chapitre8: Migrazioni
+      chapitre9: 'Demografia e problemi economico-sociali'
+      index: Indice
+      sommaire: Sommario
+      termes_correspondants: 'con i termini corrispondenti delle seguenti edizioni:'
+      licence: Licenza
+      details_licence: 'Il contenuto è disponibile tramite Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
+      date_document: 'Questo documento è stato generato il @date@.'
