@@ -23,6 +23,9 @@
 		.asterisme {text-align:center; width:100%; font-size:2em;}
 		.noteterm {font-style:italic;}
 		table {width: 100%;}
+		span.indent { width: 20px; display: inline-block; margin:0; padding:0;}
+		ul.index {list-style-type:none; margin-left: 0; padding-left:0;}
+		ul.index li {margin-left: 0; text-indent:-20px; padding-left:20px;}
 	</style>
 </head>
 <body>
@@ -120,7 +123,7 @@
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h3>(#TERME|initiale{#EDITION}|unique)</h3>
 <ul class="index" >]
-	<li [(#ENTREE|=={note}|oui)class="noteterm"]>#TERME (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#NOUVEAU|=={oui}|?{★,''})][(#ENTREE|=={note}|?{*,''})])</li>
+	<li [(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)][(#NOUVEAU|=={oui}|?{&nbsp;★,''})] (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#ENTREE|=={note}|?{*,''})])</li>
 </BOUCLE_index>
 </ul>
 </B_index>

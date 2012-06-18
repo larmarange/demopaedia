@@ -96,6 +96,7 @@ function demopaedia_maj_edition($edition){
 			
 			// On traite les RefNumber
 			$texte = preg_replace('/\{\{RefNumber\|([0-9]+)\|([0-9]+)\|([0-9]+)\}\}/U','$1$2-$3',$texte);
+			$texte = preg_replace('/\{\{RefNumber\|([0-9]+)\|([0-9]+)\|\}\}/U','$1$2',$texte); // Syntaxe incorrecte mais malheureusement utilisée
 			
 			// Echappement des NoteTerm avec des crochets et suppression du pipe pour éviter interférences avec le traitement des Notes
 			// Les pipes liés aux IndexEntry et OtherIndexEntry sont transformés en double point d'exclamation
@@ -172,6 +173,7 @@ function demopaedia_maj_edition($edition){
 						$entree_secondaire = str_replace(' , ',' / ',$entree_secondaire);
 						$entree_secondaire = str_replace('. ',' / ',$entree_secondaire);
 						$entree_secondaire = str_replace(', ',' / ',$entree_secondaire);
+						$note_secondaire = str_replace('-—','- —',$note_secondaire);
 						
 						if ($entree_secondaire != '') {
 							$demoindex[] = array(
@@ -252,6 +254,7 @@ function demopaedia_maj_edition($edition){
 							$note_secondaire = str_replace(' , ',' / ',$note_secondaire);
 							$note_secondaire = str_replace('. ',' / ',$note_secondaire);
 							$note_secondaire = str_replace(', ',' / ',$note_secondaire);
+							$note_secondaire = str_replace('-—','- —',$note_secondaire);
 							
 							if ($note_secondaire != '' && !in_array(mb_strtolower($note_secondaire),$doublons)) {
 								$demoindex[] = array(

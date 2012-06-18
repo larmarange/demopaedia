@@ -22,8 +22,10 @@
 		h2 {margin:25px 0 5px;}
 		.asterisme {text-align:center; width:100%; font-size:2em;}
 		.noteterm {font-style:italic;}
-		.etoile {font-size:0.8em;}
 		table {width: 100%;}
+		span.indent { width: 20px; display: inline-block; margin:0; padding:0;}
+		ul.index {list-style-type:none; margin-left: 0; padding-left:0;}
+		ul.index li {margin-left: 0; text-indent:-20px; padding-left:20px;}
 	</style>
 </head>
 <body>
@@ -43,7 +45,7 @@
 <h1 class="chapitre"><a name="introduction"></a>[(#CONFIG{demopaedia/[(#EDITION)]/introduction})]</h1>
 <BOUCLE_introduction(DEMOINFO){edition=#ENV{edition}}{type='introduction'}{0,1}>
 <div class="texte">
-	[(#TEXTE**|ajoute_name{introduction}|typo|replace{h3,h2}|replace{h4,h3}|replace{h5,h4}|replace{h5,h5})]
+	[(#TEXTE**|ajoute_name{introduction}|typo|replace{h3,h2}|replace{h4,h3}|replace{h5,h4}|replace{h5,h5}|replace{⁂,* * *}|replace{★,•})]
 </div>
 </BOUCLE_introduction>
 
@@ -51,7 +53,7 @@
 <h1 class="chapitre"><a name="preface"></a>[(#CONFIG{demopaedia/[(#EDITION)]/preface})]</h1>
 <BOUCLE_preface(DEMOINFO){edition=#ENV{edition}}{type='preface'}{0,1}>
 <div class="texte">
-	[(#TEXTE**|ajoute_name{preface}|typo|replace{h3,h2}|replace{h4,h3}|replace{h5,h4}|replace{h5,h5})]
+	[(#TEXTE**|ajoute_name{preface}|typo|replace{h3,h2}|replace{h4,h3}|replace{h5,h4}|replace{h5,h5}|replace{⁂,* * *}|replace{★,•})]
 </div>
 </BOUCLE_preface>
 
@@ -59,7 +61,7 @@
 <h1 class="chapitre"><a name="avertissement"></a>[(#CONFIG{demopaedia/[(#EDITION)]/avertissement})]</h1>
 <BOUCLE_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
 <div class="texte">
-	[(#TEXTE**|ajoute_name{avertissement}|typo|replace{h3,h2}|replace{h4,h3}|replace{h5,h4}|replace{h5,h5}|replace{⁂,* * *})]
+	[(#TEXTE**|ajoute_name{avertissement}|typo|replace{h3,h2}|replace{h4,h3}|replace{h5,h4}|replace{h5,h5}|replace{⁂,* * *}|replace{★,•})]
 </div>
 </BOUCLE_avertissement>
 
@@ -71,7 +73,7 @@
 <BOUCLE_definitions(DEMODEF){section >= #GET{section_min}}{section < #GET{section_max}}{edition=#ENV{edition}}{par section}>
 	[(#SECTION|asterisme{#ENV{edition}})<div class="asterisme">* * *</div>]
 	<h2><a name="#SECTION"></a>#SECTION</h2>
-	<div class="definition">[(#TEXTE**|ajoute_liens|typo)]</div>
+	<div class="definition">[(#TEXTE**|ajoute_liens|typo|replace{★,•})]</div>
 	<B_notes>
 	<ul class="notes">
 	<BOUCLE_notes(DEMONOTES){edition=#EDITION}{section=#SECTION}{par note}>
@@ -91,10 +93,9 @@
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <ul class="index" >]
-	<li [(#ENTREE|=={note}|oui)class="noteterm"]>#TERME (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#NOUVEAU|=={oui}|?{<span class="etoile">★</span>,''})][(#ENTREE|=={note}|?{*,''})])</li>
+	<li [(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)][(#NOUVEAU|=={oui}|?{&nbsp;•,''})] (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#ENTREE|=={note}|?{*,''})])</li>
 </BOUCLE_index>
 </ul>
 </B_index>
-
 </body>
 </html>
