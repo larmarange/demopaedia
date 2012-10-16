@@ -1,0 +1,32 @@
+<paquet
+	prefix="demopaedia"
+	categorie="squelette"
+	version="1.0.0-dev"
+	etat="dev"
+	compatibilite="[3.0.0;["
+	logo="img/demopaedia-64.png"
+	schema="0.7"
+>	
+
+	<nom>Demop&aelig;dia - G&eacute;n&eacute;rateur de documents</nom>
+	<!-- Ce plugin permet de générer différents documents à partir des dictionnaires démographiques multilingues -->
+
+	<auteur lien="http://joseph.larmarange.net">Joseph Larmarange</auteur>
+
+	<licence>GNU/GLP</licence>
+
+	<pipeline nom="declarer_tables_principales" inclure="base/demopaedia_tables.php" />
+	<pipeline nom="declarer_tables_interfaces" inclure="base/demopaedia_tables.php" />
+	<pipeline nom="autoriser" inclure="demopaedia_autoriser.php" />
+	<pipeline nom="taches_generales_cron" inclure="demopaedia_cron.php" />
+	<pipeline nom="ieconfig_metas" inclure="demopaedia_ieconfig_metas.php" />
+
+	<necessite nom="spip_bonux" />
+	<necessite nom="Z" />
+	<necessite nom="compositions" />
+
+	<utilise nom="menus" />
+
+	<menu nom="demoapedia" titre="demopaedia:demopaedia" parent="bando_administration" icone="img/demopaedia-24.png" action="demopaedia" />
+	<menu nom="configurer_demoapedia" titre="demopaedia:demopaedia" parent="bando_configuration" icone="img/demopaedia-24.png" action="configurer_demopaedia" />
+</paquet>
