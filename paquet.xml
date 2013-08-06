@@ -22,10 +22,9 @@
 	<pipeline nom="ieconfig_metas" inclure="demopaedia_ieconfig_metas.php" />
 
 	<necessite nom="spip_bonux" />
-	<necessite nom="Z" />
+	<necessite nom="Z" compatibilite="[1.7.0;1.8.99]" />
 	<necessite nom="compositions" />
-
-	<utilise nom="menus" />
+	<necessite nom="menus" />
 
 	<menu nom="demoapedia" titre="demopaedia:demopaedia" parent="bando_administration" icone="img/demopaedia-24.png" action="demopaedia" />
 	<menu nom="configurer_demoapedia" titre="demopaedia:demopaedia" parent="bando_configuration" icone="img/demopaedia-24.png" action="configurer_demopaedia" />
