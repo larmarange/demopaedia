@@ -54,6 +54,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'ja' => 'Japonais',
 	'de' => 'Allemand',
 	'en' => 'Anglais',
+	'id' => 'Indonésien',
+	'ko' => 'Coréen',
+	'ms' => 'Malais',
+	'th' => 'Thaï',
+	'ne' => 'Népalais',
+	'vi' => 'Vietnamien',
 	'i' => 'première édition',
 	'ii' => 'seconde édition',
 	
