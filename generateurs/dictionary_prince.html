@@ -13,7 +13,7 @@
 			size: 15.24cm 22.86cm;
 			margin: 2cm;
 			@bottom {
-				content: "—&nbsp;&nbsp;&nbsp;" counter(page) "&nbsp;&nbsp;&nbsp;—"; 
+				content: "—   " counter(page) "   —"; 
 				font-family: Libertine, FreeSerif, serif;
 				font-size: 9pt;
 			}
@@ -269,7 +269,7 @@
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <ul class="index" >]
-	<li class="[(#TERME|initiale{#EDITION})][(#TERME|initiale{#EDITION,1}|strtolower)]"><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)[(#NOUVEAU|=={oui}|?{&nbsp;★,''})]]</a></li>
+	<li class="[(#TERME|initiale{#EDITION})][(#TERME|initiale{#EDITION,1}|strtolower)]"><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)[(#NOUVEAU|=={oui}|?{ ★,''})]]</a></li>
 </BOUCLE_index>
 </ul>
 </div>
