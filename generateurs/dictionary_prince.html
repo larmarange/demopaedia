@@ -8,19 +8,20 @@
 	<meta name="date" content="[(#DATE|affdate{'Y-m-d'})]" />
 	<style type="text/css" media="all">
 		@import url([(#URL_PAGE{Libertine.css}|url_absolue)]);
+		@import url([(#URL_PAGE{FreeSerif.css}|url_absolue)]);
 		@page{
 			size: 15.24cm 22.86cm;
 			margin: 2cm;
 			@bottom {
 				content: "—&nbsp;&nbsp;&nbsp;" counter(page) "&nbsp;&nbsp;&nbsp;—"; 
-				font-family: Libertine, serif;
+				font-family: Libertine, FreeSerif, serif;
 				font-size: 9pt;
 			}
 		}
 		@page:left {
 			@top-left {
 				content: string(doctitle);
-				font-family: Libertine, serif;
+				font-family: Libertine, FreeSerif, serif;
 				font-size: 9pt;
 				font-style: italic;
 			}
@@ -28,7 +29,7 @@
 		@page:right {
 			@top-right {
 				content: string(chaptertitle);
-				font-family: Libertine, serif;
+				font-family: Libertine, FreeSerif, serif;
 				font-size: 9pt;
 				font-style: italic;
 			}
@@ -45,13 +46,13 @@
 		}
 		
 		@page index {
-			@top {content: string(chaptertitle); font-family: Libertine, serif; font-size: 9pt; font-style: italic;}
-			@top-left {content: string(indexinitials, start); font-family: Libertine, serif; font-size: 9pt; font-style: normal;}
-			@top-right {content: string(indexinitials, last); font-family: Libertine, serif; font-size: 9pt; font-style: normal;}
+			@top {content: string(chaptertitle); font-family: Libertine, FreeSerif, serif; font-size: 9pt; font-style: italic;}
+			@top-left {content: string(indexinitials, start); font-family: Libertine, FreeSerif, serif; font-size: 9pt; font-style: normal;}
+			@top-right {content: string(indexinitials, last); font-family: Libertine, FreeSerif, serif; font-size: 9pt; font-style: normal;}
 		}
 		body {
 			text-align: justify;
-			font-family: Libertine, serif;
+			font-family: Libertine, FreeSerif, serif;
 			font-size:10pt;
 			line-height: 115%;
 		}
