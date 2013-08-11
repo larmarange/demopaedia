@@ -346,6 +346,7 @@ function demopaedia_maj_edition($edition){
 				$texte = preg_replace('/===(.+)===/U','<h5>$1</h5>',$texte);
 				$texte = preg_replace('/==(.+)==/U','<h4>$1</h4>',$texte);
 				$texte = preg_replace('/\n=(.+)=/U',"\n<h3>$1</h3>",$texte); // Le \n est nécessaire à cause des = qui peuvent trainer dans une URL
+				$texte = preg_replace('/^=(.+)=/U',"\n<h3>$1</h3>",$texte); // Cas où on est au tout début du texte
 				// Gras et italique
 				$texte = preg_replace("/'''''(.+)'''''/U",'<strong><em>$1</em></strong>',$texte);
 				$texte = preg_replace("/'''(.+)'''/U",'<strong>$1</strong>',$texte);

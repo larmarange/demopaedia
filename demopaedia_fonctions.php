@@ -91,7 +91,7 @@ function filtre_ajoute_name($texte,$name='',$niveau='h3'){
 }
 
 //extrait la première lettre, supprime les accents et la passe en majuscules
-function filtre_initiale($texte, $edition='', $start=0) {
+function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 	$premiere_lettre = mb_substr($texte,$start,1); // première lettre
 	$langue = lg_code($edition);
 	$langues_traitees = array();
@@ -538,7 +538,8 @@ function filtre_initiale($texte, $edition='', $start=0) {
 		foreach ($initiales as $cle => $valeur) {
 			$premiere_lettre = mb_ereg_replace($cle,$valeur,$premiere_lettre);
 		}
-		return $premiere_lettre;
+		if ($lower) return mb_strtolower($premiere_lettre);
+		else return $premiere_lettre;
 	}
 	else
 		return '';
