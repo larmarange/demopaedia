@@ -77,7 +77,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'cfg_termes_details' => 'Rentrer dans la langue du dictionnaire les termes employés et les titres de chapitre.',
 	'configurer_demopaedia' => 'Configurer Demopædia',
 	
-	'label_avertissement' => 'Avertissement',
+	'label_avertissement' => 'Avertissement / Notice',
 	'label_domaine' => 'Nom de domaine',
 	'label_domaine_details' => 'Sans http:// ni www, par exemple : <i>demopaedia.org</i>.',
 	'label_editions' => 'Éditions du dictionnaire',
