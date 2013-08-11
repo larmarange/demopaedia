@@ -205,6 +205,7 @@ function demopaedia_maj_edition($edition){
 				// On remplace les TextTerm par leur version en HTML simplifié
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|nouveau=oui([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2★</sup>',$section);
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section);
+				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section); // Cas où on a une syntaxe courte avec jsute le num du terme
 				
 				// Traitement des notes
 				preg_match_all('/\{Note\|(.+)\}/U',$section,$notes);
