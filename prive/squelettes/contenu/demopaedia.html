@@ -1,6 +1,6 @@
 [(#SET{editions,[(#CONFIG{demopaedia/editions}|explode{','}|serialize)]})]
 
-<h1><:demopaedia:maj_base:></h1>
+<h1><:demopaedia:demopaedia:> - <:demopaedia:maj_base:></h1>
 [(#ENV*{message_maj}|?{' ',''})
 	<p style="color:green;font-weight:bold;"><:demopaedia:message_maj{edition=#ENV{message_maj}}:></p>
 ]
@@ -35,14 +35,3 @@
 </div>
 </table>
 </B_editions>
-
-<!--#navigation-->
-<div class='cadre-info'>
-	<div class="infos">
-		<div class='numero'>DEMOP&AElig;DIA
-		<p><img src="#CHEMIN{img/demopaedia-64.png}" border="0" /></p></div>
-	</div>
-</div>
-<!--/#navigation-->
-<!--#extra-->
-<!--/#extra-->

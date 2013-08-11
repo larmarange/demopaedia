@@ -26,7 +26,7 @@
 	[(#REM) On ne propose que les éditions ayant ce terme ]
 	<select name="edition" class="select" id="edition" onchange='submit()'>
 	<BOUCLE_editions(DEMOINDEX){section=#ENV{section}}{numterme=#ENV{numterme}}{fusion edition}{par edition}>
-		[(#EDITION|ed_code|=={#ENV{edition}|ed_code}|oui)<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>]
+		[(#EDITION|ed_code|=={#ENV{edition}|ed_code}|oui)<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]</option>]
 	</BOUCLE_editions>
 	</select>
 	</form>

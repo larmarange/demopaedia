@@ -1,22 +1,11 @@
-<!-- titre=Demop&aelig;dia -->
-<!-- icone=img/demopaedia-24.png -->
-<!-- autoriser=configurer-->
-<!-- nom=demopaedia-->
-<!-- depot=metapack -->
-<!-- liens*=demopaedia:demopaedia -->
-<!-- liens*=demopaedia:demopaedia_edition -->
-<!-- liens*=demopaedia:demopaedia_termes -->
-#CACHE{0}
-
-<div class="ajax">
-
-<div class='formulaire_spip formulaire_configurer formulaire_configurer_forums_contenu' id='formulaire_configurer_forums_contenu'>
-	<h3 class='titrem'><:demopaedia:cfg_demopaedia:></h3>
+<div class="formulaire_spip formulaire_configurer formulaire_#FORM">
+	<h3 class='titrem'><:demopaedia:cfg_general:></h3>
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
 
-	<form method="post" action="#SELF"><div>
-		[(#ENV{_cfg_}|form_hidden)]
+	<form method="post" action="#ENV{action}">
+	<div>
+		#ACTION_FORMULAIRE{#ENV{action}}
 		<ul>
 			<li class='configurer_domaine'>
 				<label for="domaine"><:demopaedia:label_domaine:></label>
@@ -39,16 +28,10 @@
 				<textarea name="pages_ii" id="pages_ii" class="textarea">[(#ENV{pages_ii})]</textarea>
 			</li>
 		</ul>
-		<p class='boutons'><input class='submit' type="submit" name="_cfg_ok" value="<:bouton_enregistrer:>" /></p>
+		<p class='boutons'>
+			<span class='image_loading'>&nbsp;</span>
+			<input type='submit' class='submit' value='<:bouton_enregistrer:>' />
+		</p>
 	</div>
 	</form>
-
-
-</div>
-
-
-	<h3><:demopaedia:cfg_config:></h3>
-	<p style="padding:5px;">#CFG_ARBO{demopaedia}</p>
-
-
 </div>

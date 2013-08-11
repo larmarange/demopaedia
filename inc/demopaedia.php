@@ -1,4 +1,5 @@
 <?php
+include_spip('inc/config');
 
 function demopaedia_effacer_edition($edition){
 	include_spip('base/abstract_sql');
@@ -44,12 +45,12 @@ function demopaedia_maj_edition($edition){
 	$url .= lire_config('demopaedia/domaine');
 	$url .= '/w/index.php?title=Special:Export&pages=';
 	$url .= str_replace(',','%0A',lire_config('demopaedia/pages_'.substr($edition,3,3)));
-	if (lire_config("demopaedia/$edition/page_introduction")!='')
-		$url .= '%0A'.urlencode(lire_config("demopaedia/$edition/page_introduction"));
-	if (lire_config("demopaedia/$edition/page_preface")!='')
-		$url .= '%0A'.urlencode(lire_config("demopaedia/$edition/page_preface"));
-	if (lire_config("demopaedia/$edition/page_avertissement")!='')
-		$url .= '%0A'.urlencode(lire_config("demopaedia/$edition/page_avertissement"));
+	if (lire_config("demopaedia-$edition/page_introduction")!='')
+		$url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_introduction"));
+	if (lire_config("demopaedia-$edition/page_preface")!='')
+		$url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_preface"));
+	if (lire_config("demopaedia-$edition/page_avertissement")!='')
+		$url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_avertissement"));
 	
 	// Récupération du flux
 	$xml = spip_file_get_contents($url);
@@ -306,11 +307,11 @@ function demopaedia_maj_edition($edition){
 		// Traitement des autres pages
 		else {
 			$type = '';
-			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia/$edition/page_introduction")))
+			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia-$edition/page_introduction")))
 				$type = 'introduction';
-			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia/$edition/page_preface")))
+			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia-$edition/page_preface")))
 				$type = 'preface';
-			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia/$edition/page_avertissement")))
+			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia-$edition/page_avertissement")))
 				$type = 'avertissement';
 			// Si on récupère la page
 			if ($type !='') {

@@ -25,7 +25,9 @@
 	<necessite nom="Z" compatibilite="[1.7.0;1.8.99]" />
 	<necessite nom="compositions" />
 	<necessite nom="menus" />
+	
+	<utilise nom="ieconfig" compatibilite="[1.3.0;["  />
 
-	<menu nom="demoapedia" titre="demopaedia:demopaedia" parent="bando_administration" icone="img/demopaedia-24.png" action="demopaedia" />
-	<menu nom="configurer_demoapedia" titre="demopaedia:demopaedia" parent="bando_configuration" icone="img/demopaedia-24.png" action="configurer_demopaedia" />
+	<menu nom="demoapedia" titre="demopaedia:demopaedia" parent="bando_administration" icone="images/demopaedia-16.png" action="demopaedia" />
+	<menu nom="configurer_demoapedia" titre="demopaedia:demopaedia" parent="bando_configuration" icone="images/demopaedia-16.png" action="configurer_demopaedia" />
 </paquet>

@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	[<meta http-equiv="Content-Language" content="(#ENV{edition}|lg_code)" />]
-	<title>Demopædia[ - (#CONFIG{demopaedia/[(#EDITION)]/titre_index}|textebrut)][ - (#CONFIG{demopaedia/[(#EDITION)]/details_edition}|textebrut)]</title>
+	<title>Demopædia[ - (#CONFIG{demopaedia-[(#EDITION)]/titre_index}|textebrut)][ - (#CONFIG{demopaedia-[(#EDITION)]/details_edition}|textebrut)]</title>
 	<BOUCLE_head_description(DEMOINFO){edition=#ENV{edition}}{type='introduction'}{0,1}>[<meta name="description" content="(#TEXTE**|textebrut)" />]</BOUCLE_head_description>
 	<meta name="copyright" content="demopaedia.org - http://#ENV{edition}.#CONFIG{demopaedia/domaine}" />
 	<style type="text/css" media="all">
@@ -34,11 +34,11 @@
 </head>
 <body>
 <div class="surtitre">Demopædia</div>
-<h1 class="titre">[(#CONFIG{demopaedia/[(#EDITION)]/titre_index})]</h1>
-[<div class="soustitre">(#CONFIG{demopaedia/[(#EDITION)]/details_edition})</div>]
+<h1 class="titre">[(#CONFIG{demopaedia-[(#EDITION)]/titre_index})]</h1>
+[<div class="soustitre">(#CONFIG{demopaedia-[(#EDITION)]/details_edition})</div>]
 <B_termes_correspondants>
 <div class="corr">
-	[(#CONFIG{demopaedia/[(#EDITION)]/termes_correspondants})<br />]
+	[(#CONFIG{demopaedia-[(#EDITION)]/termes_correspondants})<br />]
 	<BOUCLE_termes_correspondants(POUR){tableau #ENV{corr}}{par valeur}>
 	<span lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];" >[(#CONFIG{demopaedia/[(#VALEUR)]/details_edition})] (#VALEUR)</span><br />
 	</BOUCLE_termes_correspondants>
@@ -53,10 +53,10 @@
 <!--> <![endif]-->
 </div>
 <div class="lien"><a href='http://#EDITION.#CONFIG{demopaedia/domaine}' >http://#EDITION.#CONFIG{demopaedia/domaine}</a></div>
-<div class="date">[(#CONFIG{demopaedia/[(#EDITION)]/date_document}|ajoute_date)]</div>
-<div class="licence">[(#CONFIG{demopaedia/[(#EDITION)]/details_licence}|norm_liens)]</div>
+<div class="date">[(#CONFIG{demopaedia-[(#EDITION)]/date_document}|ajoute_date)]</div>
+<div class="licence">[(#CONFIG{demopaedia-[(#EDITION)]/details_licence}|norm_liens)]</div>
 
-[(#SET{interclassement,[(#CONFIG{demopaedia/[(#EDITION)]/interclassement}|?{[(#CONFIG{demopaedia/[(#EDITION)]/interclassement})],'utf8_unicode_ci'})]})]
+[(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|?{[(#CONFIG{demopaedia-[(#EDITION)]/interclassement})],'utf8_unicode_ci'})]})]
 <BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{entree IN principale,secondaire}>
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<dl class="index">]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</dl>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>

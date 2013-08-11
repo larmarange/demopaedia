@@ -1,6 +1,6 @@
 <div class="contenu-principal pas_surlignable">
 	<div class="cartouche">
-		[<p class="surtitre"><a href="#URL_PAGE{consulter,edition=#ENV{edition}}">(#ENV{edition}|lg_ed_txt) [(#CONFIG{demopaedia/[(#ENV{edition})]/annee})]</a></p>]
+		[<p class="surtitre"><a href="#URL_PAGE{consulter,edition=#ENV{edition}}">(#ENV{edition}|lg_ed_txt) [(#CONFIG{demopaedia-[(#ENV{edition})]/annee})]</a></p>]
 		<BOUCLE_test(CONDITION){si #ENV{terme}}>
 		<h1 class="h1" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)]; text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">#ENV{terme}</h1>
 		</BOUCLE_test>
@@ -8,7 +8,7 @@
 		<h1 class="h1" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)]; text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">#TERME</h1>
 		</BOUCLE_titre>
 		<//B_test>
-		<p class="soustitre" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)];  text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">[(#CONFIG{demopaedia/[(#EDITION)]/chapitre}) ][(#ENV{section}|substr{0,-2})][ • (#CONFIG{demopaedia/[(#EDITION)]/chapitre[(#ENV{section}|substr{0,-2})]})]</p>
+		<p class="soustitre" lang="[(#ENV{edition}|lg_code)]" style="direction:[(#ENV{edition}|lg_code|lang_dir)];  text-align:[(#ENV{edition}|lg_code|lang_dir{left,right})];">[(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ][(#ENV{section}|substr{0,-2})][ • (#CONFIG{demopaedia-[(#EDITION)]/chapitre[(#ENV{section}|substr{0,-2})]})]</p>
 		<p class="soustitre">[<:demopaedia:section:> <a href="[(#URL_PAGE{consulter,edition=[(#ENV{edition})]&section=[(#ENV{section})]})]">(#ENV{section})</a>][ • <:demopaedia:numero_reference:> (#ENV{numterme})]</p>
 	</div>
 
@@ -53,7 +53,7 @@
 	<h2 class="h2"><:demopaedia:termes_correspondants_autres_editions:></h2>
 	<BOUCLE_term_equ(DEMOINDEX){edition!=#ENV{edition}}{edition==#GET{ed}}{section=#ENV{section}}{numterme=#ENV{numterme}}{entree='principale'}{par edition, terme}>
 		[[(#COMPTEUR_BOUCLE|=={1}|non)</ul>
-		]<h3 class="h3">(#EDITION|unique|lg_ed_txt)[ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</h3>
+		]<h3 class="h3">(#EDITION|unique|lg_ed_txt)[ (#CONFIG{demopaedia-[(#EDITION)]/annee})]</h3>
 		<ul lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)]; text-align:[(#EDITION|lg_code|lang_dir{left,right})];" >]
 			<li style="direction:[(#EDITION|lg_code|lang_dir)];"><a href="[(#URL_PAGE{terme,edition=#EDITION&section=#SECTION&numterme=#NUMTERME&terme=[(#TERME|urlencode)]})]">#TERME</a></li>
 	</BOUCLE_term_equ>

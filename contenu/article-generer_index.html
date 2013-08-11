@@ -60,7 +60,7 @@
 				<B_editions>
 				<select name="edition" class="select" id="edition" >
 				<BOUCLE_editions(DEMODEF){fusion edition}{par edition}>
-					<option value='#EDITION'>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+					<option value='#EDITION'>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]</option>
 				</BOUCLE_editions>
 				</select>
 				</B_editions>
@@ -69,7 +69,7 @@
 				<label for="corr"><:demopaedia:label_corr:></label>
 				[(#REM) On ne propose que les éditions présentes en base ]
 				<BOUCLE_editions2(DEMODEF){fusion edition}{par edition}>
-					<span class="[ed_(#EDITION|substr{3,2})]"><input type="checkbox" name="corr[]" class="checkbox" value='#EDITION'> [(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]<br /></span>
+					<span class="[ed_(#EDITION|substr{3,2})]"><input type="checkbox" name="corr[]" class="checkbox" value='#EDITION'> [(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]<br /></span>
 				</BOUCLE_editions2>
 			</li>
 		</ul>

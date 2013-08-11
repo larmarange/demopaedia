@@ -551,7 +551,7 @@ function filtre_termes_correspondants($edition,$section,$numterme,$separateur) {
 	static $index = null;
 
 	if (is_null($index[$edition][$separateur])) {
-		$interclassement = lire_config('demopaedia/'.$edition.'/interclassement');
+		$interclassement = lire_config('demopaedia-'.$edition.'/interclassement');
 		if ($interclassement == '')
 			$interclassement = 'utf8_unicode_ci';
 		$resultats = sql_allfetsel (

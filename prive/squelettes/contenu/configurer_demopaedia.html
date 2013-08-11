@@ -1,0 +1,29 @@
+[(#AUTORISER{webmestre}|sinon_interdire_acces)]
+<h1 class="grostitre"><:demopaedia:configurer_demopaedia:></h1>
+
+#FORMULAIRE_CONFIGURER_DEMOPAEDIA
+
+<a name="configurer_edition"></a>
+<h2><:demopaedia:configurer_une_edition:></h2>
+<div class='formulaire_spip formulaire_configurer'>
+	[(#SET{editions,[(#CONFIG{demopaedia/editions}|explode{','}|serialize)]})]
+	<form method="get" action="./#configurer_edition"><div>
+		<input type="hidden" name="exec" value="#ENV{exec}" />
+		<ul>
+			<li class='configurer_edition'>
+				<label for="edition"><:demopaedia:label_choix_edition:></label>
+				<select class="select" name="edition" id="edition">
+					<option value=''> </option>
+					<BOUCLE_editions(POUR){tableau #GET{editions}}{par valeur}>
+						<option value="#VALEUR" [(#ENV{edition}|=={#VALEUR}|?{selected="selected"})]>#VALEUR - [(#VALEUR|lg_txt)] [(#VALEUR|ed_txt)]</option>
+					</BOUCLE_editions>
+				</select>
+			</li>
+		</ul>
+		<p class='boutons'><input class='submit' type="submit" value="<:demopaedia:cfg_afficher:>" /></p>
+	</div></form>
+</div>
+
+[(#ENV{edition}|oui)<div class="ajax">
+	#FORMULAIRE_CONFIGURER_DEMOPAEDIA_EDITION{#ENV{edition}}
+</div>]

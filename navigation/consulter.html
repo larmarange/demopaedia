@@ -24,13 +24,13 @@
 	[(#REM) On ne propose que les éditions ayant cette section ]
 	<select name="edition" class="select" id="edition" onchange='submit()'>
 	<BOUCLE_editions1(DEMODEF){section=#ENV{section}}{fusion edition}{par edition}>
-		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]</option>
 	</BOUCLE_editions1>
 	<BOUCLE_editions2(DEMOINFO){type=#ENV{section}}{fusion edition}{par edition}>
-		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]</option>
 	</BOUCLE_editions2>
 	<BOUCLE_editions3(DEMODEF){fusion edition}{par edition}>
-		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+		<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]</option>
 	</BOUCLE_editions3>
 	<//B_editions2>
 	<//B_editions1>

@@ -33,7 +33,7 @@
 				[(#REM) On ne propose que les éditions présentes en base ]
 				<select name="edition" class="select" id="edition">
 				<BOUCLE_editions(DEMODEF){fusion edition}{par edition}>
-					<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia/[(#EDITION)]/annee})]</option>
+					<option value='#EDITION' [(#ENV{edition}|=={#EDITION}|?{selected="selected"})]>[(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]</option>
 				</BOUCLE_editions>
 				</select>
 				</B_editions>

@@ -1,54 +1,55 @@
-<!-- titre=Demop&aelig;dia -->
-<!-- boite=Demop&aelig;dia - <:demopaedia:demopaedia_termes:> -->
-<!-- icone=img/demopaedia-24.png -->
-<!-- autoriser=configurer-->
-<!-- nom=demopaedia-->
-<!-- depot=metapack -->
-<!-- onglet=demopaedia -->
-<!-- liens*=demopaedia:demopaedia -->
-<!-- liens*=demopaedia:demopaedia_edition -->
-<!-- liens*=demopaedia:demopaedia_termes -->
-#CACHE{0}
-<div class="ajax">
-
-<div class='formulaire_spip formulaire_configurer formulaire_configurer_forums_contenu' id='formulaire_configurer_forums_contenu'>
-	[(#SET{editions,[(#CONFIG{demopaedia/editions}|explode{','}|serialize)]})]
-	<h3 class='titrem'><:demopaedia:cfg_selection_edition:></h3>
-
-
-	<form method="post" action="#SELF"><div>
-		[(#ENV{_cfg_}|form_hidden)]
-		<input type="hidden" class="cfg_id" name="cfg_id" id="cfg_id" value="#ENV{cfg_id}" />
-		[(#REM) On masque l'erreur qui apparait lorsqu'aucune édition n'est sélectionnée.]
-		[(#ENV{cfg_id}|?{'',' '})
-			[<p style="display:none;">(#ENV*{message_erreur})</p>]
-		]
-		<ul>
-			<li class='configurer_annee'>
-				<label for="annee"><:demopaedia:label_choix_edition:></label>
-				<select class="select" name="cfg_id" id="cfg_id">
-					<option value=''> </option>
-					<BOUCLE_editions(POUR){tableau #GET{editions}}{par valeur}>
-						<option value="#VALEUR" [(#ENV{cfg_id}|=={#VALEUR}|?{selected="selected"})]>#VALEUR - [(#VALEUR|lg_txt)] [(#VALEUR|ed_txt)]</option>
-					</BOUCLE_editions>
-				</select>
-			</li>
-		</ul>
-		<p class='boutons'><input class='submit' type="submit" name="_cfg_affiche" value="<:demopaedia:cfg_afficher:>" /></p>
-	</div></form>
-</div>
-
-[(#ENV{cfg_id}|?{' ',''})
-<div class='formulaire_spip formulaire_configurer formulaire_configurer_forums_contenu' id='formulaire_configurer_forums_contenu'>
-	<h3 class='titrem'><:demopaedia:cfg_termes:> [(#ENV{cfg_id}|lg_txt)] [(#ENV{cfg_id}|ed_txt)]</h3>
+<div class="formulaire_spip formulaire_configurer formulaire_#FORM">
+	<h3 class='titrem'>[(#ENV{edition}|lg_txt)] [(#ENV{edition}|ed_txt)] [((#ENV{edition}))]</h3>
 	[<p class="reponse_formulaire reponse_formulaire_ok">(#ENV*{message_ok})</p>]
 	[<p class="reponse_formulaire reponse_formulaire_erreur">(#ENV*{message_erreur})</p>]
-	<div class='explication'><:demopaedia:cfg_termes_details:></div>
 
-	<form method="post" action="#SELF"><div>
-		[(#ENV{_cfg_}|form_hidden)]
-		<input type="hidden" class="cfg_id" name="cfg_id" id="cfg_id" value="#ENV{id}" />
+	<form method="post" action="#ENV{action}">
+	<div>
+		#ACTION_FORMULAIRE{#ENV{action}}
+		<input type="hidden" name="_meta_casier" value="#ENV{_meta_casier}" />
 		<ul>
+			<li class='configurer_page_introduction'>
+				<label for="page_introduction"><:demopaedia:label_page_introduction:></label>
+				<div class='explication'><:demopaedia:label_page_introduction_details:></div>
+				<input type="text" name="page_introduction" value="[(#ENV{page_introduction})]" id="page_introduction" class="text" />
+			</li>
+			<li class='configurer_page_preface'>
+				<label for="page_preface"><:demopaedia:label_page_preface:></label>
+				<div class='explication'><:demopaedia:label_page_preface_details:></div>
+				<input type="text" name="page_preface" value="[(#ENV{page_preface})]" id="page_preface" class="text" />
+			</li>
+			<li class='configurer_page_avertissement'>
+				<label for="page_avertissement"><:demopaedia:label_page_avertissement:></label>
+				<div class='explication'><:demopaedia:label_page_avertissement_details:></div>
+				<input type="text" name="page_avertissement" value="[(#ENV{page_avertissement})]" id="page_avertissement" class="text" />
+			</li>
+			<li class='configurer_interclassement'>
+				<label for="interclassement"><:demopaedia:label_interclassement:></label>
+				<div class='explication'><:demopaedia:label_interclassement_details:></div>
+				<select name="interclassement" class="select" id="interclassement">
+					<option value='utf8_unicode_ci' [(#ENV{interclassement}|=={'utf8_unicode_ci'}|?{selected="selected"})]>utf8_unicode_ci</option>
+					<option value='utf8_czech_ci' [(#ENV{interclassement}|=={'utf8_czech_ci'}|?{selected="selected"})]>utf8_czech_ci</option>
+					<option value='utf8_danish_ci' [(#ENV{interclassement}|=={'utf8_danish_ci'}|?{selected="selected"})]>utf8_danish_ci</option>
+					<option value='utf8_esperanto_ci' [(#ENV{interclassement}|=={'utf8_esperanto_ci'}|?{selected="selected"})]>utf8_esperanto_ci</option>
+					<option value='utf8_estonian_ci' [(#ENV{interclassement}|=={'utf8_estonian_ci'}|?{selected="selected"})]>utf8_estonian_ci</option>
+					<option value='utf8_general_ci' [(#ENV{interclassement}|=={'utf8_general_ci'}|?{selected="selected"})]>utf8_general_ci </option>
+					<option value='utf8_hungarian_ci' [(#ENV{interclassement}|=={'utf8_hungarian_ci'}|?{selected="selected"})]>utf8_hungarian_ci</option>
+					<option value='utf8_icelandic_ci' [(#ENV{interclassement}|=={'utf8_icelandic_ci'}|?{selected="selected"})]>utf8_icelandic_ci</option>
+					<option value='utf8_latvian_ci' [(#ENV{interclassement}|=={'utf8_latvian_ci'}|?{selected="selected"})]>utf8_latvian_ci</option>
+					<option value='utf8_lithuanian_ci' [(#ENV{interclassement}|=={'utf8_lithuanian_ci'}|?{selected="selected"})]>utf8_lithuanian_ci</option>
+					<option value='utf8_persian_ci' [(#ENV{interclassement}|=={'utf8_persian_ci'}|?{selected="selected"})]>utf8_persian_ci</option>
+					<option value='utf8_polish_ci' [(#ENV{interclassement}|=={'utf8_polish_ci'}|?{selected="selected"})]>utf8_polish_ci</option>
+					<option value='utf8_roman_ci' [(#ENV{interclassement}|=={'utf8_roman_ci'}|?{selected="selected"})]>utf8_roman_ci</option>
+					<option value='utf8_unicode_ci' [(#ENV{interclassement}|=={'utf8_unicode_ci'}|?{selected="selected"})]>utf8_unicode_ci</option>
+					<option value='utf8_romanian_ci' [(#ENV{interclassement}|=={'utf8_romanian_ci'}|?{selected="selected"})]>utf8_romanian_ci</option>
+					<option value='utf8_slovak_ci' [(#ENV{interclassement}|=={'utf8_slovak_ci'}|?{selected="selected"})]>utf8_slovak_ci</option>
+					<option value='utf8_slovenian_ci' [(#ENV{interclassement}|=={'utf8_slovenian_ci'}|?{selected="selected"})]>utf8_slovenian_ci</option>
+					<option value='utf8_spanish2_ci' [(#ENV{interclassement}|=={'utf8_spanish2_ci'}|?{selected="selected"})]>utf8_spanish2_ci</option>
+					<option value='utf8_spanish_ci' [(#ENV{interclassement}|=={'utf8_spanish_ci'}|?{selected="selected"})]>utf8_spanish_ci</option>
+					<option value='utf8_swedish_ci' [(#ENV{interclassement}|=={'utf8_swedish_ci'}|?{selected="selected"})]>utf8_swedish_ci</option>
+					<option value='utf8_turkish_ci' [(#ENV{interclassement}|=={'utf8_turkish_ci'}|?{selected="selected"})]>utf8_turkish_ci</option>
+				</select>
+			</li>
 			<li class='configurer_titre_dico'>
 				<label for="titre_dico"><:demopaedia:label_titre_dico:></label>
 				<div class='explication'><:demopaedia:label_titre_dico_details:></div>
@@ -148,8 +149,10 @@
 				<textarea name="date_document" id="date_document" class="textarea">[(#ENV{date_document})]</textarea>
 			</li>
 		</ul>
-		<p class='boutons'><input class='submit' type="submit" name="_cfg_ok" value="<:bouton_enregistrer:>" /></p>
-	</div></form>
-</div>
-]
+		<p class='boutons'>
+			<span class='image_loading'>&nbsp;</span>
+			<input type='submit' class='submit' value='<:bouton_enregistrer:>' />
+		</p>
+	</div>
+	</form>
 </div>
