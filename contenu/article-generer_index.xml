@@ -1,5 +1,5 @@
 <composition>
 	<nom><:demopaedia:generer_index:></nom>
-	<description><:demopaedia:generer_dictionnaire_index:></description>
+	<description><:demopaedia:generer_index_description:></description>
 	<icon>img/generer_index.png</icon>
 </composition>

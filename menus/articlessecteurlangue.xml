@@ -1,6 +1,6 @@
 <entree>
 	<nom>demopaedia:nom_menu_articlessecteurlangue</nom>
-	<description>demopaedia:description_menu_articlessecteurlangue</description>
+	<description><:demopaedia:description_menu_articlessecteurlangue:></description>
 	<icone>images/menus_secteurlangue.png</icone>
 	<parametre nom="tri_num" label="menus:entree_tri_num" />
 	<parametre nom="tri_alpha" label="menus:entree_tri_alpha" />
