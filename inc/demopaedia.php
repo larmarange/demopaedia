@@ -5,6 +5,7 @@ function demopaedia_effacer_edition($edition){
 	include_spip('base/abstract_sql');
 	sql_delete('spip_demodef','edition = '.sql_quote($edition));
 	sql_delete('spip_demoindex','edition = '.sql_quote($edition));
+	sql_delete('spip_demoindexth','edition = '.sql_quote($edition));
 	sql_delete('spip_demonotes','edition = '.sql_quote($edition));
 	sql_delete('spip_demoinfo','edition = '.sql_quote($edition));
 	spip_log("Demopaedia : l'édition $edition a été supprimée de la base de donnée.");
@@ -421,14 +422,13 @@ function demopaedia_maj_edition($edition){
 	}
 	
 	if (count($demodef)>0 and count($demoindex)>0) {
-		// On passe la première lettre des entrées d'index en minuscule (pour certaines langues seulement)
-		// ANNULER car certains mots commencent volontaire avec une majuscule => correction de l'index préférable
-		/* if (in_array(lg_code($edition),array('fr','en','es','it','de','pl','pt','cs','ru'))) {
-			foreach($demoindex as $cle => $terme)
-				$demoindex[$cle]['terme'] = mb_lcfirst($demoindex[$cle]['terme']);
-		} */
 		// On supprime les anciennes entrées
 		demopaedia_effacer_edition($edition);
+		// Gestion du cas particulier du Thai
+		if (lg_code($edition)=='th') {
+			foreach ($demoindex as $c => $v)
+				$demoindex[$c]['termeth'] = $demoindex[$c]['terme'];
+		}
 		// On met à jour la base de données
 		sql_insertq_multi('spip_demodef',$demodef);
 		sql_insertq_multi('spip_demonotes',$demonotes);

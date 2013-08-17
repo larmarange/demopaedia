@@ -61,6 +61,7 @@ function demopaedia_declarer_tables_principales($tables_principales){
 		"numterme" => "int DEFAULT '0' NOT NULL",
 		"entree" => "ENUM('principale', 'secondaire', 'note') DEFAULT 'principale' NOT NULL",
 		"terme" => "longtext DEFAULT '' NOT NULL",
+		"termeth" => "longtext CHARACTER SET tis620 COLLATE tis620_thai_ci DEFAULT '' NOT NULL",
 		"maj"	=> "TIMESTAMP",
 		"intexte" => "longtext DEFAULT '' NOT NULL",
 		"nouveau" => "ENUM('non', 'oui') DEFAULT 'non'"
@@ -77,7 +78,6 @@ function demopaedia_declarer_tables_principales($tables_principales){
 		'field' => &$demoindex,
 		'key' => &$demoindex_cles
 	);
-	
 
 	//-- Table demoinfo -----------------------------------------------------------
 	$demoinfo = array(

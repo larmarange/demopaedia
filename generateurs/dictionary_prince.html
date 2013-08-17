@@ -269,7 +269,7 @@
 <B_index>
 <div class="index">
 <h1><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h1>
-<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}>
+<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}>
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <ul class="index" >]
@@ -278,6 +278,20 @@
 </ul>
 </div>
 </B_index>
+
+[(#REM) Gestion spécifique du Thai : tri sur terme th et prise en compte que de la première initiale pour les entêtes.]
+<B_indexth>
+<div class="index">
+<h1><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h1>
+<BOUCLE_indexth(DEMOINDEX){edition=#EDITION}{par termeth}{si #ENV{edition}|lg_code|=={th}}>
+[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
+][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
+<ul class="index" >]
+	<li class="[(#TERME|initiale{#EDITION})]"><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)[(#NOUVEAU|=={oui}|?{ ★,''})]]</a></li>
+</BOUCLE_indexth>
+</ul>
+</div>
+</B_indexth>
 
 </body>
 </html>

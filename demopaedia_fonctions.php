@@ -107,6 +107,7 @@ function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 	$langues_traitees[] = 'en';
 	$langues_traitees[] = 'ru';
 	$langues_traitees[] = 'ar';
+	$langues_traitees[] = 'th';
 	if (in_array($langue,$langues_traitees)) {
 		$initiales = array();
 		$initiales["A"] = 'A'; // A Capital A
@@ -538,6 +539,10 @@ function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 		foreach ($initiales as $cle => $valeur) {
 			$premiere_lettre = mb_ereg_replace($cle,$valeur,$premiere_lettre);
 		}
+		
+		// Cas particulier des voyelles situées en début de mot en taille
+		if (in_array($premiere_lettre,array('เ', 'แ', 'โ', 'ใ', 'ไ'))) $premiere_lettre = mb_substr($texte,$start+1,1,"UTF-8"); // seconde lettre
+		
 		if ($lower) return mb_strtolower($premiere_lettre,"UTF-8");
 		else return $premiere_lettre;
 	}

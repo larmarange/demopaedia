@@ -21,9 +21,9 @@ function demopaedia_upgrade($nom_meta_base_version, $version_cible){
     array('sql_alter',"TABLE spip_demoinfo CHANGE type type varchar(25) not null")
   );
   
-  //$maj['0.8'] = array(
-    //array('maj_tables',array('spip_demodef','spip_demonotes','spip_demoindex','spip_demoinfo'))
-  //);
+  $maj['0.8'] = array(
+    array('maj_tables',array('spip_demoindex'))
+  );
   
   include_spip('base/upgrade');
   maj_plugin($nom_meta_base_version, $version_cible, $maj);
