@@ -14,6 +14,13 @@ function demopaedia_effacer_edition($edition){
 	suivre_invalideur($edition);
 }
 
+function uchr ($codes) {
+    if (is_scalar($codes)) $codes= func_get_args();
+    $str= '';
+    foreach ($codes as $code) $str.= html_entity_decode('&#'.$code.';',ENT_NOQUOTES,'UTF-8');
+    return $str;
+}
+
 function mb_str_replace($needle, $replacement, $haystack)
 {
     $needle_len = mb_strlen($needle);
@@ -29,19 +36,21 @@ function mb_str_replace($needle, $replacement, $haystack)
 }
 
 function demopeadia_ajouter_espaces_thai1($texte) {
-	$texte = mb_str_replace('{{TextTerm','&#8203;{{TextTerm',$texte);  // &#8203; = zero-width space
-	$texte = mb_str_replace('{{NoteTerm','&#8203;{{NoteTerm',$texte);
-	$texte = mb_str_replace('{{NonRefTerm','&#8203;{{NonRefTerm',$texte);
+	$zs = uchar(8203); // &#8203; = zero-width space
+	$texte = mb_str_replace('{{TextTerm',$zs.'{{TextTerm',$texte);
+	$texte = mb_str_replace('{{NoteTerm',$zs.'{{NoteTerm',$texte);
+	$texte = mb_str_replace('{{NonRefTerm',$zs.'{{NonRefTerm',$texte);
 	return $texte;
 }
 
 function demopeadia_ajouter_espaces_thai2($texte) {
-	$texte = mb_str_replace('เ','&#8203;เ',$texte);
-	$texte = mb_str_replace('แ','&#8203;แ',$texte);
-	$texte = mb_str_replace('โ ','&#8203;โ ',$texte);
-	$texte = mb_str_replace('ใ','&#8203;ใ',$texte);
-	$texte = mb_str_replace('ไ','&#8203;ไ',$texte);
-	$texte = mb_str_replace('ะ','ะ&#8203;',$texte);
+	$zs = uchar(8203); // &#8203; = zero-width space
+	$texte = mb_str_replace('เ',$zs.'เ',$texte);
+	$texte = mb_str_replace('แ',$zs.'แ',$texte);
+	$texte = mb_str_replace('โ ',$zs.'โ ',$texte);
+	$texte = mb_str_replace('ใ',$zs.'ใ',$texte);
+	$texte = mb_str_replace('ไ',$zs.'ไ',$texte);
+	$texte = mb_str_replace('ะ','ะ'.$zs,$texte);
 	return $texte;
 }
 

@@ -11,7 +11,7 @@
 		@import url([(#URL_PAGE{FreeSerif.css}|url_absolue)]);
 		[(#ENV{edition}|lg_code|=={th}|oui)@import url([(#URL_PAGE{THSarabun.css}|url_absolue)]);]
 		[(#SET{polices,"Libertine, FreeSerif, serif"})]
-		[(#ENV{edition}|lg_code|=={th}|oui)[(#SET{polices,"Libertine, THSarabun, serif"})]]
+		[(#ENV{edition}|lg_code|=={th}|oui)[(#SET{polices,"THSarabun, Libertine, serif"})]]
 		
 		@page{
 			size: 15.24cm 22.86cm;
@@ -56,6 +56,7 @@
 		}
 		body {
 			text-align: justify;
+			[(#ENV{edition}|lg_code|=={th}|oui)text-align:left;]
 			font-family: #GET{polices};
 			font-size:10pt;
 			line-height: 115%;
@@ -70,7 +71,7 @@
 			page: index;
 		}
 		sup {font-size:0.6em; line-height:1pt; padding-left:1pt;}
-		.surtitre {text-align:center; font-size:1.5em;}
+		.surtitre {text-align:center; font-size:1.5em; font-family: Libertine, Serif;}
 		.titre {
 			text-align:center;
 			font-size:2.5em;
@@ -89,7 +90,7 @@
 			width: 8cm;
 			height: 8cm;
 		}
-		.lien {text-align:center; font-style:italic; font-size:1.1em; margin:5px 0;}
+		.lien {text-align:center; font-style:italic; font-size:1.1em; margin:5px 0; font-family: Libertine, Serif;}
 		a {color:black; text-decoration:none;}
 		a:hover {text-decoration:underline;}
 		.date {text-align:center; margin:5px 0;}
