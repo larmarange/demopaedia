@@ -36,7 +36,7 @@ function mb_str_replace($needle, $replacement, $haystack)
 }
 
 function demopeadia_ajouter_espaces_thai1($texte) {
-	$zs = uchar(8203); // &#8203; = zero-width space
+	$zs = uchr(8203); // &#8203; = zero-width space
 	$texte = mb_str_replace('{{TextTerm',$zs.'{{TextTerm',$texte);
 	$texte = mb_str_replace('{{NoteTerm',$zs.'{{NoteTerm',$texte);
 	$texte = mb_str_replace('{{NonRefTerm',$zs.'{{NonRefTerm',$texte);
@@ -44,7 +44,7 @@ function demopeadia_ajouter_espaces_thai1($texte) {
 }
 
 function demopeadia_ajouter_espaces_thai2($texte) {
-	$zs = uchar(8203); // &#8203; = zero-width space
+	$zs = uchr(8203); // &#8203; = zero-width space
 	$texte = mb_str_replace('เ',$zs.'เ',$texte);
 	$texte = mb_str_replace('แ',$zs.'แ',$texte);
 	$texte = mb_str_replace('โ ',$zs.'โ ',$texte);
