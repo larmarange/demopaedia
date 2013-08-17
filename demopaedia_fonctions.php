@@ -11,8 +11,11 @@ function filtre_insere_data_URI ($src) {
 }
 
 // Remplace la chaine @date@ par la date courante
-function filtre_ajoute_date ($texte) {
-	return str_replace('@date@',affdate(date('Y-m-d')),$texte);
+function filtre_ajoute_date ($texte, $lang='') {
+	if ($lang AND in_array($lang,array('th','ko')))
+		return str_replace('@date@',date('d/m/Y'),$texte);
+	else
+		return str_replace('@date@',affdate(date('Y-m-d')),$texte);
 }
 
 // Ajoute des liens sur les textterms et les codes de section

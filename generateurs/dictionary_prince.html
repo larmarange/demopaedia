@@ -177,7 +177,7 @@
 </div>
 <div class="premiere_bas">
 	<div class="lien"><a href='http://#EDITION.#CONFIG{demopaedia/domaine}' >http://#EDITION.#CONFIG{demopaedia/domaine}</a></div>
-	<div class="date">[(#CONFIG{demopaedia-[(#EDITION)]/date_document}|ajoute_date)]</div>
+	<div class="date">[(#CONFIG{demopaedia-[(#EDITION)]/date_document}|ajoute_date{#ENV{lang}})]</div>
 	<div class="licence">[(#CONFIG{demopaedia-[(#EDITION)]/details_licence}|norm_liens)]</div>
 </div>
 

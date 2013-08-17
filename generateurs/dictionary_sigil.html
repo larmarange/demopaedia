@@ -36,7 +36,7 @@
 	[<img src="#URL_SITE_SPIP/(#CHEMIN{img/demopaedia.png}||image_reduire{250}||extraire_attribut{src})" width="250" height="250" alt="" />]
 </div>
 <div class="lien"><a href='http://#EDITION.#CONFIG{demopaedia/domaine}' >http://#EDITION.#CONFIG{demopaedia/domaine}</a></div>
-<div class="date">[(#CONFIG{demopaedia-[(#EDITION)]/date_document}|ajoute_date)]</div>
+<div class="date">[(#CONFIG{demopaedia-[(#EDITION)]/date_document}|ajoute_date{#ENV{lang}})]</div>
 <div class="licence">[(#CONFIG{demopaedia-[(#EDITION)]/details_licence}|norm_liens)]</div>
 
 #SET{chapitres, #ARRAY{1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9}} 
