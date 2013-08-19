@@ -56,9 +56,10 @@
 		}
 		body {
 			text-align: justify;
-			[(#ENV{edition}|lg_code|=={th}|oui)text-align:left;]
+			[(#ENV{edition}|lg_code|=={th}|oui)text-align:right;]
 			font-family: #GET{polices};
 			font-size:10pt;
+			[(#ENV{edition}|lg_code|=={th}|oui)font-size:12pt;]
 			line-height: 115%;
 		}
 		div.sommaire {
@@ -108,6 +109,7 @@
 			text-align:left;
 			padding-right: 1cm;
 			font-size:20pt;
+			[(#ENV{edition}|lg_code|=={th}|oui)font-size:24pt;]
 			page-break-before: right;
 			string-set: chaptertitle content();
 		}
@@ -117,11 +119,16 @@
 			line-height: normal;
 			text-align:left;
 			font-size:16pt;
+			[(#ENV{edition}|lg_code|=={th}|oui)font-size:20pt;]
 			padding-right: 1cm;
 		}
 		h3 {
 			text-align:left;
 			font-size:12pt;
+			[(#ENV{edition}|lg_code|=={th}|oui)font-size:16pt;]
+		}
+		div.chapitre {
+			[(#ENV{edition}|lg_code|=={th}|oui)text-align:right;]
 		}
 		div.sommaire, div.chapitre, div.index {
 			string-set: chaptertitle ""; /* Pour ne pas avoir d'en-tête au début d'une section */
@@ -130,7 +137,10 @@
 		/* div.texte a[href ^="http:"]::after {content: " (" attr(href) ")";} */
 		ol, ul {margin: 0 0 0 1cm;}
 		li {margin: 0; padding:0.1cm 0;}
-		ol.notes { margin: 0.25cm 1cm 0 1cm; padding:0; font-size: 9pt;}
+		ol.notes {
+			margin: 0.25cm 1cm 0 1cm; padding:0; font-size: 9pt;
+			[(#ENV{edition}|lg_code|=={th}|oui)font-size:10pt;]
+		}
 		ul.toc a::after { content: leader(" . ") target-counter(attr(href), page);}
 		ul.toc {
 			margin-top: 0.5cm;
@@ -148,7 +158,6 @@
 			margin: 0;
 			padding: 0;
 			list-style: none;
-			font-size: 9pt;
 		}
 		ul.index li {
 			text-align: left;
@@ -158,6 +167,7 @@
 			text-indent:-0.25cm;
 			padding-left:0.25cm;
 			font-size: 8pt;
+			[(#ENV{edition}|lg_code|=={th}|oui)font-size:10pt;]
 			line-height:100%;
 		}
 		span.indent { width: 0.25cm; display: inline-block; margin:0; padding:0;}

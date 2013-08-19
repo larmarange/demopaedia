@@ -42,6 +42,7 @@
 #SET{chapitres, #ARRAY{1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9}} 
 
 <B_introduction>
+<hr class="sigil_split_marker" />
 <h1 class="chapitre"><a name="introduction"></a>[(#CONFIG{demopaedia-[(#EDITION)]/introduction})]</h1>
 <BOUCLE_introduction(DEMOINFO){edition=#ENV{edition}}{type='introduction'}{0,1}>
 <div class="texte">
@@ -50,6 +51,7 @@
 </BOUCLE_introduction>
 
 <B_preface>
+<hr class="sigil_split_marker" />
 <h1 class="chapitre"><a name="preface"></a>[(#CONFIG{demopaedia-[(#EDITION)]/preface})]</h1>
 <BOUCLE_preface(DEMOINFO){edition=#ENV{edition}}{type='preface'}{0,1}>
 <div class="texte">
@@ -58,6 +60,7 @@
 </BOUCLE_preface>
 
 <B_avertissement>
+<hr class="sigil_split_marker" />
 <h1 class="chapitre"><a name="avertissement"></a>[(#CONFIG{demopaedia-[(#EDITION)]/avertissement})]</h1>
 <BOUCLE_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
 <div class="texte">
@@ -66,6 +69,7 @@
 </BOUCLE_avertissement>
 
 <BOUCLE_chapitres(POUR){tableau #GET{chapitres}}>
+<hr class="sigil_split_marker" />
 #SET{section_min,#EVAL{100*#VALEUR}} #SET{section_max,#EVAL{100*(#VALEUR+1)}}
 <B_definitions>
 <h1 class="chapitre"><a name="chapitre#VALEUR"></a>[(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ]#VALEUR[ • (#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR})]</h1>
@@ -88,8 +92,9 @@
 
 [(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|sinon{'utf8_unicode_ci'})]})]
 <B_index>
+<hr class="sigil_split_marker" />
 <h1 class="chapitre"><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h1>
-<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}>
+<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}>
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <ul class="index" >]
@@ -97,5 +102,17 @@
 </BOUCLE_index>
 </ul>
 </B_index>
+
+<B_indexth>
+<hr class="sigil_split_marker" />
+<h1 class="chapitre"><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h1>
+<BOUCLE_indexth(DEMOINDEX){edition=#EDITION}{par termeth}{si #ENV{edition}|lg_code|=={th}}>
+[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
+][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
+<ul class="index" >]
+	<li [(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)][(#NOUVEAU|=={oui}|?{&nbsp;•,''})] (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#ENTREE|=={note}|?{*,''})])</li>
+</BOUCLE_indexth>
+</ul>
+</B_indexth>
 </body>
 </html>

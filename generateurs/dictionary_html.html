@@ -7,7 +7,7 @@
 	<BOUCLE_head_description(DEMOINFO){edition=#ENV{edition}}{type='introduction'}{0,1}>[<meta name="description" content="(#TEXTE**|textebrut)" />]</BOUCLE_head_description>
 	<meta name="copyright" content="demopaedia.org - http://#ENV{edition}.#CONFIG{demopaedia/domaine}" />
 	<style type="text/css" media="all">
-		body {max-width:800px; margin:0 auto;padding:0 10px; text-align: justify; font-family: FreeSerif, Constantia, Georgia, "Times New Roman", Times, serif; font-size:90%}
+		body {max-width:800px; margin:0 auto;padding:0 10px; text-align: justify; font-family: "Linux Libertine", FreeSerif, Constantia, Georgia, "Times New Roman", Times, serif; font-size:90%}
 		.surtitre {text-align:center; font-size:1.5em; font-variant: small-caps; margin-top:5px;}
 		.titre {text-align:center; font-size:2.5em; font-weight:bold; margin:10px 0;}
 		.soustitre {text-align:center; font-size:1.5em; font-weight:bold; margin:5px 0;}
@@ -119,7 +119,7 @@
 [(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|sinon{'utf8_unicode_ci'})]})]
 <B_index>
 <h2><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h2>
-<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}>
+<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}>
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h3>(#TERME|initiale{#EDITION}|unique)</h3>
 <ul class="index" >]
@@ -127,6 +127,17 @@
 </BOUCLE_index>
 </ul>
 </B_index>
+
+<B_indexth>
+<h2><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h2>
+<BOUCLE_indexth(DEMOINDEX){edition=#EDITION}{par termeth}{si #ENV{edition}|lg_code|=={th}}>
+[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
+][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h3>(#TERME|initiale{#EDITION}|unique)</h3>
+<ul class="index" >]
+	<li [(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)][(#NOUVEAU|=={oui}|?{&nbsp;★,''})] (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#ENTREE|=={note}|?{*,''})])</li>
+</BOUCLE_indexth>
+</ul>
+</B_indexth>
 
 </body>
 </html>
