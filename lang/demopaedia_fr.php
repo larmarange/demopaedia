@@ -60,6 +60,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'th' => 'Thaï',
 	'ne' => 'Népalais',
 	'vi' => 'Vietnamien',
+	'sh' => 'Serbo-Croate',
 	'i' => 'première édition',
 	'ii' => 'seconde édition',
 	
