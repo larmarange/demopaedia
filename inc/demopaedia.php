@@ -168,7 +168,7 @@ function demopaedia_maj_edition($edition){
 				$doublons = array(); // tableau qui servira à stocker les termes pour essayer de filtrer les doublons dans les NoteTerm
 				
 				// Cas du Thai (ajout d'espaces invisibles)
-				if (lg_code($edition)=='th') $section = demopeadia_ajouter_espaces_thai1($section);
+				//if (lg_code($edition)=='th') $section = demopeadia_ajouter_espaces_thai1($section);
 				
 				// Traitement des TextTerm
 				preg_match_all('/\{TextTerm\|(.*)\}/U',$section,$textterms);
@@ -330,7 +330,7 @@ function demopaedia_maj_edition($edition){
 					$texte_note = preg_replace('/\[\*NoteTerm\!\!([^![\]]+)\!\!(.+)\*\]/U','<strong>$1</strong>',$texte_note); // mise en forme avant enregistrement de la note
 					$texte_note = preg_replace('/\[\*NoteTerm\!\!([^![\]]+)\*\]/U','<strong>$1</strong>',$texte_note);
 					// Cas particulier du Thai
-					if (lg_code($edition)=='th') $texte_note = demopeadia_ajouter_espaces_thai2($texte_note);
+					//if (lg_code($edition)=='th') $texte_note = demopeadia_ajouter_espaces_thai2($texte_note);
 					$demonotes[] = array(
 						'edition' => $edition,
 						'section' => $num_section,
@@ -342,7 +342,7 @@ function demopaedia_maj_edition($edition){
 				$section = preg_replace('/\{Note\|(.+)\}/U','',$section);
 				$section = preg_replace('/\n/','',$section);
 				// Cas particulier du Thai
-				if (lg_code($edition)=='th') $section = demopeadia_ajouter_espaces_thai2($section);
+				//if (lg_code($edition)=='th') $section = demopeadia_ajouter_espaces_thai2($section);
 				$demodef[] = array(
 					'edition' => $edition,
 					'section' => $num_section,
@@ -457,7 +457,7 @@ function demopaedia_maj_edition($edition){
 						$texte .= "<p>".$paragraphe."</p>\n";
 				
 				// Cas particulier du Thai
-				if (lg_code($edition)=='th') $texte = demopeadia_ajouter_espaces_thai2($texte);
+				//if (lg_code($edition)=='th') $texte = demopeadia_ajouter_espaces_thai2($texte);
 				
 				// On préparer les données à insérer
 				$demoinfo[] = array(

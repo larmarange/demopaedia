@@ -1,4 +1,4 @@
-#HTTP_HEADER{Content-Type: text/html; charset=#CHARSET}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+#HTTP_HEADER{Content-Type: text/html; charset=#CHARSET}<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" [xml:lang="(#ENV{edition}|lg_code)"] [lang="(#ENV{edition}|lg_code)"] [dir="(#ENV{edition}|lg_code|lang_dir)"]>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -6,6 +6,9 @@
 	<title>[(#CONFIG{demopaedia-[(#EDITION)]/titre_dico}|textebrut)][ - (#CONFIG{demopaedia-[(#EDITION)]/details_edition}|textebrut)]</title>
 	<meta name="author" content="Demopædia" />
 	<meta name="date" content="[(#DATE|affdate{'Y-m-d'})]" />
+	[(#ENV{edition}|lg_code|=={th}|oui)
+		<script type="text/javascript" src="[(#CHEMIN{thaiwrap.js}|url_absolue)]"></script>
+	]
 	<style type="text/css" media="all">
 		@import url([(#URL_PAGE{Libertine.css}|url_absolue)]);
 		@import url([(#URL_PAGE{FreeSerif.css}|url_absolue)]);
@@ -127,9 +130,6 @@
 			font-size:12pt;
 			[(#ENV{edition}|lg_code|=={th}|oui)font-size:16pt;]
 		}
-		div.chapitre {
-			[(#ENV{edition}|lg_code|=={th}|oui)text-align:right;]
-		}
 		div.sommaire, div.chapitre, div.index {
 			string-set: chaptertitle ""; /* Pour ne pas avoir d'en-tête au début d'une section */
 		}
@@ -179,7 +179,7 @@
 		table {width: 100%;}
 	</style>
 </head>
-<body>
+<body [(#ENV{edition}|lg_code|=={th}|oui)onload="thaiWrap();]">
 <div class="surtitre">Demopædia</div>
 <div class="titre">[(#CONFIG{demopaedia-[(#EDITION)]/titre_dico})]</div>
 [<div class="soustitre">(#CONFIG{demopaedia-[(#EDITION)]/details_edition})</div>]
