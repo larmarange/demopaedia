@@ -94,10 +94,11 @@ function filtre_ajoute_name($texte,$name='',$niveau='h3'){
 }
 
 // http://stackoverflow.com/questions/10472294/how-to-convert-to-korean-initials
+// Modifier pour ne pas prendre en compte les voyelles doubles
 function ko_initial($letter) {
 	$value = uord($letter);
 	if ($value >=44032 AND £VALUE <+ 55230) {
-		$initials = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+		$initials = "ㄱㄱㄴㄷㄷㄹㅁㅂㅂㅅㅅㅇㅈㅈㅊㅋㅌㅍㅎ"; // "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
 		$value = abs(($value - 44032) / 588);
 		return(mb_substr($initials, $value, 1));
 	} else
@@ -551,11 +552,11 @@ function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 
 		}
 		
-		// Cas du Coréen
+		// Cas du Coréen "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ"
 		if ($langue=='ko') {
 			$premiere_lettre = ko_initial($premiere_lettre);
 		}
-		
+
 		// Cas particulier des voyelles situées en début de mot en Thai
 		if (in_array($premiere_lettre,array('เ', 'แ', 'โ', 'ใ', 'ไ'))) $premiere_lettre = mb_substr($texte,$start+1,1,"UTF-8"); // seconde lettre
 		
