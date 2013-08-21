@@ -14,51 +14,6 @@ function demopaedia_effacer_edition($edition){
 	suivre_invalideur($edition);
 }
 
-function uchr ($codes) {
-    if (is_scalar($codes)) $codes= func_get_args();
-    $str= '';
-    foreach ($codes as $code) $str.= html_entity_decode('&#'.$code.';',ENT_NOQUOTES,'UTF-8');
-    return $str;
-}
-
-function mb_str_replace($needle, $replacement, $haystack)
-{
-    $needle_len = mb_strlen($needle);
-    $replacement_len = mb_strlen($replacement);
-    $pos = mb_strpos($haystack, $needle);
-    while ($pos !== false)
-    {
-        $haystack = mb_substr($haystack, 0, $pos) . $replacement
-                . mb_substr($haystack, $pos + $needle_len);
-        $pos = mb_strpos($haystack, $needle, $pos + $replacement_len);
-    }
-    return $haystack;
-}
-
-if (!function_exists('mb_ucfirst')) {
-	function mb_ucfirst($str, $encoding = "UTF-8", $lower_str_end = false) {
-		$first_letter = mb_strtoupper(mb_substr($str, 0, 1, $encoding), $encoding);
-		$str_end = "";
-		if ($lower_str_end) {
-			$str_end = mb_strtolower(mb_substr($str, 1, mb_strlen($str, $encoding), $encoding), $encoding);
-		}
-		else {
-			$str_end = mb_substr($str, 1, mb_strlen($str, $encoding), $encoding);
-		}
-		$str = $first_letter . $str_end;
-		return $str;
-	}
-}
-
-if (!function_exists('mb_lcfirst')) {
-	function mb_lcfirst($str, $encoding = "UTF-8") {
-		$first_letter = mb_strtolower(mb_substr($str, 0, 1, $encoding), $encoding);
-		$str_end = mb_substr($str, 1, mb_strlen($str, $encoding), $encoding);
-		$str = $first_letter . $str_end;
-		return $str;
-	}
-}
-
 function demopaedia_maj_edition($edition){
 	include_spip('base/abstract_sql');
 	include_spip('inc/flock');

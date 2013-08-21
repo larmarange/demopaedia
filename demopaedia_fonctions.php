@@ -93,6 +93,17 @@ function filtre_ajoute_name($texte,$name='',$niveau='h3'){
 		return $texte;
 }
 
+// http://stackoverflow.com/questions/10472294/how-to-convert-to-korean-initials
+function ko_initial($letter) {
+	$value = uord($letter);
+	if ($value >=44032 AND £VALUE <+ 55230) {
+		$initials = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+		$value = abs(($value - 44032) / 588);
+		return(mb_substr($initials, $value, 1));
+	} else
+		return $letter;
+}
+
 //extrait la première lettre, supprime les accents et la passe en majuscules
 function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 	$premiere_lettre = mb_substr($texte,$start,1,"UTF-8"); // première lettre
@@ -111,6 +122,7 @@ function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 	$langues_traitees[] = 'ru';
 	$langues_traitees[] = 'ar';
 	$langues_traitees[] = 'th';
+	$langues_traitees[] = 'ko';
 	if (in_array($langue,$langues_traitees)) {
 		$initiales = array();
 		$initiales["A"] = 'A'; // A Capital A
@@ -539,12 +551,18 @@ function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 
 		}
 		
+		// Cas du Coréen
+		if ($langue=='ko') {
+			$premiere_lettre = ko_initial($premiere_lettre);
+		}
+		
+		// Cas particulier des voyelles situées en début de mot en Thai
+		if (in_array($premiere_lettre,array('เ', 'แ', 'โ', 'ใ', 'ไ'))) $premiere_lettre = mb_substr($texte,$start+1,1,"UTF-8"); // seconde lettre
+		
 		foreach ($initiales as $cle => $valeur) {
 			$premiere_lettre = mb_ereg_replace($cle,$valeur,$premiere_lettre);
 		}
-		
-		// Cas particulier des voyelles situées en début de mot en taille
-		if (in_array($premiere_lettre,array('เ', 'แ', 'โ', 'ใ', 'ไ'))) $premiere_lettre = mb_substr($texte,$start+1,1,"UTF-8"); // seconde lettre
+
 		
 		if ($lower) return mb_strtolower($premiere_lettre,"UTF-8");
 		else return $premiere_lettre;
