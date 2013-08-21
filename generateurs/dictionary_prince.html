@@ -59,7 +59,7 @@
 		}
 		body {
 			text-align: justify;
-			[(#ENV{edition}|lg_code|=={th}|oui)text-align:right;]
+			[(#ENV{edition}|lg_code|=={th}|oui)text-align:left;]
 			font-family: #GET{polices};
 			font-size:10pt;
 			[(#ENV{edition}|lg_code|=={th}|oui)font-size:12pt;]
@@ -130,6 +130,10 @@
 			font-size:12pt;
 			[(#ENV{edition}|lg_code|=={th}|oui)font-size:16pt;]
 		}
+		div.chapitre {
+			[(#ENV{edition}|lg_code|=={th}|oui)text-align:left;]
+		}
+
 		div.sommaire, div.chapitre, div.index {
 			string-set: chaptertitle ""; /* Pour ne pas avoir d'en-tête au début d'une section */
 		}
@@ -266,7 +270,7 @@
 	<B_notes>
 	<ol class="notes">
 	<BOUCLE_notes(DEMONOTES){edition=#EDITION}{section=#SECTION}{par note}>
-		<li value="#NOTE**">[(#TEXTE**|ajoute_liens|typo)]</li>
+		<li value="#NOTE**" class="note">[(#TEXTE**|ajoute_liens|typo)]</li>
 	</BOUCLE_notes>
 	</ol>
 	</B_notes>
