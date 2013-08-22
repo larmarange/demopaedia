@@ -10,11 +10,11 @@
 		@import url([(#URL_PAGE{Libertine.css}|url_absolue)]);
 		@import url([(#URL_PAGE{FreeSerif.css}|url_absolue)]);
 		@import url([(#URL_PAGE{THSarabun.css}|url_absolue)]);
-		[(#SET{polices,"Libertine, THSarabun, FreeSerif, serif"})]
+		[(#SET{polices,"Libertine, FreeSerif, serif"})]
 		
 		@page{
-			size: 15.24cm 22.86cm;
-			margin: 2cm;
+			size: 21cm 29.7cm;
+			margin: 2.5cm;
 			@bottom {
 				content: "—   " counter(page) "   —"; 
 				font-family: #GET{polices};
@@ -84,7 +84,7 @@
 			position:absolute;
 			bottom: 0;
 		}
-		div.sommaire {
+		div.sommaire h1 {
 			counter-reset: page 1;
 		}
 		div.titreindex, h1.toc {
@@ -126,11 +126,11 @@
 			list-style: none;
 		}
 		ul.index {
-			-moz-column-count: 2;
+			-moz-column-count: 3;
 			-moz-column-gap: 1cm;
-			-webkit-column-count: 2;
+			-webkit-column-count: 3;
 			-webkit-column-gap: 1cm;
-			column-count: 2;
+			column-count: 3;
 			column-gap: 1cm;
 			margin: 0;
 			padding: 0;
@@ -193,7 +193,7 @@
 	<ul class="toc">
 		<BOUCLE_toc(POUR){tableau #ENV{editions}}{par valeur}>
 		<li>
-			<a href="#index_[(#VALEUR|lg_code)]">[(#CONFIG{demopaedia-[(#VALEUR)]/index})] [((#VALEUR|lg_code))]</a>
+			<a href="#index_[(#VALEUR|lg_code)]">[(#CONFIG{demopaedia-[(#VALEUR)]/titre_index_court})] [((#VALEUR|lg_code))]</a>
 		</li>
 		</BOUCLE_toc>
 	</ul>
@@ -231,7 +231,7 @@
 	[(#SET{interclassement,[(#CONFIG{demopaedia-[(#VALEUR)]/interclassement}|sinon{'utf8_unicode_ci'})]})]
 	<B_index>
 	<div class="index">
-	<div class="titreindex">[(#CONFIG{demopaedia-[(#VALEUR)]/index})] [((#VALEUR|lg_code))]</div>
+	<div class="titreindex">[(#CONFIG{demopaedia-[(#VALEUR)]/titre_index_court})] [((#VALEUR|lg_code))]</div>
 	<BOUCLE_index(DEMOINDEX){edition=#VALEUR}{par terme}{entree IN principale,secondaire}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}>
 	[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
 	][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
@@ -258,7 +258,8 @@
 	[(#REM) Gestion spécifique du Thai : tri sur terme th et prise en compte que de la première initiale pour les entêtes.]
 	<B_indexth>
 	<div class="index">
-	<h1><a name="index"></a>[(#CONFIG{demopaedia-[(#VALEUR)]/index})]</h1>
+	<div class="titreindex">[(#CONFIG{demopaedia-[(#VALEUR)]/titre_index_court})] [((#VALEUR|lg_code))]</div>
+	<h1>[(#CONFIG{demopaedia-[(#VALEUR)]/index})]</h1>
 	<BOUCLE_indexth(DEMOINDEX){edition=#VALEUR}{entree IN principale,secondaire}{par termeth}{si #ENV{edition}|lg_code|=={th}}>
 	[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
 	][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
