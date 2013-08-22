@@ -12,7 +12,7 @@ function filtre_insere_data_URI ($src) {
 
 // Remplace la chaine @date@ par la date courante
 function filtre_ajoute_date ($texte, $lang='') {
-	if ($lang AND in_array($lang,array('th','ko')))
+	if ($lang AND in_array($lang,array('th','ko','no_trad')))
 		return str_replace('@date@',date('d/m/Y'),$texte);
 	else
 		return str_replace('@date@',affdate(date('Y-m-d')),$texte);
@@ -582,13 +582,22 @@ function filtre_termes_correspondants($edition,$section,$numterme,$separateur) {
 		$interclassement = lire_config('demopaedia-'.$edition.'/interclassement');
 		if ($interclassement == '')
 			$interclassement = 'utf8_unicode_ci';
-		$resultats = sql_allfetsel (
-			array("CONCAT( section, '-', numterme )",'GROUP_CONCAT( terme ORDER BY terme COLLATE utf8_unicode_ci ASC SEPARATOR '.sql_quote($separateur).' )'),
-			'spip_demoindex',
-			'entree = "principale" AND edition = '.sql_quote($edition),
-			'section, numterme',
-			'section, numterme'
-		);
+		if (lg_code($edition)=='th')
+			$resultats = sql_allfetsel (
+				array("CONCAT( section, '-', numterme )",'GROUP_CONCAT( terme ORDER BY termeth ASC SEPARATOR '.sql_quote($separateur).' )'),
+				'spip_demoindex',
+				'entree = "principale" AND edition = '.sql_quote($edition),
+				'section, numterme',
+				'section, numterme'
+			);
+		else
+			$resultats = sql_allfetsel (
+				array("CONCAT( section, '-', numterme )",'GROUP_CONCAT( terme ORDER BY terme COLLATE '.$interclassement.' ASC SEPARATOR '.sql_quote($separateur).' )'),
+				'spip_demoindex',
+				'entree = "principale" AND edition = '.sql_quote($edition),
+				'section, numterme',
+				'section, numterme'
+			);
 		foreach($resultats as $res) {
 			$res = array_values($res);
 			$index[$edition][$separateur][$res[0]] = $res[1];
@@ -730,7 +739,7 @@ function filtre_ajoute_liens ($texte) {
 
 // Cette fonction vise à améliorer la présentation de l'index
 // Si deux entrées commencent par le même mot
-function ameliorer_index($texte) {
+function ameliorer_index($texte, $verifier_precedent=true) {
 	static $prec='';
 	$texte = str_replace(' —','—',$texte);
 	$texte = str_replace('—','&nbsp;—',$texte);
@@ -742,7 +751,9 @@ function ameliorer_index($texte) {
 		$cur = trim(mb_substr($texte,0,$pos));
 	}
 
-	if ($prec =='')
+	if (!$verifier_precedent)
+		$idem = FALSE;
+	elseif ($prec =='')
 		$idem = FALSE;
 	// elseif ($pos === FALSE AND mb_strpos($cur,$prec.' ')===0) Si on souhaite aussi regrouper les entrées principales commençant par la même chose.
 	//	$idem = TRUE;
@@ -750,6 +761,8 @@ function ameliorer_index($texte) {
 		$idem = TRUE;
 	else
 		$idem = FALSE;
+	
+	
 	if ($idem) {
 		if ($pos===FALSE) {
 			return '<span class="indent">&nbsp;</span>— '.trim(mb_substr($texte,mb_strlen($prec)));

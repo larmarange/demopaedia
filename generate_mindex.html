@@ -1,0 +1,1 @@
+[(#SET{fond,[generateurs/mindex_(#ENV{format})]})][(#SET{header,[(#ENV{format}|=={html}|?{'Content-Type: text/html',''})]})][(#HTTP_HEADER{#GET{header}})]<INCLURE{fond=#GET{fond}}{editions=#ENV{editions}}>

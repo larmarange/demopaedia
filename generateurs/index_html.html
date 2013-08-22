@@ -40,7 +40,7 @@
 <div class="corr">
 	[(#CONFIG{demopaedia-[(#EDITION)]/termes_correspondants})<br />]
 	<BOUCLE_termes_correspondants(POUR){tableau #ENV{corr}}{par valeur}>
-	<span lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];" >[(#CONFIG{demopaedia/[(#VALEUR)]/details_edition})] (#VALEUR)</span><br />
+	<span lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];" >[(#CONFIG{demopaedia-[(#VALEUR)]/details_edition})] (#VALEUR)</span><br />
 	</BOUCLE_termes_correspondants>
 </div>
 </B_termes_correspondants>
@@ -68,7 +68,6 @@
 		<tr lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];">
 			[<td class="edition">#VALEUR</td>
 			<td class="termes">(#VALEUR|termes_correspondants{#SECTION,#NUMTERME,<br />})</td>]
-		</BOUCLE_index_corr>
 		</tr>
 		</BOUCLE_editions_corr>
 	</table></dd>

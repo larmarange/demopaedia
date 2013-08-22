@@ -1,0 +1,288 @@
+#HTTP_HEADER{Content-Type: text/html; charset=#CHARSET}<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" [xml:lang="(#ENV{edition}|lg_code)"] [lang="(#ENV{edition}|lg_code)"] [dir="(#ENV{edition}|lg_code|lang_dir)"]>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	[<meta http-equiv="Content-Language" content="(#ENV{edition}|lg_code)" />]
+	<title>Multilingual index - Demopædia</title>
+	<meta name="author" content="Demopædia" />
+	<meta name="date" content="[(#DATE|affdate{'Y-m-d'})]" />
+	<style type="text/css" media="all">
+		@import url([(#URL_PAGE{Libertine.css}|url_absolue)]);
+		@import url([(#URL_PAGE{FreeSerif.css}|url_absolue)]);
+		@import url([(#URL_PAGE{THSarabun.css}|url_absolue)]);
+		[(#SET{polices,"Libertine, THSarabun, FreeSerif, serif"})]
+		
+		@page{
+			size: 15.24cm 22.86cm;
+			margin: 2cm;
+			@bottom {
+				content: "—   " counter(page) "   —"; 
+				font-family: #GET{polices};
+				font-size: 9pt;
+			}
+		}
+		@page couv {
+			@bottom { content: normal; }
+			@top-left { content:normal;}
+			@top-right { content:normal;}
+		}
+		@page:blank{
+			@bottom { content: normal;}
+			@top-left { content:normal;}
+			@top-right { content:normal;}
+		}
+		@page blanche{
+			@bottom { content: normal;}
+			@top-left { content:normal;}
+			@top-right { content:normal;}
+		}
+		@page index {
+			@top {content: string(chaptertitle); font-family: #GET{polices}; font-size: 9pt; font-style: italic;}
+			@top-left {content: string(indexinitials, start); font-family:#GET{polices}; font-size: 9pt; font-style: normal;}
+			@top-right {content: string(indexinitials, last); font-family: #GET{polices}; font-size: 9pt; font-style: normal;}
+		}
+		body {
+			text-align: left;
+			font-family: #GET{polices};
+			font-size:10pt;
+			line-height: 115%;
+		}
+		p, div.definition {
+			hyphens: auto;
+		}
+		div.index {
+			page: index; page-break-before: right;
+		}
+		div.blanche {page: blanche; string-set: indexinitials " ";}
+		sup {font-size:0.6em; line-height:1pt; padding-left:1pt;}
+		.couv {page: couv; page-break-before: right;}
+		.surtitre {text-align:center; font-size:1.5em;}
+		h1.titre, div.titre {
+			text-align:center;
+			font-size:2em;
+			font-weight:bold;
+			margin:0.5cm 0;
+			line-height: normal;
+		}
+		.soustitre {text-align:center; font-size:1.5em;}
+		.corr {text-align:center; font-size:1.25em; margin:15px 0;}
+		.logo {
+			text-align:center;
+			margin:1.5cm 0;
+		}
+		.logo img {
+			border:0;
+			width: 6cm;
+			height: 6cm;
+		}
+		.lien {text-align:center; font-style:italic; font-size:1.1em; margin:5px 0;}
+		a {color:black; text-decoration:none;}
+		a:hover {text-decoration:underline;}
+		.date {text-align:center; margin:5px 0;}
+		.licence {text-align:center; margin:5px 0;}
+		div.premiere_bas {
+			position:absolute;
+			bottom: 0;
+		}
+		div.sommaire {
+			counter-reset: page 1;
+		}
+		div.titreindex, h1.toc {
+			padding-top: 3cm;
+			margin-bottom: 0.5cm;
+			border-bottom: 0.5pt solid black;
+			page-break-after: avoid;
+			line-height: normal;
+			text-align:left;
+			padding-right: 1cm;
+			font-size:20pt;
+			[(#ENV{edition}|lg_code|=={th}|oui)font-size:24pt;]
+			string-set: chaptertitle content();
+		}
+		h2 {
+			margin:0.75cm 0 0.25cm;
+			page-break-after: avoid;
+			line-height: normal;
+			text-align:left;
+			font-size:16pt;
+			padding-right: 1cm;
+		}
+		h3 {
+			text-align:left;
+			font-size:12pt;
+		}
+
+		div.index {
+			string-set: chaptertitle ""; /* Pour ne pas avoir d'en-tête au début d'une section */
+		}
+		p { margin: 0.25cm 0; }
+		/* div.texte a[href ^="http:"]::after {content: " (" attr(href) ")";} */
+		ol, ul {margin: 0 0 0 1cm;}
+		li {margin: 0; padding:0.1cm 0;}
+		ul.toc a::after { content: leader(" . ") target-counter(attr(href), page);}
+		ul.toc {
+			margin-top: 0.5cm;
+			padding: 0;
+			list-style: none;
+		}
+		ul.index {
+			-moz-column-count: 2;
+			-moz-column-gap: 1cm;
+			-webkit-column-count: 2;
+			-webkit-column-gap: 1cm;
+			column-count: 2;
+			column-gap: 1cm;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+		}
+		ul.index li {
+			text-align: left;
+			margin:0;
+			padding:0;
+			string-set: indexinitials attr(class);
+			text-indent:-0.25cm;
+			padding-left:0.25cm;
+			font-size: 8pt;
+			[(#ENV{edition}|lg_code|=={th}|oui)font-size:10pt;]
+			line-height:100%;
+			column-break-inside:avoid;
+			-moz-column-break-inside:avoid;
+			-webkit-column-break-inside:avoid;
+		}
+		span.indent { width: 0.25cm; display: inline-block; margin:0; padding:0;}
+		ul.index a {font-weight: bold;}
+		ul.index a::after { content: leader(" .") attr(title);}
+		span.num_index {
+			leader(" ");
+		}
+		.noteterm {font-style:italic;}
+		table.termes_corr {width: 100%; border: none;}
+		td.langue {width: 0.35cm; vertical-align:top;}
+		td.termes {vertical-align:top; padding: 0; text-indent: 0;}
+	</style>
+</head>
+<body>
+
+<div class="couv"></a>
+	<div class="surtitre">Demopædia</div>
+	<div class="titre">Combined Index of the Multilingual Demographic Dictionary</div>
+	<B_eds>
+	<div class="corr">
+		from the following editions:<br />
+		<BOUCLE_eds(POUR){tableau #ENV{editions}}{par valeur}>
+			<p lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];" >[((#VALEUR|lg_code)) ][(#CONFIG{demopaedia-[(#VALEUR)]/details_edition})]</p>
+		</BOUCLE_eds>
+	</div>
+	</B_eds>
+	<div class="logo">
+		[<img src="(#CHEMIN{img/demopaedia.png}|url_absolue)" alt="" />]
+	</div>
+	<div class="premiere_bas">
+		<div class="lien"><a href='http://www.#CONFIG{demopaedia/domaine}' >http://www.#CONFIG{demopaedia/domaine}</a></div>
+		<div class="date">[(#CONFIG{demopaedia-en-ii/date_document}|ajoute_date{no_trad})]</div>
+		<div class="licence">[(#CONFIG{demopaedia-en-ii/details_licence}|norm_liens)]</div>
+	</div>
+</div>
+<div class="blanche"></div>
+
+
+<div class="sommaire">
+	<h1 class="toc">[(#CONFIG{demopaedia-en-ii/sommaire})]</h1>
+	<B_toc>
+	<ul class="toc">
+		<BOUCLE_toc(POUR){tableau #ENV{editions}}{par valeur}>
+		<li>
+			<a href="#index_[(#VALEUR|lg_code)]">[(#CONFIG{demopaedia-[(#VALEUR)]/index})] [((#VALEUR|lg_code))]</a>
+		</li>
+		</BOUCLE_toc>
+	</ul>
+	</B_toc>
+</div>
+
+<BOUCLE_editions(POUR){tableau #ENV{editions}}{par valeur}>
+
+<div class="edition #VALEUR" lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];">
+	<div class="couv"><a name="index_[(#VALEUR|lg_code)]"></a>
+		<div class="surtitre">Demopædia</div>
+		<h1 class="titre">[(#CONFIG{demopaedia-[(#VALEUR)]/titre_index})]</h1>
+		[<div class="soustitre">(#CONFIG{demopaedia-[(#VALEUR)]/details_edition})</div>]
+		<B_termes_correspondants>
+		<div class="corr">
+			[(#CONFIG{demopaedia-[(#VALEUR)]/termes_correspondants})<br />]
+			<BOUCLE_termes_correspondants(POUR){tableau #ENV{editions}}{par valeur}>
+			[(#VALEUR|=={#_editions:VALEUR}|non)
+				<p lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];" >[((#VALEUR|lg_code)) ][(#CONFIG{demopaedia-[(#VALEUR)]/details_edition})]</p>
+			]
+			</BOUCLE_termes_correspondants>
+		</div>
+		</B_termes_correspondants>
+		<div class="logo">
+			[<img src="(#CHEMIN{img/demopaedia.png}|url_absolue)" alt="" />]
+		</div>
+		<div class="premiere_bas">
+			<div class="lien"><a href='http://#VALEUR.#CONFIG{demopaedia/domaine}' >http://#VALEUR.#CONFIG{demopaedia/domaine}</a></div>
+			<div class="date">[(#CONFIG{demopaedia-[(#VALEUR)]/date_document}|ajoute_date{no_trad})]</div>
+			<div class="licence">[(#CONFIG{demopaedia-[(#VALEUR)]/details_licence}|norm_liens)]</div>
+		</div>
+	</div>
+	<div class="blanche"></div>
+
+	[(#SET{interclassement,[(#CONFIG{demopaedia-[(#VALEUR)]/interclassement}|sinon{'utf8_unicode_ci'})]})]
+	<B_index>
+	<div class="index">
+	<div class="titreindex">[(#CONFIG{demopaedia-[(#VALEUR)]/index})] [((#VALEUR|lg_code))]</div>
+	<BOUCLE_index(DEMOINDEX){edition=#VALEUR}{par terme}{entree IN principale,secondaire}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}>
+	[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
+	][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
+	<ul class="index" >]
+		<li class="[(#TERME|initiale{#VALEUR})][(#TERME|initiale{#VALEUR,1,'lower'})]"><a href="##SECTION" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
+		<B_editions_corr>
+		<table class="termes_corr">
+		<BOUCLE_editions_corr(POUR){tableau #ENV{editions}}{par valeur}>
+			[(#VALEUR|=={#_editions:VALEUR}|non)
+			<tr lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];">
+				[<td class="langue">[((#VALEUR|lg_code))]</td>
+				<td class="termes">(#VALEUR|termes_correspondants{#SECTION,#NUMTERME,<br />})</td>]
+			]
+			</tr>
+			</BOUCLE_editions_corr>
+		</table>
+		</B_editions_corr>
+		</li>
+	</BOUCLE_index>
+	</ul>
+	</div>
+	</B_index>
+
+	[(#REM) Gestion spécifique du Thai : tri sur terme th et prise en compte que de la première initiale pour les entêtes.]
+	<B_indexth>
+	<div class="index">
+	<h1><a name="index"></a>[(#CONFIG{demopaedia-[(#VALEUR)]/index})]</h1>
+	<BOUCLE_indexth(DEMOINDEX){edition=#VALEUR}{entree IN principale,secondaire}{par termeth}{si #ENV{edition}|lg_code|=={th}}>
+	[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
+	][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
+	<ul class="index" >]
+		<li class="[(#TERME|initiale{#VALEUR})][(#TERME|initiale{#VALEUR,1,'lower'})]"><a href="##SECTION" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
+		<B_editions_corr2>
+		<table class="termes_corr">
+		<BOUCLE_editions_corr2(POUR){tableau #ENV{editions}}{par valeur}>
+			[(#VALEUR|=={#_editions:VALEUR}|non)
+			<tr lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];">
+				[<td class="langue">[((#VALEUR|lg_code))]</td>
+				<td class="termes">(#VALEUR|termes_correspondants{#SECTION,#NUMTERME,<br />})</td>]
+			]
+			</tr>
+			</BOUCLE_editions_corr2>
+		</table>
+		</B_editions_corr2>
+		</li>
+	</BOUCLE_indexth>
+	</ul>
+	</div>
+	</B_indexth>
+<div>
+</BOUCLE_editions>
+
+</body>
+</html>

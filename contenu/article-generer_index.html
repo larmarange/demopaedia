@@ -66,7 +66,7 @@
 				</B_editions>
 			</li>
 			<li class='corr'>
-				<label for="corr"><:demopaedia:label_corr:></label>
+				<label for="corr">Editions to include in the combined index</label>
 				[(#REM) On ne propose que les éditions présentes en base ]
 				<BOUCLE_editions2(DEMODEF){fusion edition}{par edition}>
 					<span class="[ed_(#EDITION|substr{3,2})]"><input type="checkbox" name="corr[]" class="checkbox" value='#EDITION'> [(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]<br /></span>

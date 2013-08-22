@@ -82,5 +82,29 @@
 		<p class='boutons'><input class='submit' type="submit" value="<:demopaedia:generer:>" /></p>
 		</form>
 	</div>
+	
+	<h3 class="h3">Combined multilingual index</h3>
+	<div class='formulaire_spip formulaire_generer_mindex' id='formulaire_generer_mindex'>
+		<form method="get" action="#URL_SITE_SPIP/spip.php">
+		<input type='hidden' name='page' value='generate_mindex' />
+		<ul>
+			<li class='editions obligatoire'>
+				<label for="editions"><:demopaedia:label_edition:></label>
+				[(#REM) On ne propose que les SECONDES éditions présentes en base ]
+				<BOUCLE_editions4(DEMODEF){fusion edition}{par edition}>
+					[(#EDITION|ed_code|=={ii}|oui)<span class="[ed_(#EDITION|substr{3,2})]"><input type="checkbox" name="editions\[\]" class="checkbox" value='#EDITION'> [(#EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#EDITION)]/annee})]<br /></span>]
+				</BOUCLE_editions4>
+				</B_editions4>
+			</li>
+			<li class='format'>
+				<label for="format"><:demopaedia:label_format:></label>
+				<select name="format" class="select" id="format">
+					<option value='prince' >Prince</option>
+				</select>
+			</li>
+		</ul>
+		<p class='boutons'><input class='submit' type="submit" value="<:demopaedia:generer:>" /></p>
+		</form>
+	</div>
 
 </div>
