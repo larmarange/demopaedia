@@ -6,6 +6,7 @@
 	<title>Multilingual index - Demopædia</title>
 	<meta name="author" content="Demopædia" />
 	<meta name="date" content="[(#DATE|affdate{'Y-m-d'})]" />
+	<script type="text/javascript" src="[(#CHEMIN{thaiwrap.js}|url_absolue)]"></script>
 	<style type="text/css" media="all">
 		@import url([(#URL_PAGE{Libertine.css}|url_absolue)]);
 		@import url([(#URL_PAGE{FreeSerif.css}|url_absolue)]);
@@ -14,7 +15,7 @@
 		
 		@page{
 			size: 21cm 29.7cm;
-			margin: 2.5cm;
+			margin: 2.5cm 2cm;
 			@bottom {
 				content: "—   " counter(page) "   —"; 
 				font-family: #GET{polices};
@@ -59,7 +60,7 @@
 		.surtitre {text-align:center; font-size:1.5em;}
 		h1.titre, div.titre {
 			text-align:center;
-			font-size:2em;
+			font-size:2.5em;
 			font-weight:bold;
 			margin:0.5cm 0;
 			line-height: normal;
@@ -68,12 +69,12 @@
 		.corr {text-align:center; font-size:1.25em; margin:15px 0;}
 		.logo {
 			text-align:center;
-			margin:1.5cm 0;
+			margin:2cm 0;
 		}
 		.logo img {
 			border:0;
-			width: 6cm;
-			height: 6cm;
+			width: 10cm;
+			height: 10cm;
 		}
 		.lien {text-align:center; font-style:italic; font-size:1.1em; margin:5px 0;}
 		a {color:black; text-decoration:none;}
@@ -157,12 +158,12 @@
 			leader(" ");
 		}
 		.noteterm {font-style:italic;}
-		table.termes_corr {width: 100%; border: none;}
+		table.termes_corr {width: 5cm; border: none;}
 		td.langue {width: 0.35cm; vertical-align:top;}
-		td.termes {vertical-align:top; padding: 0; text-indent: 0;}
+		td.termes {vertical-align:top; padding: 0; text-indent: 0; width:4.6cm;}
 	</style>
 </head>
-<body>
+<body onload="thaiWrap();">
 
 <div class="couv"></a>
 	<div class="surtitre">Demopædia</div>
@@ -186,24 +187,10 @@
 </div>
 <div class="blanche"></div>
 
-
-<div class="sommaire">
-	<h1 class="toc">[(#CONFIG{demopaedia-en-ii/sommaire})]</h1>
-	<B_toc>
-	<ul class="toc">
-		<BOUCLE_toc(POUR){tableau #ENV{editions}}{par valeur}>
-		<li>
-			<a href="#index_[(#VALEUR|lg_code)]">[(#CONFIG{demopaedia-[(#VALEUR)]/titre_index_court})] [((#VALEUR|lg_code))]</a>
-		</li>
-		</BOUCLE_toc>
-	</ul>
-	</B_toc>
-</div>
-
 <BOUCLE_editions(POUR){tableau #ENV{editions}}{par valeur}>
 
 <div class="edition #VALEUR" lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];">
-	<div class="couv"><a name="index_[(#VALEUR|lg_code)]"></a>
+	<div class="couv"><a name="index[(#VALEUR|lg_code)]"></a>
 		<div class="surtitre">Demopædia</div>
 		<h1 class="titre">[(#CONFIG{demopaedia-[(#VALEUR)]/titre_index})]</h1>
 		[<div class="soustitre">(#CONFIG{demopaedia-[(#VALEUR)]/details_edition})</div>]
@@ -236,7 +223,7 @@
 	[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
 	][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
 	<ul class="index" >]
-		<li class="[(#TERME|initiale{#VALEUR})][(#TERME|initiale{#VALEUR,1,'lower'})]"><a href="##SECTION" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
+		<li class="[(#TERME|initiale{#VALEUR})][(#TERME|initiale{#VALEUR,1,'lower'})]"><a href="http://#VALEUR.#CONFIG{demopaedia/domaine}/wiki/[(#SECTION|page_section)][#(#SECTION)]" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
 		<B_editions_corr>
 		<table class="termes_corr">
 		<BOUCLE_editions_corr(POUR){tableau #ENV{editions}}{par valeur}>
@@ -264,7 +251,7 @@
 	[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
 	][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
 	<ul class="index" >]
-		<li class="[(#TERME|initiale{#VALEUR})][(#TERME|initiale{#VALEUR,1,'lower'})]"><a href="##SECTION" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
+		<li class="[(#TERME|initiale{#VALEUR})][(#TERME|initiale{#VALEUR,1,'lower'})]"><a href="http://#VALEUR.#CONFIG{demopaedia/domaine}/wiki/[(#SECTION|page_section)][#(#SECTION)]" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
 		<B_editions_corr2>
 		<table class="termes_corr">
 		<BOUCLE_editions_corr2(POUR){tableau #ENV{editions}}{par valeur}>

@@ -1,3 +1,6 @@
+/* Original script: http://not.siit.net/members/art/thaiwrap.html */
+/* Modified by Joseph Larmarange for Demopaedia*/
+/* We apply it only for some paragraphs, if no zero-width space has already been inserted in the wiki for this paragraph. */
 function thaiWrap() {
  /* if it is Internet Explorer, do nothing. */
  /* note: Opera can identified itself as IE, but we should treat it as Opera. */
@@ -74,7 +77,7 @@ function thaiWrap() {
      /*n.parentNode.insertBefore(document.createElement("WBR"),a);*/
      /* Use zero-width space instead of <WBR> */
      /* as Opera doesn't support <WBR>, http://www.quirksmode.org/oddsandends/wbr.html */
-     n.parentNode.insertBefore(document.createTextNode("\u200b"),a);
+     n.parentNode.insertBefore(document.createTextNode("\u200b"),a);  /* \u200b */
     }
    }
   }else{
@@ -83,6 +86,21 @@ function thaiWrap() {
   }
  }
  
- F(document.body);
+ parag = document.getElementsByClassName('definition');
+ for(var j=0;j<parag.length;j++){
+	if (parag[j].innerHTML.indexOf("\u200b")<0) F(parag[j]);
+ }
+ parag = document.getElementsByClassName('note');
+ for(var j=0;j<parag.length;j++){
+	if (parag[j].innerHTML.indexOf("\u200b")<0) F(parag[j]);
+ }
+ parag = document.getElementsByTagName('p');
+ for(var j=0;j<parag.length;j++){
+	if (parag[j].innerHTML.indexOf("\u200b")<0) F(parag[j]);
+ }
  
+ /* We don't want a zero-width space before the number of a TextTerm*/
+ var patt=new RegExp("\u200b</strong>","g")
+ document.body.innerHTML = document.body.innerHTML.replace(patt, '</strong>');
+
 }
