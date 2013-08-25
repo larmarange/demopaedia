@@ -124,6 +124,7 @@ function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 	$langues_traitees[] = 'ar';
 	$langues_traitees[] = 'th';
 	$langues_traitees[] = 'ko';
+	$langues_traitees[] = 'ms';
 	if (in_array($langue,$langues_traitees)) {
 		$initiales = array();
 		$initiales["A"] = 'A'; // A Capital A

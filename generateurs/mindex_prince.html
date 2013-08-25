@@ -6,7 +6,7 @@
 	<title>Multilingual index - Demopædia</title>
 	<meta name="author" content="Demopædia" />
 	<meta name="date" content="[(#DATE|affdate{'Y-m-d'})]" />
-	<script type="text/javascript" src="[(#CHEMIN{thaiwrap.js}|url_absolue)]"></script>
+	[(#VAL{'th-ii'}|in_array{#ENV{editions}}|oui})<script type="text/javascript" src="[(#CHEMIN{thaiwrap.js}|url_absolue)]"></script>]
 	<style type="text/css" media="all">
 		@import url([(#URL_PAGE{Libertine.css}|url_absolue)]);
 		@import url([(#URL_PAGE{FreeSerif.css}|url_absolue)]);
@@ -163,7 +163,7 @@
 		td.termes {vertical-align:top; padding: 0; text-indent: 0; width:4.6cm;}
 	</style>
 </head>
-<body onload="thaiWrap();">
+<body [(#VAL{'th-ii'}|in_array{#ENV{editions}}|oui})onload="thaiWrap();"]>
 
 <div class="couv"></a>
 	<div class="surtitre">Demopædia</div>
@@ -251,7 +251,7 @@
 	[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
 	][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
 	<ul class="index" >]
-		<li class="[(#TERME|initiale{#VALEUR})][(#TERME|initiale{#VALEUR,1,'lower'})]"><a href="http://#VALEUR.#CONFIG{demopaedia/domaine}/wiki/[(#SECTION|page_section)][#(#SECTION)]" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
+		<li class="[(#TERME|initiale{#VALEUR})]"><a href="http://#VALEUR.#CONFIG{demopaedia/domaine}/wiki/[(#SECTION|page_section)][#(#SECTION)]" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
 		<B_editions_corr2>
 		<table class="termes_corr">
 		<BOUCLE_editions_corr2(POUR){tableau #ENV{editions}}{par valeur}>
