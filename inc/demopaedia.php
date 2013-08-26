@@ -195,6 +195,7 @@ function demopaedia_maj_edition($edition){
 						if (!strpos($noteterm,'!')) {
 							$note_terme = trim($noteterm);
 							$note_intexte = trim($noteterm);
+							$noteterm = array($noteterm);
 						} else {
 							$noteterm = explode('!!',$noteterm);
 							$note_terme = trim($noteterm[0]);
