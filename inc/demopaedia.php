@@ -164,6 +164,7 @@ function demopaedia_maj_edition($edition){
 								'section' => $num_section,
 								'numterme' => $numterme,
 								'terme' => $entree_secondaire,
+								'termeen' => '',
 								'entree' => 'secondaire',
 								'intexte' => $intexte,
 								'nouveau' => $nouveau
@@ -256,6 +257,7 @@ function demopaedia_maj_edition($edition){
 									'section' => $num_section,
 									'numterme' => $note[0],
 									'terme' => $note_secondaire,
+									'termeen' => '',
 									'entree' => 'note',
 									'intexte' => $note_intexte,
 									'nouveau' => 'non'
@@ -270,6 +272,7 @@ function demopaedia_maj_edition($edition){
 								'section' => $num_section,
 								'numterme' => $note[0],
 								'terme' => $note_terme,
+								'termeen' => '',
 								'entree' => 'note',
 								'intexte' => $note_intexte,
 								'nouveau' => 'non'
