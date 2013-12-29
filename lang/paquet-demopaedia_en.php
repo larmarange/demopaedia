@@ -13,7 +13,7 @@ if (!defined('_ECRIRE_INC_VERSION')) return;
 $GLOBALS[$GLOBALS['idx_lang']] = array(
 
 // D
-	'demopaedia_description' => 'Ce plugin permet de générer différents documents à partir du dictionnaire démographique multilingue.',
-	'demopaedia_slogan' => 'Ce plugin permet de générer différents documents à partir du dictionnaire démographique multilingue.',
+	'demopaedia_description' => 'Producing documents from the multilingual demographic dictionary.',
+	'demopaedia_slogan' => 'Producing documents from the multilingual demographic dictionary.',
 );
 ?>
