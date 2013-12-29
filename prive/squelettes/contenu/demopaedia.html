@@ -4,33 +4,40 @@
 
 <h2><:demopaedia:maj_base:></h2>
 
+
 [(#ENV*{message_maj}|?{' ',''})
-	<p style="color:green;font-weight:bold;"><:demopaedia:message_maj{edition=#ENV{message_maj}}:></p>
+	#BOITE_OUVRIR{'','success'}
+	<p><:demopaedia:message_maj{edition=#ENV{message_maj}}:></p>
+	#BOITE_FERMER
 ]
 [(#ENV*{message_supp}|?{' ',''})
-	<p style="color:red;font-weight:bold;"><:demopaedia:message_supp{edition=#ENV{message_supp}}:></p>
+	#BOITE_OUVRIR{'','notice'}
+	<p><:demopaedia:message_supp{edition=#ENV{message_supp}}:></p>
+	#BOITE_FERMER
 ]
 [(#ENV*{message_maj_pb}|?{' ',''})
-	<p style="color:red;font-weight:bold;"><:demopaedia:message_maj_pb{edition=#ENV{message_maj_pb}}:></p>
+	#BOITE_OUVRIR{'','error'}
+	<p><:demopaedia:message_maj_pb{edition=#ENV{message_maj_pb}}:></p>
+	#BOITE_FERMER
 ]
 <B_editions>
 <table class="spip liste">
 <tbody>
 <BOUCLE_editions(POUR){tableau #GET{editions}}{par valeur}>
-	<tr class="tr_liste">
+	<tr>
 		<td class="arial2"><b>#VALEUR</b></td>
 		<td>[(#VALEUR|lg_ed_txt)]</td>
 		<td>
 			<BOUCLE_maj(DEMODEF){edition=#VALEUR}{par maj}{0,1}>
-				(<:demopaedia:derniere_maj:> [(#MAJ|affdate{'j/m/Y G:i'})])
+				(<:demopaedia:derniere_maj:> [(#MAJ|affdate{'Y-m-j G:i'})])
 			</BOUCLE_maj>
 				<span style='color:red;'><:demopaedia:jamais_maj:></span>
 			<//B_maj>
 		</td>
 		<td>
 			[(#AUTORISER{configurer})
-				<span class='lien_modifier'>&#91;<a href='[(#URL_ACTION_AUTEUR{maj_demopaedia,#VALEUR,#SELF})]'><:demopaedia:maj:></a>&#93;</span> - 
-				<span class='lien_modifier'>&#91;<a href='[(#URL_ACTION_AUTEUR{effacer_demopaedia,#VALEUR,#SELF})]'><:demopaedia:effacer:></a>&#93;</span>
+				&#91;<a href='[(#URL_ACTION_AUTEUR{maj_demopaedia,#VALEUR,#SELF})]'><:demopaedia:maj:></a>&#93; - 
+				&#91;<a href='[(#URL_ACTION_AUTEUR{effacer_demopaedia,#VALEUR,#SELF})]'><:demopaedia:effacer:></a>&#93;
 			]
 		</td>
 	</tr>
@@ -38,6 +45,40 @@
 </tbody>
 </table>
 </B_editions>
+
+<a name="generer"></a>
+<h2><:demopaedia:generation_documents:></h2>
+
+[(#ENV*{message_pdf}|?{' ',''})
+	#BOITE_OUVRIR{'','success'}
+	<p><:demopaedia:message_pdf{edition=#ENV{message_pdf}}:></p>
+	#BOITE_FERMER
+]
+[(#ENV*{message_pdf_pb}|?{' ',''})
+	#BOITE_OUVRIR{'','error'}
+	<p><:demopaedia:message_pdf_pb{edition=#ENV{message_pdf_pb}}:></p>
+	#BOITE_FERMER
+]
+<B_editions2>
+<table class="spip liste">
+<tbody>
+<BOUCLE_editions2(POUR){tableau #GET{editions}}{par valeur}>
+	<tr>
+		<td class="arial2"><b>#VALEUR</b></td>
+		<td>[(#VALEUR|lg_ed_txt)]</td>
+		<td>[<a href="(#CHEMIN{IMG/demopaedia/dictionary/#VALEUR.pdf})">PDF</a> ([(#CHEMIN{IMG/demopaedia/dictionary/#VALEUR.pdf}|date_fichier)])]</td>
+		<td>
+			[(#AUTORISER{configurer})
+				<span>&#91;<a href='[(#URL_ACTION_AUTEUR{generer_pdf,#VALEUR,#SELF})]'><:demopaedia:generer_pdf:></a>&#93;</span>
+			]
+		</td>
+	</tr>
+</BOUCLE_editions2>
+</tbody>
+</table>
+</B_editions2>
+
+
 
 <h2><:demopaedia:liste_couvertures:></h2>
 

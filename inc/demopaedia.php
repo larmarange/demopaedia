@@ -1,4 +1,7 @@
 <?php
+define('_DIR_DEMOPAEDIA', _DIR_IMG.'demopaedia/');
+define('_DIR_DEMOPAEDIA_DICTIONARY', _DIR_DEMOPAEDIA.'dictionary/');
+
 include_spip('inc/config');
 
 function demopaedia_effacer_edition($edition){
@@ -434,4 +437,52 @@ function demopaedia_maj_edition($edition){
 		return false;
 	}
 }
+
+function demopaedia_verifier_export(){
+	if(!is_dir(_DIR_DEMOPAEDIA))
+		mkdir(_DIR_DEMOPAEDIA, 0775, true);
+	if(!is_dir(_DIR_DEMOPAEDIA_DICTIONARY))
+		mkdir(_DIR_DEMOPAEDIA_DICTIONARY, 0775, true);
+}
+
+function demopaedia_generer_pdf($edition){
+	demopaedia_verifier_export();
+	include_spip('inc/flock');
+	include_spip('inc/utils');
+	$file_html_prince = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'-prince.html';
+	$file_pdf_text = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'-text.pdf';
+	$file_pdf = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'.pdf';
+	$cover_back = find_in_path('covers/back.pdf');
+	$cover_front = find_in_path("covers/$edition.pdf");
+	if (!$cover_front) $cover_front = find_in_path("covers/default-".ed_code($edition).".pdf");
+	if (!ecrire_fichier($file_html_prince,recuperer_fond('generate_dictionary', array('format' => 'prince', 'edition' => $edition)))) return false;
+	// swath requis pour le Thai
+	if ($edition=='th-ii')
+		exec("swath $file_html_prince -f html -u u,u >$file_html_prince");
+	exec('prince '.$file_html_prince.' -o '.$file_pdf_text, $out, $ret);
+	$nb_pages = getPDFPages($file_pdf_text);
+	if ($nb_pages % 2 == 0)   // Si nombre de pages paire
+		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '{},1' --papersize '{152.4mm,228.6mm}' -o $file_pdf");
+	else
+		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '1' --papersize '{152.4mm,228.6mm}' -o $file_pdf");
+	return true;
+}
+
+// Source http://stackoverflow.com/questions/14644353/get-the-number-of-pages-in-a-pdf-document
+
+function getPDFPages($document){
+	// Parse entire output
+	exec("pdfinfo $document", $output);
+	// Iterate through lines
+	$pagecount = 0;
+	foreach($output as $op) {
+		// Extract the number
+		if(preg_match("/Pages:\s*(\d+)/i", $op, $matches) === 1) {
+			$pagecount = intval($matches[1]);
+			break;
+		}
+	}
+	return $pagecount;
+}
+
 ?>

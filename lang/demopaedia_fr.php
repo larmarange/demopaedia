@@ -137,10 +137,14 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'effacer' => 'Effacer',
 	'derniere_maj' => 'MAJ :',
 	'jamais_maj' => 'JAMAIS TÉLÉCHARGÉE',
+	'generation_documents' => 'Génération des documents',
+	'generer_pdf' => 'Générer le PDF',
 	
-	'message_maj' => 'L\'édition @edition@ a été mise à jour.',
-	'message_maj_pb' => 'Problème lors de la mise à jour de l\'édition @edition@.',
-	'message_supp' => 'L\'édition @edition@ a été effacée de la base de données.',
+	'message_pdf' => 'Le PDF de l\'édition <strong>@edition@</strong> a été généré.',
+	'message_pdf_pb' => 'Problème lors de la génération du PDF de l\'édition <strong>@edition@</strong>.',
+	'message_maj' => 'L\'édition <strong>@edition@</strong> a été mise à jour.',
+	'message_maj_pb' => 'Problème lors de la mise à jour de l\'édition <strong>@edition@</strong>.',
+	'message_supp' => 'L\'édition <strong>@edition@</strong> a été effacée de la base de données.',
 	
 	'nom_menu_articlessecteurlangue' => 'Articles d\'un secteur de langue',
 	'description_menu_articlessecteurlangue' => 'Cette entrée est spécifique aux sites utilisant un secteur par langue. Elle affiche automatiquement un menu listant les articles du secteur correspondant à la langue de la page. Par défaut, affiche toutes les articles depuis la racine, triés par titre (numériquement puis alphabétiquement).',

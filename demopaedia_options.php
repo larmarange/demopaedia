@@ -30,6 +30,11 @@ function lg_ed_txt ($edition) {
 		return '';
 }
 
+// Renvoie la date d'un fichier
+function date_fichier ($fichier) {
+	return date('Y-m-j G:i', filemtime($fichier));
+}
+
 function mb_str_replace($needle, $replacement, $haystack)
 {
     $needle_len = mb_strlen($needle);
