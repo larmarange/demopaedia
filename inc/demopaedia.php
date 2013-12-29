@@ -465,7 +465,7 @@ function demopaedia_generer_pdf($edition){
 		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '{},1' --papersize '{152.4mm,228.6mm}' -o $file_pdf");
 	else
 		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '1' --papersize '{152.4mm,228.6mm}' -o $file_pdf");
-	return true;
+	return file_exists($file_pdf);
 }
 
 // Source http://stackoverflow.com/questions/14644353/get-the-number-of-pages-in-a-pdf-document
