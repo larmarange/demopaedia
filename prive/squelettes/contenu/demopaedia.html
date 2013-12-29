@@ -1,6 +1,9 @@
 [(#SET{editions,[(#CONFIG{demopaedia/editions}|explode{','}|serialize)]})]
 
-<h1><:demopaedia:demopaedia:> - <:demopaedia:maj_base:></h1>
+<h1><:demopaedia:demopaedia:></h1>
+
+<h2><:demopaedia:maj_base:></h2>
+
 [(#ENV*{message_maj}|?{' ',''})
 	<p style="color:green;font-weight:bold;"><:demopaedia:message_maj{edition=#ENV{message_maj}}:></p>
 ]
@@ -11,8 +14,8 @@
 	<p style="color:red;font-weight:bold;"><:demopaedia:message_maj_pb{edition=#ENV{message_maj_pb}}:></p>
 ]
 <B_editions>
-<div class="cadre cadre-liste">
-<table class="arial1" style="border: 0px none ; width: 100%;" cellpadding="2" cellspacing="0">
+<table class="spip liste">
+<tbody>
 <BOUCLE_editions(POUR){tableau #GET{editions}}{par valeur}>
 	<tr class="tr_liste">
 		<td class="arial2"><b>#VALEUR</b></td>
@@ -32,6 +35,12 @@
 		</td>
 	</tr>
 </BOUCLE_editions>
-</div>
+</tbody>
 </table>
 </B_editions>
+
+<h2><:demopaedia:liste_couvertures:></h2>
+
+<p><:demopaedia:sources:> <a href="https://github.com/larmarange/demopaedia/tree/master/covers">https://github.com/larmarange/demopaedia/tree/master/covers</a></p>
+
+#MODELE{couvertures}

@@ -1,0 +1,30 @@
+[(#SET{editions,[(#CONFIG{demopaedia/editions}|explode{','}|serialize)]})]
+<B_editions>
+<table class="spip liste">
+<tbody>
+	<tr>
+		<td class="arial2"><b>default-i</b></td>
+		<td>Default 1<sup>st</sup> edition</td>
+		<td>[<a href="(#CHEMIN{covers/default-i.svg})">SVG</a>]</td>
+		<td>[<a href="(#CHEMIN{covers/default-i.png})">PNG</a>]</td>
+		<td>[<a href="(#CHEMIN{covers/default-i.pdf})">PDF</a>]</td>
+	</tr>
+	<tr>
+		<td class="arial2"><b>default-ii</b></td>
+		<td>Default 2<sup>nd</sup> edition</td>
+		<td>[<a href="(#CHEMIN{covers/default-ii.svg})">SVG</a>]</td>
+		<td>[<a href="(#CHEMIN{covers/default-ii.png})">PNG</a>]</td>
+		<td>[<a href="(#CHEMIN{covers/default-ii.pdf})">PDF</a>]</td>
+	</tr>
+<BOUCLE_editions(POUR){tableau #GET{editions}}{par valeur}>
+	[(#CHEMIN{covers/#VALEUR.svg}|oui)<tr>
+		<td class="arial2"><b>#VALEUR</b></td>
+		<td>[(#VALEUR|lg_ed_txt)]</td>
+		<td>[<a href="(#CHEMIN{covers/#VALEUR.svg})">SVG</a>]</td>
+		<td>[<a href="(#CHEMIN{covers/#VALEUR.png})">PNG</a>]</td>
+		<td>[<a href="(#CHEMIN{covers/#VALEUR.pdf})">PDF</a>]</td>
+	</tr>]
+</BOUCLE_editions>
+</tbody>
+</table>
+</B_editions>
