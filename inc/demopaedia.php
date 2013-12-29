@@ -68,6 +68,7 @@ function demopaedia_maj_edition($edition){
 			$texte = preg_replace('/OtherIndexEntryThree=/U','OtherIndexEntryThree:',$texte);
 			$texte = preg_replace('/OtherIndexEntryFour=/U','OtherIndexEntryFour:',$texte);
 			$texte = preg_replace('/OtherIndexEntryFive=/U','OtherIndexEntryFive:',$texte);
+			$texte = preg_replace('/EnglishEntry=/U','EnglishEntry:',$texte);
 			
 			// On traite les NonRefTerm
 			$texte = preg_replace('/\{\{NonRefTerm\|(.+)\}\}/U','<em>$1</em>',$texte);
@@ -108,6 +109,7 @@ function demopaedia_maj_edition($edition){
 				foreach($textterms[1] as $textterm) {
 					$textterm = explode ('|',$textterm);
 					$entree_principale = '';
+					$entree_anglaise = '';
 					$intexte = trim($textterm[0]);
 					$numterme = trim($textterm[1]);
 					$nouveau = 'non';
@@ -164,6 +166,10 @@ function demopaedia_maj_edition($edition){
 								'nouveau' => $nouveau
 							);
 						}
+						
+						// Y a-t-il un EnglishEntry ?
+						if(substr($entree,0,12)=='EnglishEntry')
+							$entree_anglaise = substr($entree,13);
 					}
 
 					// On sauvegarde l'entrée principale
@@ -174,15 +180,20 @@ function demopaedia_maj_edition($edition){
 						'section' => $num_section,
 						'numterme' => $textterm[1],
 						'terme' => $entree_principale,
+						'termeen' => $entree_anglaise,
 						'entree' => 'principale',
 						'intexte' => $intexte,
 						'nouveau' => $nouveau
 					);
 				}
 				// On remplace les TextTerm par leur version en HTML simplifié
+				// Avec EnglishEntry
+				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
+				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
+				// Sans EnglishEntry
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|nouveau=oui([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2★</sup>',$section);
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section);
-				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section); // Cas où on a une syntaxe courte avec jsute le num du terme
+				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section); // Cas où on a une syntaxe courte avec juste le num du terme
 				
 				// Traitement des notes
 				preg_match_all('/\{Note\|(.+)\}/U',$section,$notes);
