@@ -15,6 +15,13 @@
 		[(#ENV{edition}|lg_code|=={th}|oui)@import url([(#URL_PAGE{THSarabun.css}|url_absolue)]);]
 		[(#SET{polices,"Libertine, FreeSerif, serif"})]
 		[(#ENV{edition}|lg_code|=={th}|oui)[(#SET{polices,"THSarabun, Libertine, serif"})]]
+		nobr{
+		  white-space:nowrap;
+		}
+		wbr:before{
+		  content:"\200B";
+		  white-space:normal;
+		}			 
 		
 		@page{
 			size: 15.24cm 22.86cm;
