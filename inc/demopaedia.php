@@ -453,6 +453,7 @@ function demopaedia_generer_pdf($edition){
 	include_spip('inc/flock');
 	include_spip('inc/utils');
 	$file_html_prince = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'-prince.html';
+	$file_html_swath = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'-prince-swath.html';
 	$file_pdf_text = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'-text.pdf';
 	$file_pdf = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'.pdf';
 	$cover_back = find_in_path('covers/back.pdf');
@@ -460,8 +461,10 @@ function demopaedia_generer_pdf($edition){
 	if (!$cover_front) $cover_front = find_in_path("covers/default-".ed_code($edition).".pdf");
 	if (!ecrire_fichier($file_html_prince,recuperer_fond('generate_dictionary', array('format' => 'prince', 'edition' => $edition)))) return false;
 	// swath requis pour le Thai
-	if ($edition=='th-ii')
-		exec("swath $file_html_prince -f html -u u,u >$file_html_prince");
+	if ($edition=='th-ii') {
+		exec("cat $file_html_prince | swath -u u,u -f html | tee $file_html_swath");
+		$file_html_prince = $file_html_swath;
+	}
 	exec('prince '.$file_html_prince.' -o '.$file_pdf_text, $out, $ret);
 	$nb_pages = getPDFPages($file_pdf_text);
 	if ($nb_pages % 2 == 0)   // Si nombre de pages paire
