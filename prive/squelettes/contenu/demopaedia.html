@@ -1,3 +1,4 @@
+#CACHE{0}
 [(#SET{editions,[(#CONFIG{demopaedia/editions}|explode{','}|serialize)]})]
 
 <h1><:demopaedia:demopaedia:></h1>
@@ -49,6 +50,16 @@
 <a name="generer"></a>
 <h2><:demopaedia:generation_documents:></h2>
 
+[(#ENV*{message_html}|?{' ',''})
+	#BOITE_OUVRIR{'','success'}
+	<p><:demopaedia:message_html{edition=#ENV{message_html}}:></p>
+	#BOITE_FERMER
+]
+[(#ENV*{message_html_pb}|?{' ',''})
+	#BOITE_OUVRIR{'','error'}
+	<p><:demopaedia:message_html_pb{edition=#ENV{message_html_pb}}:></p>
+	#BOITE_FERMER
+]
 [(#ENV*{message_pdf}|?{' ',''})
 	#BOITE_OUVRIR{'','success'}
 	<p><:demopaedia:message_pdf{edition=#ENV{message_pdf}}:></p>
@@ -66,9 +77,13 @@
 	<tr>
 		<td class="arial2"><b>#VALEUR</b></td>
 		<td>[(#VALEUR|lg_ed_txt)]</td>
-		<td>[<a href="(#CHEMIN{IMG/demopaedia/dictionary/#VALEUR.pdf})">PDF</a> ([(#CHEMIN{IMG/demopaedia/dictionary/#VALEUR.pdf}|date_fichier)])]</td>
+		<td>
+			[<a href="(#CHEMIN{IMG/demopaedia/dictionary/#VALEUR.html})">HTML</a> ([(#CHEMIN{IMG/demopaedia/dictionary/#VALEUR.html}|date_fichier)]) <br />]
+			[<a href="(#CHEMIN{IMG/demopaedia/dictionary/#VALEUR.pdf})">PDF</a> ([(#CHEMIN{IMG/demopaedia/dictionary/#VALEUR.pdf}|date_fichier)])]
+		</td>
 		<td>
 			[(#AUTORISER{configurer})
+				<span>&#91;<a href='[(#URL_ACTION_AUTEUR{generer_html,#VALEUR,#SELF})]'><:demopaedia:generer_html:></a>&#93;</span><br />
 				<span>&#91;<a href='[(#URL_ACTION_AUTEUR{generer_pdf,#VALEUR,#SELF})]'><:demopaedia:generer_pdf:></a>&#93;</span>
 			]
 		</td>

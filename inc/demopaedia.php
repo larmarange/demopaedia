@@ -468,9 +468,9 @@ function demopaedia_generer_pdf($edition){
 	exec('prince '.$file_html_prince.' -o '.$file_pdf_text, $out, $ret);
 	$nb_pages = getPDFPages($file_pdf_text);
 	if ($nb_pages % 2 == 0)   // Si nombre de pages paire
-		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '{},1' --papersize '{152.4mm,228.6mm}' -o $file_pdf");
+		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '{},1' --papersize '{152.4mm,228.6mm}' --twoside -o $file_pdf");
 	else
-		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '1' --papersize '{152.4mm,228.6mm}' -o $file_pdf");
+		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '1' --papersize '{152.4mm,228.6mm}' --twoside -o $file_pdf");
 	return file_exists($file_pdf);
 }
 
@@ -490,5 +490,14 @@ function getPDFPages($document){
 	}
 	return $pagecount;
 }
+
+function demopaedia_generer_html($edition){
+	demopaedia_verifier_export();
+	include_spip('inc/flock');
+	include_spip('inc/utils');
+	$file_html = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'.html';
+	return ecrire_fichier($file_html,recuperer_fond('generate_dictionary', array('format' => 'html', 'edition' => $edition)));
+}
+
 
 ?>

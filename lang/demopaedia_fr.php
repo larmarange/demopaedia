@@ -139,9 +139,12 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'jamais_maj' => 'JAMAIS TÉLÉCHARGÉE',
 	'generation_documents' => 'Génération des documents',
 	'generer_pdf' => 'Générer le PDF',
+	'generer_html' => 'Générer le HTML',
 	
 	'message_pdf' => 'Le PDF de l\'édition <strong>@edition@</strong> a été généré.',
 	'message_pdf_pb' => 'Problème lors de la génération du PDF de l\'édition <strong>@edition@</strong>.',
+	'message_html' => 'La version HTML de l\'édition <strong>@edition@</strong> a été générée.',
+	'message_html_pb' => 'Problème lors de la génération de la version HTML de l\'édition <strong>@edition@</strong>.',
 	'message_maj' => 'L\'édition <strong>@edition@</strong> a été mise à jour.',
 	'message_maj_pb' => 'Problème lors de la mise à jour de l\'édition <strong>@edition@</strong>.',
 	'message_supp' => 'L\'édition <strong>@edition@</strong> a été effacée de la base de données.',
