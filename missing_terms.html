@@ -42,14 +42,21 @@
 
 <BOUCLE_manquants(POUR){tableau #GET{manquants}}{par cle}>
 	[<h2>Chapter (#VALEUR|substr{0,1}|unique)</h2>]
-	<h3><a href='http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/[(#VALEUR|page_section)][#(#VALEUR|substr{0,3})]' >#VALEUR</a></h3>
+	[<p>&#60;!--'''Talk:(#VALEUR|page_section|unique)'''--&#62;<p>
+&#60;!-- Once every section has been double checked, please change "To be checked" into "Double checked" --&#62;
+ <p>
+{{To be checked}}<p>
+]
+        <!-- = [[10#101|101-8]] To be checked = -->
+	<h3><a href='http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/[(#VALEUR|page_section)][#(#VALEUR|substr{0,3})]' >= &#91;&#91;[(#VALEUR|page_section)][#(#VALEUR|substr{0,3})]</a><a  href='http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/Talk:[(#VALEUR|page_section)]##VALEUR' >|#VALEUR&#93;&#93; To be checked =</a>&#60;!-- After double checking, please change "To be checked" into "Double checked" --&#62; </h3>
 	#SET{section,#VALEUR|substr{0,3}} #SET{numterme,#VALEUR|substr{4,3}} 
 	<B_termes>
-	<ul>
+	<!--ul-->
+        <!-- * it-ii: [[:it-ii:10#101|scienze della popolazione]] -->
 	<BOUCLE_termes(DEMOINDEX){section=#GET{section}}{numterme=#GET{numterme}}{par edition, terme}{entree=principale}>
-		[(#EDITION|ed_code|=={#ENV{edition}|ed_code}|oui)<li>#EDITION: <span lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)];"><a href="http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/[(#GET{section}|page_section)][#(#GET{section})]">#TERME</a><span></li>]
+		[(#EDITION|ed_code|=={#ENV{edition}|ed_code}|oui)<br/>* #EDITION:&#91;&#91;:#EDITION:[(#VALEUR|page_section)][#(#VALEUR|substr{0,3})]|<a href="http://#EDITION.#CONFIG{demopaedia/domaine}/wiki/[(#GET{section}|page_section)][#(#GET{section})]"><span lang="[(#EDITION|lg_code)]" style="direction:[(#EDITION|lg_code|lang_dir)];">#TERME<span>&#93;&#93; </a>]
 	</BOUCLE_termes>
-	</ul>
+	<!--/ul-->
 	</B_termes>
 </BOUCLE_manquants>
 <h2>No missing terms.</h2>
