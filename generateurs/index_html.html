@@ -56,7 +56,7 @@
 <div class="date">[(#CONFIG{demopaedia-[(#EDITION)]/date_document}|ajoute_date{#ENV{lang}})]</div>
 <div class="licence">[(#CONFIG{demopaedia-[(#EDITION)]/details_licence}|norm_liens)]</div>
 
-[(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|?{[(#CONFIG{demopaedia-[(#EDITION)]/interclassement})],'utf8_unicode_ci'})]})]
+[(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|?{[(#CONFIG{demopaedia-[(#EDITION)]/interclassement})],'utf8mb4_unicode_ci'})]})]
 <BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{entree IN principale,secondaire}>
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<dl class="index">]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</dl>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>

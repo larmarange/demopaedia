@@ -290,11 +290,11 @@
 </B_definitions>
 </BOUCLE_chapitres>
 
-[(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|sinon{'utf8_unicode_ci'})]})]
+[(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|sinon{'utf8mb4_unicode_ci'})]})]
 <B_index>
 <div class="index">
 <h1><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h1>
-<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}>
+<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}{si #ENV{edition}|lg_code|!={zh}}>
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <ul class="index" >]
@@ -317,6 +317,20 @@
 </ul>
 </div>
 </B_indexth>
+
+[(#REM) Gestion spécifique du Chinois]
+<B_indexzh>
+<div class="index">
+<h1><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h1>
+<BOUCLE_indexzh(DEMOINDEX){edition=#EDITION}{par termezh}{si #ENV{edition}|lg_code|=={zh}}>
+[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
+][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
+<ul class="index" >]
+	<li class="[(#TERME|initiale{#EDITION})][(#TERME|initiale{#EDITION,1,'lower'})]"><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)[(#NOUVEAU|=={oui}|?{ ★,''})]]</a></li>
+</BOUCLE_indexzh>
+</ul>
+</div>
+</B_indexzh>
 
 </body>
 </html>

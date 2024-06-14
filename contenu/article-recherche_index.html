@@ -85,7 +85,7 @@
 	[<h2 class="h2"><:demopaedia:texte_recherche:> (#ENV{terme_recherche})</h2>]
 	[(#SET{section_min,[(#ENV{chapitre}|oui|?{[(#EVAL{100*#ENV{chapitre}})],0})]})][(#SET{section_max,[(#ENV{chapitre}|oui|?{[(#EVAL{100*([(#ENV{chapitre})]+1)})],10000})]})]
 	<BOUCLE_recherche_editions(DEMOINDEX){terme LIKE %(#GET{recherche})%}{entree IN #GET**{entrees}}{fusion edition}{edition?}{section >= #GET{section_min}}{section < #GET{section_max}}{par edition}>
-		[(#SET{interclassement,[(#CONFIG{demopaedia-[(#_recherche_editions:EDITION)]/interclassement}|sinon{'utf8_unicode_ci'})]})]
+		[(#SET{interclassement,[(#CONFIG{demopaedia-[(#_recherche_editions:EDITION)]/interclassement}|sinon{'utf8mb4_unicode_ci'})]})]
 		<B_recherche_resultats>
 		<h3 class="h3">[(#_recherche_editions:EDITION|lg_ed_txt)][ (#CONFIG{demopaedia-[(#_recherche_editions:EDITION)]/annee})]</h3>
 		<BOUCLE_recherche_resultats(DEMOINDEX){terme LIKE %(#GET{recherche})%}{entree IN #GET**{entrees}}{edition=#_recherche_editions:EDITION}{section >= #GET{section_min}}{section < #GET{section_max}}{par terme}{collecte #GET{interclassement}}>

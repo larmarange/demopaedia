@@ -423,6 +423,11 @@ function demopaedia_maj_edition($edition){
 			foreach ($demoindex as $c => $v)
 				$demoindex[$c]['termeth'] = $demoindex[$c]['terme'];
 		}
+		// Gestion du cas particulier du Chinois
+		if (lg_code($edition)=='zh') {
+			foreach ($demoindex as $c => $v)
+				$demoindex[$c]['termezh'] = $demoindex[$c]['terme'];
+		}
 		// On met à jour la base de données
 		sql_insertq_multi('spip_demodef',$demodef);
 		sql_insertq_multi('spip_demonotes',$demonotes);

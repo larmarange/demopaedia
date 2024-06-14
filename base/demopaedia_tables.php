@@ -62,6 +62,7 @@ function demopaedia_declarer_tables_principales($tables_principales){
 		"entree" => "ENUM('principale', 'secondaire', 'note') DEFAULT 'principale' NOT NULL",
 		"terme" => "longtext DEFAULT '' NOT NULL",
 		"termeth" => "longtext CHARACTER SET tis620 COLLATE tis620_thai_ci DEFAULT '' NOT NULL",
+		"termezh" => "longtext CHARACTER SET gb2312 COLLATE gb2312_chinese_ci DEFAULT '' NOT NULL",
 		"termeen" => "longtext DEFAULT '' NOT NULL",
 		"maj"	=> "TIMESTAMP",
 		"intexte" => "longtext DEFAULT '' NOT NULL",

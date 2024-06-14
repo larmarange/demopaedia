@@ -215,11 +215,11 @@
 	</div>
 	<div class="blanche"></div>
 
-	[(#SET{interclassement,[(#CONFIG{demopaedia-[(#VALEUR)]/interclassement}|sinon{'utf8_unicode_ci'})]})]
+	[(#SET{interclassement,[(#CONFIG{demopaedia-[(#VALEUR)]/interclassement}|sinon{'utf8mb4_unicode_ci'})]})]
 	<B_index>
 	<div class="index">
 	<div class="titreindex">[(#CONFIG{demopaedia-[(#VALEUR)]/titre_index_court})] [((#VALEUR|lg_code))]</div>
-	<BOUCLE_index(DEMOINDEX){edition=#VALEUR}{par terme}{entree IN principale,secondaire}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}>
+	<BOUCLE_index(DEMOINDEX){edition=#VALEUR}{par terme}{entree IN principale,secondaire}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}{si #ENV{edition}|lg_code|!={zh}}>
 	[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
 	][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
 	<ul class="index" >]
@@ -269,6 +269,34 @@
 	</ul>
 	</div>
 	</B_indexth>
+	
+		[(#REM) Gestion spécifique du Chinois]
+		<B_indexzh>
+		<div class="index">
+		<div class="titreindex">[(#CONFIG{demopaedia-[(#VALEUR)]/titre_index_court})] [((#VALEUR|lg_code))]</div>
+		<h1>[(#CONFIG{demopaedia-[(#VALEUR)]/index})]</h1>
+		<BOUCLE_indexzh(DEMOINDEX){edition=#VALEUR}{entree IN principale,secondaire}{par termezh}{si #ENV{edition}|lg_code|=={th}}>
+		[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#VALEUR}|non)<ul class="index" >]
+		][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#VALEUR}|unique{#VALEUR})</h2>
+		<ul class="index" >]
+			<li class="[(#TERME|initiale{#VALEUR})]"><a href="http://#VALEUR.#CONFIG{demopaedia/domaine}/wiki/[(#SECTION|page_section)][#(#SECTION)]" title="#SECTION-#NUMTERME">[(#TERME|ameliorer_index{''})]</a>
+			<B_editions_corr3>
+			<table class="termes_corr">
+			<BOUCLE_editions_corr3(POUR){tableau #ENV{editions}}{par valeur}>
+				[(#VALEUR|=={#_editions:VALEUR}|non)
+				<tr lang="[(#VALEUR|lg_code)]" style="direction:[(#VALEUR|lg_code|lang_dir)];">
+					[<td class="langue">[((#VALEUR|lg_code))]</td>
+					<td class="termes">(#VALEUR|termes_correspondants{#SECTION,#NUMTERME,<br />})</td>]
+				]
+				</tr>
+				</BOUCLE_editions_corr3>
+			</table>
+			</B_editions_corr3>
+			</li>
+		</BOUCLE_indexzh>
+		</ul>
+		</div>
+		</B_indexzh>
 <div>
 </BOUCLE_editions>
 

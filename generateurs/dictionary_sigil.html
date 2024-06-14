@@ -70,11 +70,11 @@
 </B_definitions>
 </BOUCLE_chapitres>
 
-[(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|sinon{'utf8_unicode_ci'})]})]
+[(#SET{interclassement,[(#CONFIG{demopaedia-[(#EDITION)]/interclassement}|sinon{'utf8mb4_unicode_ci'})]})]
 <B_index>
 <hr class="sigil_split_marker" />
 <h1 class="chapitre"><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h1>
-<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}>
+<BOUCLE_index(DEMOINDEX){edition=#EDITION}{par terme}{collecte #GET{interclassement}}{si #ENV{edition}|lg_code|!={th}}{si #ENV{edition}|lg_code|!={zh}}>
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <ul class="index" >]
@@ -94,5 +94,17 @@
 </BOUCLE_indexth>
 </ul>
 </B_indexth>
+
+<B_indexzh>
+<hr class="sigil_split_marker" />
+<h1 class="chapitre"><a name="index"></a>[(#CONFIG{demopaedia-[(#EDITION)]/index})]</h1>
+<BOUCLE_indexzh(DEMOINDEX){edition=#EDITION}{par termezh}{si #ENV{edition}|lg_code|=={zh}}>
+[(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
+][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
+<ul class="index" >]
+	<li [(#ENTREE|=={note}|oui)class="noteterm"]>[(#TERME|ameliorer_index)][(#NOUVEAU|=={oui}|?{&nbsp;★,''})] (<a href="##SECTION">#SECTION</a>-#NUMTERME[(#ENTREE|=={note}|?{*,''})])</li>
+</BOUCLE_indexzh>
+</ul>
+</B_indexzh>
 </body>
 </html>

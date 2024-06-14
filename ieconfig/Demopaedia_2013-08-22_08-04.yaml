@@ -84,12 +84,12 @@ demopaedia:
     date_document: 'Dieses Dokument wurde am @date@ erstellt.'
     page_introduction: Hauptseite
     page_preface: Vorwort
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
   demopaedia-en-i:
     page_introduction: Introduction
     page_preface: Preface
     page_copyright: ''
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     titre_dico: 'Multilingual Demographic Dictionary'
     annee: '1958'
     details_edition: 'english first edition 1958'
@@ -117,7 +117,7 @@ demopaedia:
     page_introduction: Introduction_(printed_edition)
     page_preface: Preface_(printed_edition)
     page_copyright: ''
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     titre_dico: 'Multilingual Demographic Dictionary'
     annee: '2013'
     details_edition: 'unified second edition, English volume'
@@ -199,7 +199,7 @@ demopaedia:
     page_introduction: Introduction
     page_preface: Préface
     page_copyright: ''
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     titre_dico: 'Dictionnaire démographique multilingue'
     annee: '1958'
     details_edition: 'première édition française de 1958'
@@ -247,7 +247,7 @@ demopaedia:
     droit_auteur: ''
     licence: Licence
     details_licence: 'Contenu disponible sous Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/).'
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     annee: '2012'
     date_document: 'Ce document a été généré le @date@.'
     page_avertissement: Avertissement_(version_imprimée)
@@ -255,7 +255,7 @@ demopaedia:
   demopaedia-it-i:
     page_introduction: Prefazione
     page_preface: Introduzione
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     titre_dico: 'Dizionario demografico multilingue'
     annee: '1959'
     details_edition: 'prima edizione del 1959'
@@ -303,14 +303,14 @@ demopaedia:
     date_document: 'Questo documento è stato generato il @date@.'
     page_introduction: ''
     page_preface: Prefazione_alla_seconda_edizione_armonizzata_-_versione_per_la_stampa
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     avertissement: Avvertenza
     page_avertissement: Avvertenza_alla_versione_stampata
   demopaedia-ko-ii:
     page_introduction: ''
     page_preface: Preface
     page_avertissement: ''
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     titre_dico: '다국어 인구학사전'
     annee: '2013'
     details_edition: '두 번째 통합본, 한국어 판'
@@ -389,7 +389,7 @@ demopaedia:
   demopaedia-ru-i:
     page_introduction: Введение
     page_preface: Вступление
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     titre_dico: 'Многоязычный демографический словарь'
     annee: '1964'
     details_edition: 'первое русское издание 1964'
@@ -416,7 +416,7 @@ demopaedia:
     page_introduction: Введение
     page_preface: Вступление
     page_copyright: ''
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
     titre_dico: 'Многоязычный демографический словарь'
     annee: '2008'
     details_edition: 'Русский второго издания 2008'
@@ -447,7 +447,7 @@ demopaedia:
     page_introduction: ''
     page_preface: 序文
     page_copyright: ''
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
   demopaedia-th-ii:
     page_introduction: ''
     page_preface: คำนำ_(ฉบับพิมพ์)
@@ -475,7 +475,7 @@ demopaedia:
     licence: ลิขสิทธิ์
     details_licence: 'การใช้เนื้อหาทั้งหมดเป็นไปตามเงื่อนไข Attribution-Share Alike 3.0 Unported (http://creativecommons.org/licenses/by-sa/3.0/)'
     date_document: 'เอกสารนี้สร้างขึ้นเมื่อ  @date@'
-    interclassement: utf8_unicode_ci
+    interclassement: utf8mb4_unicode_ci
   demopaedia-vi-ii:
     page_introduction: ''
     page_preface: ''

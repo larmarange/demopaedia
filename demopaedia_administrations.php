@@ -25,6 +25,10 @@ function demopaedia_upgrade($nom_meta_base_version, $version_cible){
     array('maj_tables',array('spip_demoindex'))
   );
   
+  $maj['1.0'] = array(
+    array('maj_tables',array('spip_demoindex'))
+  );
+  
   include_spip('base/upgrade');
   maj_plugin($nom_meta_base_version, $version_cible, $maj);
 }

@@ -98,7 +98,7 @@ $GLOBALS[$GLOBALS['idx_lang']] = array(
 	'label_page_copyright' => 'Page contenant le copyright',
 	'label_page_copyright_details' => 'Indiquer le nom de la page (partie située après <i>/wiki/</i> dans l\'URL de la page. Laisser vide si cette page n\'existe pas.',
 	'label_interclassement' => 'Interclassement',
-	'label_interclassement_details' => 'Spécifie le mode de tri alphabétique (<i>utf8_unicode_ci</i> par défaut).',
+	'label_interclassement_details' => 'Spécifie le mode de tri alphabétique (<i>utf8mb4_unicode_ci</i> par défaut).',
 	
 	'label_titre_dico' => 'Titre du dictionnaire',
 	'label_titre_dico_details' => 'Exemple : <i>Dictionnaire démographique multilingue</i>.',

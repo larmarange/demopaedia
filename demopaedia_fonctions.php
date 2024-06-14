@@ -582,10 +582,18 @@ function filtre_termes_correspondants($edition,$section,$numterme,$separateur) {
 	if (is_null($index[$edition][$separateur])) {
 		$interclassement = lire_config('demopaedia-'.$edition.'/interclassement');
 		if ($interclassement == '')
-			$interclassement = 'utf8_unicode_ci';
+			$interclassement = 'utf8mb4_unicode_ci';
 		if (lg_code($edition)=='th')
 			$resultats = sql_allfetsel (
 				array("CONCAT( section, '-', numterme )",'GROUP_CONCAT( terme ORDER BY termeth ASC SEPARATOR '.sql_quote($separateur).' )'),
+				'spip_demoindex',
+				'entree = "principale" AND edition = '.sql_quote($edition),
+				'section, numterme',
+				'section, numterme'
+			);
+		else if (lg_code($edition)=='zh')
+			$resultats = sql_allfetsel (
+				array("CONCAT( section, '-', numterme )",'GROUP_CONCAT( terme ORDER BY termezh ASC SEPARATOR '.sql_quote($separateur).' )'),
 				'spip_demoindex',
 				'entree = "principale" AND edition = '.sql_quote($edition),
 				'section, numterme',
