@@ -63,6 +63,7 @@ function demopaedia_declarer_tables_principales($tables_principales){
 		"terme" => "longtext DEFAULT '' NOT NULL",
 		"termeth" => "longtext CHARACTER SET tis620 COLLATE tis620_thai_ci DEFAULT '' NOT NULL",
 		"termezh" => "longtext CHARACTER SET gb2312 COLLATE gb2312_chinese_ci DEFAULT '' NOT NULL",
+		"termezh_pinyin" => "longtext DEFAULT '' NOT NULL",
 		"termeen" => "longtext DEFAULT '' NOT NULL",
 		"maj"	=> "TIMESTAMP",
 		"intexte" => "longtext DEFAULT '' NOT NULL",

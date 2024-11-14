@@ -1,11 +1,11 @@
 <paquet
 	prefix="demopaedia"
 	categorie="squelette"
-	version="1.4.2"
+	version="1.4.3"
 	etat="dev"
 	compatibilite="[3.0.0;["
 	logo="img/demopaedia-64.png"
-	schema="1.0"
+	schema="1.1"
 >	
 
 	<nom>Demop&aelig;dia - G&eacute;n&eacute;rateur de documents</nom>
