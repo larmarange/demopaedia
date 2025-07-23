@@ -1,9 +1,11 @@
 <?php
+//echo "hi not";exit;
 define('_DIR_DEMOPAEDIA', _DIR_IMG.'demopaedia/');
 define('_DIR_DEMOPAEDIA_DICTIONARY', _DIR_DEMOPAEDIA.'dictionary/');
 
 include_spip('inc/config');
-
+//spip_log("Checkpoint A: edition = $edition", "demopaedia_debug");
+//spip_log('foo foo', 'demopaedia');
 function demopaedia_effacer_edition($edition){
 	include_spip('base/abstract_sql');
 	sql_delete('spip_demodef','edition = '.sql_quote($edition));
@@ -17,24 +19,99 @@ function demopaedia_effacer_edition($edition){
 	suivre_invalideur($edition);
 }
 
+// For Chinese or any language with a single variant (and no avertissement page!)
+function convert_simplified_to_traditional($text) {
+    $tmpfile = tempnam(sys_get_temp_dir(), 'simp');
+    file_put_contents($tmpfile, $text);
+
+    // Escape for shell
+    $escaped = escapeshellarg($tmpfile); // e.g., '/tmp/simpXXXXX'
+
+    // Call Python with inline code
+    // $cmd = "python3 -c 'from opencc import OpenCC; print(OpenCC(\"s2t\").convert(open(\"$escaped\", encoding=\"utf-8\").read()))'";
+    // Wrap in double-quoted shell string to embed it cleanly in Python
+    $cmd = "PYTHONIOENCODING=utf-8 python3 -c \"from opencc import OpenCC; print(OpenCC('s2t').convert(open($escaped, encoding='utf-8').read()))\"";
+    //$converted = shell_exec($cmd);
+    // Run the command and capture the output
+    $converted = shell_exec($cmd . " 2>&1");
+
+    //unlink($tmpfile);
+    return $converted;
+}
+function generate_demoindex_from_python($edition, $variant) {
+    //die("generate_demo_index $edition $variant");
+
+    // Path to your shell script
+    $shell_script = '/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/generate_demoindex_from_shell.sh';
+  
+    // Build args
+      
+    $args = ["--edition=$edition"];
+    if ($variant === 'zh_hant') {
+        $args[] = "--traditional";
+    }
+
+    // Build the full command with escaped arguments
+    $cmd = escapeshellcmd($shell_script);
+    foreach ($args as $arg) {
+        $cmd .= ' ' . escapeshellarg($arg);
+    }
+   // Add environment print for debug
+    /* $cmd = "whoami; id; $cmd 2>&1"; */
+
+    /* $output = shell_exec($cmd); */
+    /* die("CMD: $cmd\nOUTPUT:\n" . $output); */
+
+    // Run and capture output (including stderr)
+    $output = shell_exec("$cmd 2>&1");
+    
+    //die("TO generate_demo_index e=$edition v=$variant c=$cmd o=$output");
+
+    // Check output
+    if (strpos($output, 'Exception') !== false || strpos($output, 'Traceback') !== false) { 
+         die("generate_demoindex_from_python failed:\nCommand: $cmd\nOutput:\n$output"); 
+    } 
+
+    return true;
+}
+
+
 function demopaedia_maj_edition($edition){
 	include_spip('base/abstract_sql');
 	include_spip('inc/flock');
+	// Added for variants of and edition. For example in Chinese /wiki/10&variant=zh_hant will display in traditional Chinese
+	// but the xml is still in simplified Chinese by default.
+	$variant = _request('variant'); // returns 'zh_hant' if present
+
+	// $variant = ''; // default is empty
 	// Construction de l'URL
 	$url = 'http://'.$edition.'.';
 	$url .= lire_config('demopaedia/domaine');
 	$url .= '/w/index.php?title=Special:Export&pages=';
 	$url .= str_replace(',','%0A',lire_config('demopaedia/pages_'.substr($edition,3,3)));
 	if (lire_config("demopaedia-$edition/page_introduction")!='')
-		$url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_introduction"));
+	  $url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_introduction"));
 	if (lire_config("demopaedia-$edition/page_preface")!='')
-		$url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_preface"));
-	if (lire_config("demopaedia-$edition/page_avertissement")!='')
-		$url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_avertissement"));
-	
+	  $url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_preface"));
+	if (lire_config("demopaedia-$edition/page_avertissement")!=''){
+	  $url .= '%0A'.urlencode(lire_config("demopaedia-$edition/page_avertissement"));
+	}
 	// Récupération du flux
 	$xml = spip_file_get_contents($url);
+		// Added for traditional Chinese if their is a variant
+	//Make sure OpenCC is installed (e.g., sudo yum install opencc or apt install opencc).
+	// Convert to Traditional if needed
+	if (lg_code($edition) == 'zh' and $variant == 'zh_hant') {  //
+	  spip_log("Demopaedia : on traite les notes.");
+	  $xml = convert_simplified_to_traditional($xml);
+	}
+
+	// Call Python indexer with proper variant
+	if (!generate_demoindex_from_python($edition, $variant)) {
+	  return false; // Fail early if Python call didn't work
+	}
 	
+
 	// On créé les tableaux qui vont récupérer les données traitées
 	$demodef = array();
 	$demonotes = array();
@@ -192,20 +269,28 @@ function demopaedia_maj_edition($edition){
 				}
 				// On remplace les TextTerm par leur version en HTML simplifié
 				// Avec EnglishEntry
-				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
-				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
+				//section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
+				//section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
+				// In Chinese we decided to not publish the English translation.
+				// English translation will be found only in the indexes
+				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ',$section);
+				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ',$section);
 				// Sans EnglishEntry
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|nouveau=oui([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2★</sup>',$section);
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section);
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section); // Cas où on a une syntaxe courte avec juste le num du terme
 				
 				// Traitement des notes
+		spip_log("Demopaedia : on traite les notes.");
 				preg_match_all('/\{Note\|(.+)\}/U',$section,$notes);
 				foreach($notes[1] as $note) {
 					$note = explode ('|',$note);
+					$entree_anglaise = ''; // Ajout des termes anglais dans une note du chinois mais il peut y avoir plusieurs Note tandis qu'il n'y a qu'un TextTerm par section
 					$texte_note = $note[1];
 					// Traitement des NoteTerm
+                    // echo "hi NoteTerm";exit;
 					preg_match_all('/\[\*NoteTerm\!\!(.*)\*\]/U',$texte_note,$noteterms);
+                    //echo "hi English";exit;
 					foreach ($noteterms[1] as $noteterm) {
 						if (!strpos($noteterm,'!')) {
 							$note_terme = trim($noteterm);
@@ -240,6 +325,9 @@ function demopaedia_maj_edition($edition){
 								$note_secondaire = substr($entree,20);
 							elseif(substr($entree,0,15)=='OtherIndexEntry')
 								$note_secondaire = substr($entree,16);
+                            // Y a-t-il un EnglishEntry ?
+                            if(substr($entree,0,12)=='EnglishEntry')  //Ajout pour le chinois
+                                $entree_anglaise = substr($entree,13);
 							
 							// Nettoyage des entrées secondaires
 							// On essaye d'harmoniser la présentation 
@@ -250,14 +338,14 @@ function demopaedia_maj_edition($edition){
 							$note_secondaire = str_replace('. ',' / ',$note_secondaire);
 							$note_secondaire = str_replace(', ',' / ',$note_secondaire);
 							$note_secondaire = str_replace('-—','- —',$note_secondaire);
-							
+							//  On ajoute entree_anglaise si chinois
 							if ($note_secondaire != '' && !in_array(mb_strtolower($note_secondaire),$doublons)) {
 								$demoindex[] = array(
 									'edition' => $edition,
 									'section' => $num_section,
 									'numterme' => $note[0],
 									'terme' => $note_secondaire,
-									'termeen' => '',
+									'termeen' => $entree_anglaise,
 									'entree' => 'note',
 									'intexte' => $note_intexte,
 									'nouveau' => 'non'
@@ -265,14 +353,14 @@ function demopaedia_maj_edition($edition){
 							}
 						}
 						
-						// On sauvegarde l'entrée principale de la note
+						// On sauvegarde l'entrée principale de la note, on ajoute entree_anglaise si chinois
 						if (!in_array(mb_strtolower($note_terme),$doublons)) // Seulement si le terme n'est pas deja renseigne en entree principale
 							$demoindex[] = array(
 								'edition' => $edition,
 								'section' => $num_section,
 								'numterme' => $note[0],
 								'terme' => $note_terme,
-								'termeen' => '',
+								'termeen' => $entree_anglaise,
 								'entree' => 'note',
 								'intexte' => $note_intexte,
 								'nouveau' => 'non'
@@ -423,7 +511,8 @@ function demopaedia_maj_edition($edition){
 			foreach ($demoindex as $c => $v)
 				$demoindex[$c]['termeth'] = $demoindex[$c]['terme'];
 		}
-		// Gestion du cas particulier du Chinois
+		// Gestion du cas particulier du Chinois en effet si la base est utf8mb4 l'ordre de tri par exemple en pinyin doit être
+		// dans une variable ayant ce collate.
 		if (lg_code($edition)=='zh') {
 			foreach ($demoindex as $c => $v)
 				$demoindex[$c]['termezh'] = $demoindex[$c]['terme'];
@@ -434,6 +523,7 @@ function demopaedia_maj_edition($edition){
 		sql_insertq_multi('spip_demoindex',$demoindex);
 		if (count($demoinfo)>0)
 			sql_insertq_multi('spip_demoinfo',$demoinfo);
+		//spip_log("Demopaedia : l'édition $edition a été mise à jour.", "demopaedia");
 		spip_log("Demopaedia : l'édition $edition a été mise à jour.");
 		// On invalide le cache
 		include_spip('inc/invalideur');
@@ -457,14 +547,41 @@ function demopaedia_generer_pdf($edition){
 	demopaedia_verifier_export();
 	include_spip('inc/flock');
 	include_spip('inc/utils');
-	$file_html_prince = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'-prince.html';
+	//die("demopaedia_generer_pdf called");
+	// NEW: detect variant
+	$variant = _request('variant'); // 'zh_hant' or null
+	
+        // If there's a variant (e.g., 'zh_hant'), append it to the filenames
+	$suffix = $variant ? '-'.$variant : '';
+
+	$file_pdf_text = _DIR_DEMOPAEDIA_DICTIONARY . $edition . $suffix . '-text.pdf';
+	$file_html_prince = _DIR_DEMOPAEDIA_DICTIONARY . $edition . $suffix . '-prince.html';
+
 	$file_html_swath = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'-prince-swath.html';
-	$file_pdf_text = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'-text.pdf';
-	$file_pdf = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'.pdf';
+	$file_pdf      = _DIR_DEMOPAEDIA_DICTIONARY . $edition . $suffix . '.pdf';
+
 	$cover_back = find_in_path('covers/back.pdf');
-	$cover_front = find_in_path("covers/$edition.pdf");
+	$cover_front = find_in_path('covers/' . $edition . $suffix . '.pdf');
+
 	if (!$cover_front) $cover_front = find_in_path("covers/default-".ed_code($edition).".pdf");
-	if (!ecrire_fichier($file_html_prince,recuperer_fond('generate_dictionary', array('format' => 'prince', 'edition' => $edition)))) return false;
+	// copy($file_html_prince, _DIR_TMP . 'debug-prince.html'); 
+	touch(_DIR_DEMOPAEDIA_DICTIONARY . 'test.txt');
+	file_put_contents(_DIR_TMP . 'demopaedia_debug.txt', var_export($file_html_prince, true));
+
+	//if (!ecrire_fichier($file_html_prince,recuperer_fond('generate_dictionary', array('format' => 'prince', 'edition' => $edition)))) return false;
+	// Generate the HTML
+	$html = recuperer_fond('generate_dictionary', array(
+				 'format' => 'prince',
+				 'edition' => $edition,
+				 'variant' => $variant
+				 ));
+
+	if (lg_code($edition) == 'zh' and $variant == 'zh_hant') {
+	  $html = convert_simplified_to_traditional($html);
+	}
+
+	if (!ecrire_fichier($file_html_prince, $html)) return false;
+
 	// swath requis pour le Thai
 	if ($edition=='th-ii') {
 		exec("cat $file_html_prince | swath -u u,u -f html | tee $file_html_swath");
@@ -497,11 +614,15 @@ function getPDFPages($document){
 }
 
 function demopaedia_generer_html($edition){
+    spip_log("Demopaedia : ok");
 	demopaedia_verifier_export();
 	include_spip('inc/flock');
 	include_spip('inc/utils');
+	// NEW: detect variant
+	$variant = _request('variant'); // 'zh_hant' or null
+
 	$file_html = _DIR_DEMOPAEDIA_DICTIONARY.$edition.'.html';
-	return ecrire_fichier($file_html,recuperer_fond('generate_dictionary', array('format' => 'html', 'edition' => $edition)));
+	return ecrire_fichier($file_html,recuperer_fond('generate_dictionary', array('format' => 'html', 'edition' => $edition, 'variant' => $variant)));
 }
 
 
