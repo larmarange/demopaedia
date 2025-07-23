@@ -105,26 +105,50 @@ function ko_initial($letter) {
 		return $letter;
 }
 
+// Helper function to check if a character is Chinese (basic Unicode range)
+function mb_ord_compat($char, $encoding = 'UTF-8') {
+    if (!$char || mb_strlen($char, $encoding) === 0) {
+        return false; // safely fail if input is empty
+    }
+
+    if ($encoding !== 'UTF-8') {
+        $char = mb_convert_encoding($char, 'UTF-8', $encoding);
+    }
+
+    $converted = mb_convert_encoding($char, 'UCS-4BE', 'UTF-8');
+    if (strlen($converted) < 4) {
+        return false; // prevent unpack error
+    }
+
+    $result = unpack('N', $converted);
+    return $result[1];
+}
+function is_chinese_character($char) {
+  $codepoint = mb_ord_compat($char, 'UTF-8');
+  if ($codepoint === false) {
+    return false;
+  }
+
+  return (
+    ($codepoint >= 0x4E00 && $codepoint <= 0x9FFF) ||   // CJK Unified Ideographs
+    ($codepoint >= 0x3400 && $codepoint <= 0x4DBF) ||   // CJK Unified Ideographs Extension A
+    ($codepoint >= 0x20000 && $codepoint <= 0x2A6DF)    // CJK Unified Ideographs Extension B (optional)
+    );
+}
+
 //extrait la première lettre, supprime les accents et la passe en majuscules
 function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 	$premiere_lettre = mb_substr($texte,$start,1,"UTF-8"); // première lettre
 	$langue = lg_code($edition);
-	$langues_traitees = array();
-	$langues_traitees[] = 'fr';
-	$langues_traitees[] = 'es';
-	$langues_traitees[] = 'pl';
-	$langues_traitees[] = 'cs';
-	$langues_traitees[] = 'pt';
-	$langues_traitees[] = 'it';
-	$langues_traitees[] = 'sv';
-	$langues_traitees[] = 'et';
-	$langues_traitees[] = 'de';
-	$langues_traitees[] = 'en';
-	$langues_traitees[] = 'ru';
-	$langues_traitees[] = 'ar';
-	$langues_traitees[] = 'th';
-	$langues_traitees[] = 'ko';
-	$langues_traitees[] = 'ms';
+	$langues_traitees = array(
+	  'fr', 'es', 'pl', 'cs', 'pt', 'it', 'sv', 'et', 'de', 'en', 'ru',
+	  'ar', 'th', 'ko', 'ms',
+	  // Add Chinese language codes:
+	  'zh',       // generic Chinese
+	  'zh-hans',  // simplified Chinese
+	  'zh-hant'   // traditional Chinese
+	  );
+
 	if (in_array($langue,$langues_traitees)) {
 		$initiales = array();
 		$initiales["A"] = 'A'; // A Capital A
@@ -557,7 +581,23 @@ function filtre_initiale($texte, $edition='', $start=0, $lower=false) {
 		if ($langue=='ko') {
 			$premiere_lettre = ko_initial($premiere_lettre);
 		}
-
+		
+		// Cas du chinois (par défaut le simplifié et le traditionnel avec le variant &variant=zh_hant
+		// mais on ne le traite pas car nous avons déjà un termezh_pinyin et un termezh_bopomofo
+		// dans les deux nouvelles bases spip_indexzh et spip_indexzh_trad
+		if (in_array($langue, array('zh', 'zh-hans', 'zh-hant'))) {
+		  if (is_chinese_character($premiere_lettre)) {
+		    //$initiale = get_pinyin_initial($premiere_lettre);
+		    $initiale = $premiere_lettre;
+		    if ($lower) {
+		      $initiale = mb_strtolower($initiale, 'UTF-8');
+		    } else {
+		      $initiale = mb_strtoupper($initiale, 'UTF-8');
+		    }
+		    return $initiale;
+		  }
+		}
+		
 		// Cas particulier des voyelles situées en début de mot en Thai
 		if (in_array($premiere_lettre,array('เ', 'แ', 'โ', 'ใ', 'ไ'))) $premiere_lettre = mb_substr($texte,$start+1,1,"UTF-8"); // seconde lettre
 		
@@ -593,7 +633,7 @@ function filtre_termes_correspondants($edition,$section,$numterme,$separateur) {
 			);
 		else if (lg_code($edition)=='zh')
 			$resultats = sql_allfetsel (
-				array("CONCAT( section, '-', numterme )",'GROUP_CONCAT( terme ORDER BY termezh ASC SEPARATOR '.sql_quote($separateur).' )'),
+				array("CONCAT( section, '-', numterme )",'GROUP_CONCAT( terme ORDER BY termezh_pinyin ASC SEPARATOR '.sql_quote($separateur).' )'),
 				'spip_demoindex',
 				'entree = "principale" AND edition = '.sql_quote($edition),
 				'section, numterme',
@@ -787,6 +827,11 @@ function ameliorer_index($texte, $verifier_precedent=true) {
 			return str_replace(' / ','<br />',$texte);
 		}
 	}
+}
+function normaliser_index($texte) {
+    $texte = strtolower($texte);
+    $texte = preg_replace('/s\b/', '', $texte); // remove trailing 's'
+    return $texte;
 }
 
 ?>
