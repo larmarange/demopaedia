@@ -9,8 +9,11 @@
 	[(#ENV{edition}|lg_code|=={th}|oui)
 		<script type="text/javascript" src="[(#CHEMIN{thaiwrap_adapted.js}|url_absolue)]"></script>
 	]
-	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bopomofo&display=swap" rel="stylesheet">	<style type="text/css" media="all">
-	<style type="text/css" media="all">
+	<!-- <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bopomofo&display=swap" rel="stylesheet"> -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Huninn&display=swap" rel="stylesheet">
+        <style type="text/css" media="all">
 		@import url([(#URL_PAGE{Libertine.css}|url_absolue)]);
 		@import url([(#URL_PAGE{FreeSerif.css}|url_absolue)]);
 		[(#ENV{edition}|lg_code|=={th}|oui)@import url([(#URL_PAGE{THSarabun.css}|url_absolue)]);]
@@ -245,8 +248,19 @@
 </head>
 <body [(#ENV{edition}|lg_code|=={th}|oui)onload="thaiWrap();]">
 <div class="surtitre">Demopædia</div>
-<div class="titre">[(#CONFIG{demopaedia-[(#EDITION)]/titre_dico})]</div>
-[<div class="soustitre">(#CONFIG{demopaedia-[(#EDITION)]/details_edition})</div>]
+<div class="titre">
+                   [(#ENV{variant}|=={zh_hant}|?{
+                     [(#CONFIG{demopaedia-[(#EDITION)]/titre_dico}|convert_simplified_to_traditional)],
+                     [(#CONFIG{demopaedia-[(#EDITION)]/titre_dico})]
+                   })]
+</div>
+<div class="soustitre">
+  [(#ENV{variant}|=={zh_hant}|?{
+    [(#CONFIG{demopaedia-[(#EDITION)]/details_edition}|convert_simplified_to_traditional)
+      <br><br />（繁體字，附注音索引）],
+    [(#CONFIG{demopaedia-[(#EDITION)]/details_edition})]
+  })]
+</div>
 <div class="logo">
 	[<img src="(#CHEMIN{img/demopaedia.png}|url_absolue)" alt="" />]
 </div>
@@ -264,7 +278,6 @@
 		<BOUCLE_sommaire_introduction(DEMOINFO){edition=#ENV{edition}}{type='introduction'}{0,1}>
 		<li>
                   <a href="#introduction">
-                   [(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ]#VALEUR • 
                    [(#ENV{variant}|=={zh_hant}|?{
                      [(#CONFIG{demopaedia-[(#EDITION)]/introduction}|convert_simplified_to_traditional)],
                      [(#CONFIG{demopaedia-[(#EDITION)]/introduction})]
@@ -275,7 +288,6 @@
 		<BOUCLE_sommaire_preface(DEMOINFO){edition=#ENV{edition}}{type='preface'}{0,1}>
 		<li>
                   <a href="#preface">
-                   [(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ]#VALEUR • 
                    [(#ENV{variant}|=={zh_hant}|?{
                      [(#CONFIG{demopaedia-[(#EDITION)]/preface}|convert_simplified_to_traditional)],
                      [(#CONFIG{demopaedia-[(#EDITION)]/preface})]
@@ -283,28 +295,39 @@
                  </a>
 		</li>
 		</BOUCLE_sommaire_preface>
+		<B_test>
+	       <!-- 	<BOUCLE_test(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}> -->
+               <!--   FOUND: #MAJ — #VALEUR -->
+	       <!-- 	</BOUCLE_test> -->
+	       <!-- 	<B_test> -->
+               <!-- NOT FOUND -->
+               <!-- <//B_test> -->
+
 		<BOUCLE_sommaire_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
 		<li>
                   <a href="#avertissement">
-                   [(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ]#VALEUR • 
                    [(#ENV{variant}|=={zh_hant}|?{
                      [(#CONFIG{demopaedia-[(#EDITION)]/avertissement}|convert_simplified_to_traditional)],
                      [(#CONFIG{demopaedia-[(#EDITION)]/avertissement})]
                    })]
-                 </a>
-		  
+                  </a>
 		</li>
 		</BOUCLE_sommaire_avertissement>
+		  
 		<BOUCLE_sommaire_chapitres(POUR){tableau #GET{chapitres}}>
-		<li>
-                 <a href="#chapitre#VALEUR">
-                   [(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ]#VALEUR • 
-                   [(#ENV{variant}|=={zh_hant}|?{
-                     [(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR}|convert_simplified_to_traditional)],
-                     [(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR})]
-                   })]
-                 </a>
-               </li>
+		  <li>
+		    <a href="#chapitre#VALEUR">
+		      [(#ENV{edition}|=={zh-ii}|?{
+		      <!-- IF zh-ii -->
+		      [(#ENV{variant}|=={zh_hant}|?{
+		      第[(#VALEUR|chiffre_chinois)]章 [(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR}|convert_simplified_to_traditional)],
+		      第[(#VALEUR|chiffre_chinois)]章 [(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR})]
+		      })],
+		      <!-- ELSE: other languages -->
+		      [(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ]#VALEUR • [(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR})]
+		      })]
+		    </a>
+		  </li>
 		</BOUCLE_sommaire_chapitres>
                 [(#ENV{edition}|=={zh-ii}|oui)
                   [(#ENV{variant}|oui)
@@ -345,19 +368,33 @@
 
 <B_avertissement>
 <div class="avertissement chapitre">
-<h1><a name="avertissement"></a>[(#CONFIG{demopaedia-[(#EDITION)]/avertissement}|typo)]</h1>
+  [(#ENV{variant}|=={zh_hant}|?{
+  <h1><a name="avertissement"></a>[(#CONFIG{demopaedia-[(#EDITION)]/avertissement}|typo|convert_simplified_to_traditional)]</h1>,
+  <h1><a name="avertissement"></a>[(#CONFIG{demopaedia-[(#EDITION)]/avertissement}|typo)]</h1>,
+  })]
 <BOUCLE_avertissement(DEMOINFO){edition=#ENV{edition}}{type='avertissement'}{0,1}>
 <div class="texte">
 	[(#TEXTE**|ajoute_name{avertissement}|typo|replace{h3,h2}|replace{h4,h3}|replace{h5,h4}|replace{h5,h5})]
 </div>
 </div>
 </BOUCLE_avertissement>
+</B_avertissement>
 
 <BOUCLE_chapitres(POUR){tableau #GET{chapitres}}>
 #SET{section_min,#EVAL{100*#VALEUR}} #SET{section_max,#EVAL{100*(#VALEUR+1)}}
 <B_definitions>
 <div class="chapitre">
-<h1><a name="chapitre#VALEUR"></a>[(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ]#VALEUR[ <br />(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR})]</h1>
+  <h1><a name="chapitre#VALEUR"></a>
+    [(#ENV{edition}|=={zh-ii}|?{
+    <!-- IF zh-ii -->
+    [(#ENV{variant}|=={zh_hant}|?{
+    第[(#VALEUR|chiffre_chinois)]章<br/>[(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR}|convert_simplified_to_traditional)],
+    第[(#VALEUR|chiffre_chinois)]章<br/>[(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR})]
+    })],
+    <!-- ELSE: other languages -->
+    [(#CONFIG{demopaedia-[(#EDITION)]/chapitre}) ]#VALEUR<br />[(#CONFIG{demopaedia-[(#EDITION)]/chapitre#VALEUR})]
+    })]
+  </h1>
 <div class="paragraphes">
 <BOUCLE_definitions(DEMODEF){section >= #GET{section_min}}{section < #GET{section_max}}{edition=#ENV{edition}}{par section}>
 	[(#SECTION|asterisme{#ENV{edition}})<div class="asterisme">⁂</div>]
@@ -419,9 +456,9 @@
 
 <B_group_pinyin>
 <div id="index_pinyin" class="index pinyin-index">
-  <h1><a name="index"></a>按拼音顺序排列的[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by Pinyin</h1>
+  <h1><a name="index"></a>按拼音顺序排列的索引[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by Pinyin</h1>
   <div class="information">
-    Four columns: (1) Chinese, (2) Pinyin transcription, (3) English translation (4) Unified number.<br/>
+    Four columns: (1) Chinese, (2) Pinyin transcription, (3) English (4) Unified number.<br/>
     四栏内容：（1）中文，（2）拼音，（3）英文，（4）统一编号。</div>
 
   <BOUCLE_group_pinyin(spip_demoindexzh)
@@ -455,13 +492,14 @@
 
 <B_groupen>
 <div id="index_english" class="index english-index">
-  <h1><a name="index-english"></a>索引按英文排序 Index sorted by English</h1>
+  <h1><a name="index-english"></a>按英文字母排序的索引 Index sorted by English</h1>
   <div class="information">
     Four columns: (1) English, (2) Simplified Chinese, (3) Pinyin, (4) Unified number.<br />
     四栏内容：（1）英文，（2）简体中文，（3）拼音，（4）统一编号。
   </div>
 
   <BOUCLE_groupen(spip_demoindex)
+    {si #ENV{edition}|lg_code|=={zh}}
     {si (#ENV{variant}|non)}
     {edition=en-ii}
     {terme != ''}
@@ -490,12 +528,13 @@
 
 <B_group_bopomofo>
 <div id="index_bopomofo" class="index bopomofo-index">
-  <h1><a name="index"></a>按注音顺序排列的[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by Bopomofo (Zhuyin)</h1>
+  <h1><a name="index"></a>依注音符號順序排列索引[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by Bopomofo (Zhuyin)</h1>
   <div class="information">
-    Four columns: (1) Traditional Chinese, (2) Bopomofo, (3) English translation, (4) Unified number .<br />
-    四欄內容：（1）簡體中文，（2）英文，（3）拼音 ，（4）統一編號。 </div>
+    Four columns: (1) Traditional Chinese, (2) Zhuyin, (3) English, (4) Unified number .<br />
+    四欄內容：（1）繁體中文，（2）注音，（3）英文 ，（4）統一編號。</div>
   
   <BOUCLE_group_bopomofo(spip_demoindexzh_trad)
+    {si #ENV{edition}|lg_code|=={zh}}
     {si (#ENV{variant}|oui)}
     {edition=#EDITION}
     {fusion termezh_firstchar_bopomofo}
@@ -525,36 +564,29 @@
 <!-- Traditional index by strokes -->
 <B_group_strokes>
 <div id="index_english_strokes" class="index bopomofo-index" style="prince-page: index-stroke;">
-  <h1><a name="index"></a>按筆劃排序的[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by strokes</h1>
+  <h1><a name="index"></a>依筆劃順序排列索引[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by strokes</h1>
   <div class="information">
-    Four columns: (1) Traditional Chinese, (2) Bopomofo, (3) English translation, (4) Unified number .<br />
-    四欄內容：（1）簡體中文，（2）英文，（3）拼音 ，（4）統一編號。 </div>
+    Four columns: (1) Traditional Chinese, (2) Zhuyin, (3) English, (4) Unified number .<br />
+    四欄內容：（1）繁體中文，（2）注音，（3）英文 ，（4）統一編號。</div>
   
-   <BOUCLE_group_strokes(spip_demoindexzh_trad)
+  <BOUCLE_group_strokes(spip_demoindexzh_trad)
+    {si #ENV{edition}|lg_code|=={zh}}
     {si (#ENV{variant}|oui)}
     {edition=#EDITION}
     {fusion termezh_strokes_separator}
     {par termezh_HEX_strokes, termezh_strokes_separator}>
-
-
     <h2 class="information">[(#TERMEZH_STROKES_SEPARATOR)]</h2>
     <div class="section">
     <ul class="index">
-	  
     <BOUCLE_items_strokes(spip_demoindexzh_trad)
       {si (#ENV{variant}|oui)}
       {edition=#EDITION}
       {termezh_strokes_separator=#TERMEZH_STROKES_SEPARATOR}
       {par termezh_HEX_strokes}>
-      
-      <li>
-        <span style="string-set: indexinitials '#TERMEZH_STROKES_SEPARATOR'; indexchar '#TERMEZH|mb_substr{0,1}'; height: 0; overflow: hidden; display: block;"></span>
-	<a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>  #TERME <span class="bopomofo">(#TERMEZH_BOPOMOFO)</span><span class="english"> [(#TERMEEN|ameliorer_index)][(#NOUVEAU|=={oui}|?{ ★,''})]</span> </a>
-       </li>
+      <li>  <span style="string-set: indexinitials '#TERMEZH_STROKES_SEPARATOR', indexchar '#TERMEZH|mb_substr{0,1}'; height: 0; overflow: hidden; display: block;"></span><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>  #TERME <span class="bopomofo">(#TERMEZH_BOPOMOFO)</span><span class="english"> [(#TERMEEN|ameliorer_index)][(#NOUVEAU|=={oui}|?{ ★,''})]</span> </a> </li>
     </BOUCLE_items_strokes>
     </ul>
     </div>
-      
   </BOUCLE_group_strokes>
 </div>
 </B_group_strokes>
@@ -564,22 +596,21 @@
 
 <B_groupent>
   <div id="index_english_bopomofo" class="index english-index">
-    <h1><a name="index english-index"></a>索引按英文排序[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by English</h1>
+    <h1><a name="index english-index"></a>依英文字母排序索引[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by English</h1>
     <div class="information">
-      Five columns: (1) English, (2) Traditional Chinese, (3) Bopomofo, (4) Pinyin , (5) Unified number.<br />
-      五欄內容：（1）英文，（2）繁體中文（3）拼音，（4）注音符號，（5）統一編號。
+      Five columns: (1) English, (2) Traditional Chinese, (3) Zhuyin, (4) Pinyin , (5) Unified number.<br />
+      五欄內容：(1) 英文，(2) 繁體中文，(3) 注音，(4) 拼音，(5) 統一編號。
     </div>
 
   <BOUCLE_groupent(spip_demoindex)
+    {si #ENV{edition}|lg_code|=={zh}}
     {si (#ENV{variant}|oui)}
     {edition=en-ii}
     {terme != ''}
     {par  terme, section, numterme}>
-
 [(#COMPTEUR_BOUCLE|=={1}|oui)[(#TERME|initiale{#EDITION}|non)<ul class="index" >]
 ][[(#COMPTEUR_BOUCLE|=={1}|non)</ul>]<h2>(#TERME|initiale{#EDITION}|unique)</h2>
 <ul class="index" >]
-  
     <BOUCLE_itemsent(spip_demoindexzh_trad)
       {si (#ENV{variant}|oui)}
       {edition=zh-ii}
@@ -588,18 +619,10 @@
       {par termezh_bopomofo}>
       <BOUCLE_match(CONDITION){si #_groupent:INTEXTE|normaliser_index|=={#TERMEEN|normaliser_index}}>
 	<li class="[(#_groupent:TERME|initiale{#_groupent:EDITION})][(#_groupent:TERME|initiale{#_groupent:EDITION,1,'lower'})]">
-	  <a href="##_groupent:SECTION"
-             title="#_groupent:SECTION-#_groupent:NUMTERME[(#_groupent:ENTREE|=={note}|?{*,''})]"
-             [(#_groupent:ENTREE|=={note}|oui)class="noteterm"]>
-            [(#_groupent:TERME|ameliorer_index)][(#_groupent:NOUVEAU|=={oui}|?{ ★,''})]
-            #TERMEZH
-            <span class="bopomofo">(#TERMEZH_BOPOMOFO)</span>
-            <span class="pinyin">#TERMEZH_DIACRPINYIN</span>
-	  </a>
-	</li>
+	  <a href="##_groupent:SECTION" title="#_groupent:SECTION-#_groupent:NUMTERME[(#_groupent:ENTREE|=={note}|?{*,''})]"
+             [(#_groupent:ENTREE|=={note}|oui)class="noteterm"]>[(#_groupent:TERME|ameliorer_index)][(#_groupent:NOUVEAU|=={oui}|?{ ★,''})] #TERMEZH <span class="bopomofo">(#TERMEZH_BOPOMOFO)</span> <span class="pinyin">#TERMEZH_DIACRPINYIN</span></a></li>
       </BOUCLE_match>
     </BOUCLE_itemsent>
-
   </BOUCLE_groupent>
     </ul>
 </div>
