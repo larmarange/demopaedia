@@ -5,39 +5,130 @@ define('_DIR_DEMOPAEDIA_DICTIONARY', _DIR_DEMOPAEDIA.'dictionary/');
 
 include_spip('inc/config');
 //spip_log("Checkpoint A: edition = $edition", "demopaedia_debug");
-//spip_log('foo foo', 'demopaedia');
+spip_log("\nStarting demopaedia update", "demopaedia"); //should be in tmp/log/demopaedia.log
+//spip_log("Variable X = " . var_export($x, true), "demopaedia");
+//spip_log("Reached cleanup exact replacements", "demopaedia");
+
 function demopaedia_effacer_edition($edition){
 	include_spip('base/abstract_sql');
 	sql_delete('spip_demodef','edition = '.sql_quote($edition));
+	if (lg_code($edition) == 'zh'){
+//	  if( $variant == 'zh_hant'){
+	    spip_log("Demopaedia : la table spip_demoindexzh_trad va être supprimée ". $variant, "demopaedia");
+	    sql_delete('spip_demoindexzh_trad','edition = '.sql_quote($edition));
+//	  }else{ // on ne doit pas supprimer spip_demoindexzh qui a été juste créée dans demopaedia_maj_edition via generate_demoindex_from_python
+	    spip_log("Demopaedia : la table spip_demoindexzh va être supprimée ". $variant, "demopaedia");
+	    sql_delete('spip_demoindexzh','edition = '.sql_quote($edition));
+//	  }
+	  spip_log("Demopaedia : la table spip_demoindex de ". $edition ." va être supprimée mais pas la mémoire demoindex ". $variant, "demopaedia");
+	}
 	sql_delete('spip_demoindex','edition = '.sql_quote($edition));
-	sql_delete('spip_demoindexth','edition = '.sql_quote($edition));
+
+	// Check if the table exists in the current connection
+	if (sql_showtable('spip_demoindexth', true)) {
+	  sql_delete('spip_demoindexth', 'edition = ' . sql_quote($edition));
+	}
+	/* sql_delete('spip_demoindexth','edition = '.sql_quote($edition)); */
 	sql_delete('spip_demonotes','edition = '.sql_quote($edition));
 	sql_delete('spip_demoinfo','edition = '.sql_quote($edition));
+	if (lg_code($edition) == 'zh'){
+	  spip_log("Demopaedia : la table spip_demoinfo a été supprimée ". $variant, "demopaedia");
+	}
 	spip_log("Demopaedia : l'édition $edition a été supprimée de la base de donnée.");
-	// On invalide le cache
+	if (lg_code($edition) == 'zh'){
+	  spip_log("Demopaedia : l'édition $edition a été supprimée de la base de donnée.","demopaedia");
+	}
+        // On invalide le cache
 	include_spip('inc/invalideur');
 	suivre_invalideur($edition);
 }
 
-// For Chinese or any language with a single variant (and no avertissement page!)
 function convert_simplified_to_traditional($text) {
     $tmpfile = tempnam(sys_get_temp_dir(), 'simp');
     file_put_contents($tmpfile, $text);
 
     // Escape for shell
-    $escaped = escapeshellarg($tmpfile); // e.g., '/tmp/simpXXXXX'
+    $escaped = escapeshellarg($tmpfile);
 
-    // Call Python with inline code
-    // $cmd = "python3 -c 'from opencc import OpenCC; print(OpenCC(\"s2t\").convert(open(\"$escaped\", encoding=\"utf-8\").read()))'";
-    // Wrap in double-quoted shell string to embed it cleanly in Python
-    $cmd = "PYTHONIOENCODING=utf-8 python3 -c \"from opencc import OpenCC; print(OpenCC('s2t').convert(open($escaped, encoding='utf-8').read()))\"";
-    //$converted = shell_exec($cmd);
-    // Run the command and capture the output
+    // Call Python OpenCC
+    $cmd = "PYTHONIOENCODING=utf-8 python3 -c \"from opencc import OpenCC; "
+         . "print(OpenCC('s2t').convert(open($escaped, encoding='utf-8').read()))\"";
+    //  cmd= PYTHONIOENCODING=utf-8 python3 -c "from opencc import OpenCC; print(OpenCC('s2t').convert(open('/tmp/simpWUz5hC', encoding='utf-8').read()))"
+    //die("convert_simplified_to_traditional  $cmd");
+    // log is on ./tmp/log/generate_index.log
     $converted = shell_exec($cmd . " 2>&1");
+    // converted is a text stream
+    
+    // Split lines for individual processing
+    //$lines = preg_split('/\R/u', $converted);
 
-    //unlink($tmpfile);
+    // Prepare log file
+    //$log_file =  _DIR_TMP . "log/generate_index2.log";
+
+    // Known exact replacements in the text, not in the index.
+    $override_traditional = [
+        "姓名錶" => "姓名表",
+	//"聯閤家庭" => "聯合家庭", // Shouldn't be 聯閤家庭 which is too old
+	//"复合家庭" => "聯合家庭", // Shouldn't be 聯閤家庭 which is too old
+	"聯合家庭" => "聯合家庭", // Shouldn't be 聯閤家庭 which is too old
+	"聯機" => "網際網路", // (on line) (228-2) we tend to translate as網際網路, but it is up to you.
+	"記錄" => "紀錄", // # 15.  P. 118, 記錄(record)（211-3）, should be 紀錄 。Yes but in Taiwan and Hong Kong only
+	"勞動力參加比" => "勞動力參與比", //labor force participation ratio）(350-6), we tend to translate as 勞動力參與比。Here, 與should be pronounced as ㄩˋ（4th sound）.
+	//"人口重新分佈" => "人口重新分布",
+	"分佈" => "分布", // In addition, distribution is translated as 「分布」not 「分佈」in nowadays
+	"家庭計劃" => "家庭計畫", //家庭計畫 (Jiātíng Jìhuà): The standard term used in Taiwan. 家庭計劃 (Jiātíng Jìhuà): The standard term used in Mainland China.
+	"家庭生育計劃" => "家庭生育計畫", // 624-4
+	"計劃生育者" => "計畫生育者",  // 624-2 and 3
+	"計劃生育者" => "計畫生育者",
+	"計劃生育" => "計畫生育", //625-1
+	"幹擾" => "干擾", //819-7 back to simplified in fact!
+	"计划的生育" => "計畫的生育", // No reference to one-child policy, more neutral
+	"抽樣計劃" => "抽樣計畫", // Taiwan, sampling plan but there are others 160-5
+	"最初年齡分佈" => "最初年齡分布" // Taiwan 703-4 initial age distribution  
+    ];
+    foreach ($override_traditional as $bad => $good) {
+        $hits = substr_count($converted, $bad);
+        if ($hits) {
+	  spip_log("override_traditional: '$bad' → '$good' ×$hits", "demopaedia");
+	  $converted = strtr($converted, [$bad => $good]);
+        }
+    }
+    // 2) robust regex cleanups (UTF-8 aware)
+    //    - drop leading “予” immediately before 免稅/免税 (with optional spaces)
+    //    - strip trailing article codes like （931-4） or (931-4)
+    //    - trim and normalize spaces around CJK punctuation
+    $patterns = [
+        // Remove 予 before 免稅/免税 at word/segment boundaries
+        ['rx' => '/(^|[\s>（(])予(?=\s*免[稅税])/u', 'rep' => '$1', 'desc' => "drop '予' before 免稅/免税"],
+        // Remove trailing code in fullwidth or ASCII parens
+        ['rx' => '/\s*[（(]\d{3,4}-\d+[）)]\s*/u', 'rep' => '', 'desc' => 'drop trailing code (（1234-5）)'],
+        // Collapse excessive horizontal spaces
+        ['rx' => '/\h+/u', 'rep' => ' ', 'desc' => 'collapse spaces'],
+        // Remove spaces next to CJK punctuation
+        ['rx' => '/\s+(?=[，。；：？！、）)》」』])/u', 'rep' => '', 'desc' => 'trim space before right punc'],
+        ['rx' => '/(?<=[（(《「『])\s+/u',          'rep' => '', 'desc' => 'trim space after left punc'],
+    ];
+    foreach ($patterns as $p) {
+        $text2 = preg_replace($p['rx'], $p['rep'], $converted, -1, $count);
+        if ($count) {
+	  spip_log("cleanup regex: {$p['desc']} — {$count} hit(s)", "demopaedia");
+            $converted = $text2;
+        }
+    }
+    // Remove possible trailing newline or carriage return
+    $converted = rtrim($converted, "\r\n");
+
     return $converted;
 }
+function chiffre_chinois($n) {
+    $map = [
+        0=>'零',1=>'一',2=>'二',3=>'三',4=>'四',
+        5=>'五',6=>'六',7=>'七',8=>'八',9=>'九',10=>'十',
+        11=>'十一',12=>'十二',13=>'十三',14=>'十四',15=>'十五',16=>'十六'
+    ];
+    return isset($map[$n]) ? $map[$n] : $n;
+}
+			
 function generate_demoindex_from_python($edition, $variant) {
     //die("generate_demo_index $edition $variant");
 
@@ -101,15 +192,34 @@ function demopaedia_maj_edition($edition){
 		// Added for traditional Chinese if their is a variant
 	//Make sure OpenCC is installed (e.g., sudo yum install opencc or apt install opencc).
 	// Convert to Traditional if needed
-	if (lg_code($edition) == 'zh' and $variant == 'zh_hant') {  //
-	  spip_log("Demopaedia : on traite les notes.");
-	  $xml = convert_simplified_to_traditional($xml);
+	if (lg_code($edition) == 'zh'){
+	  if ( $variant == 'zh_hant') {  //
+	    spip_log("Demopaedia : applies simplified_to_traditional to the wiki (xml) ". $variant, "demopaedia");
+	    $xml = convert_simplified_to_traditional($xml);
+	  }else{
+	    spip_log("Demopaedia : no conversion of the wiki (xml) to traditional ". $variant, "demopaedia");
+	  }
+	  // Sauvegarde du flux xml pour debug
+	  spip_log("Demopaedia : save the xml on file ". $variant, "demopaedia");
+	  $logfile = _DIR_TMP . "xml_raw_" . $edition . $variant . ".xml";
+	  if (!ecrire_fichier($logfile, $xml)) return false;
 	}
-
-	// Call Python indexer with proper variant
-	if (!generate_demoindex_from_python($edition, $variant)) {
-	  return false; // Fail early if Python call didn't work
-	}
+	
+	// Call Python indexer with proper variant. Works only on sql column spip_demoindex term for indexing in various transcriptions, not on text.
+	// It means that in case of a variant and if there are exceptions to be treated, they have to be treated also
+	// in generate_demoindex_from python!
+	/* if (lg_code($edition) == 'zh' ){ */
+	/*   // Feeds the table spip_demoindexzh or demoindexzh_trad from spip_demoindex for pinyin, bopop, stroke etc. */
+	/*   // but doesn't change the main text. */
+	/*   if( $variant == 'zh_hant'){ */
+	/*     spip_log("Demopaedia : generate_demoindex_from_python (deletes and creates table spip_demoindexzh_trad from table spip_demoindex ". $variant, "demopaedia"); */
+	/*   }else{ */
+	/*     spip_log("Demopaedia : generate_demoindex_from_python (deletes and creates table spip_demoindexzh from table spip_demoindex ". $variant, "demopaedia"); */
+	/*   } */
+	/*   if (!generate_demoindex_from_python($edition, $variant)) { */
+	/*     return false; // Fail early if Python call didn't work */
+	/*   } */
+	/* } */
 	
 
 	// On créé les tableaux qui vont récupérer les données traitées
@@ -118,9 +228,12 @@ function demopaedia_maj_edition($edition){
 	$demoindex = array();
 	$demoinfo = array();
 	
-	// On créé un tableau pour chaque page
+	// On créé un tableau pour chaque page depuis le fichier $xml qui a peut-être été transcrit dans une autre variante.
 	preg_match_all('/\<page\>(.*?)\<\/page\>/s',$xml,$pages);
 	
+	if (lg_code($edition) == 'zh' ){
+	  spip_log("Demopaedia : on traite les pages ". $variant, "demopaedia");
+	}
 	// On traite chaque page séparément
 	foreach($pages[1] as $page) {
 		// On récupère le texte et le titre de la page
@@ -278,10 +391,10 @@ function demopaedia_maj_edition($edition){
 				// Sans EnglishEntry
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|nouveau=oui([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2★</sup>',$section);
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section);
-				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section); // Cas où on a une syntaxe courte avec juste le num du terme
+$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section); // Cas où on a une syntaxe courte avec juste le num du terme
 				
 				// Traitement des notes
-		spip_log("Demopaedia : on traite les notes.");
+                                //spip_log("Demopaedia2 : on traite les notes.","demopaedia");
 				preg_match_all('/\{Note\|(.+)\}/U',$section,$notes);
 				foreach($notes[1] as $note) {
 					$note = explode ('|',$note);
@@ -392,16 +505,38 @@ function demopaedia_maj_edition($edition){
 		else {
 			$type = '';
 			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia-$edition/page_introduction")))
-				$type = 'introduction';
+			  $type = 'introduction';
 			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia-$edition/page_preface")))
-				$type = 'preface';
-			if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia-$edition/page_avertissement")))
-				$type = 'avertissement';
+			  $type = 'preface';
+			// In Chinese the avertissement is not identical in simplified (default) and in traditional
+			// therefore we need to convert first.
+			if (lg_code($edition)=='zh') {
+			  spip_log("Demopaedia : debug demoinfo zh  ". $variant, "demopaedia");
+			  if( $variant == 'zh_hant'){
+			    $config_avertissement = convert_simplified_to_traditional(
+			      str_replace('_',' ',lire_config("demopaedia-$edition/page_avertissement")));
+			    spip_log("Demopaedia : debug demoinfo variant $config_avertissement .". $variant, "demopaedia");
+			    spip_log("Demopaedia : debug demoinfo variant title= $title  .". $variant, "demopaedia");
+			    spip_log("Demopaedia : title raw=".json_encode($title[1][0]), "demopaedia");
+			    spip_log("Demopaedia : config raw=".json_encode($config_avertissement), "demopaedia");
+			    if ($title[1][0] == $config_avertissement) {
+			      $type = 'avertissement';
+			      spip_log("Demopaedia : debug demoinfo Variant $type .". $variant, "demopaedia");
+			    }
+			  }else{
+			    if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia-$edition/page_avertissement")))
+			      $type = 'avertissement';
+			    spip_log("Demopaedia : debug demoinfo no variant $type .". $variant, "demopaedia");
+			  }
+			} else{     
+			  if ($title[1][0]==str_replace('_',' ',lire_config("demopaedia-$edition/page_avertissement")))
+			    $type = 'avertissement';
+			}
 			// Si on récupère la page
 			if ($type !='') {
-				// On redéfini l'édition en cours à chaque page à cause des redirections possibles
+				// On redéfinit l'édition en cours à chaque page à cause des redirections possibles
 				$edition_en_cours = $edition;
-				// On vérifie qu'on a pas à faire à une redirection sur le About de en-ii
+				// On vérifie qu'on n'a pas à faire à une redirection sur le About de en-ii
 				if (preg_match('@\[\[en-ii(.*)About\]\]@',$texte)) {
 					$url_about = 'http://en-ii.';
 					$url_about .= lire_config('demopaedia/domaine');
@@ -491,40 +626,70 @@ function demopaedia_maj_edition($edition){
 					else
 						$texte .= "<p>".$paragraphe."</p>\n";
 				
-				// On préparer les données à insérer
+				// On prépare les données à insérer
 				$demoinfo[] = array(
 					'edition' => $edition,
 					'type' => $type,
 					'texte' => trim($texte)
 				);
+				if (lg_code($edition)=='zh' and $type == 'avertissement') {
+				  spip_log("Demopaedia : debug demoinfo TEXTE $texte AND  ". $variant, "demopaedia");
+				}      
 			}
 		// Fin traitement des autres pages
 		}
 	// Fin traitement page
 	}
 	
-	if (count($demodef)>0 and count($demoindex)>0) {
+			//if (count($demodef)>0 and count($demoindex)>0) {
+			//if (lg_code($edition !='zh' and count($demodef)>0 and count($demoindex)>0) {
+	/* if (count($demodef)>0 and count($demoindex)>0) { */
+	if (count($demodef)>0 and count($demoindex)>0 and count($demoinfo)>0) {
 		// On supprime les anciennes entrées
-		demopaedia_effacer_edition($edition);
+	        demopaedia_effacer_edition($edition);
 		// Gestion du cas particulier du Thai
 		if (lg_code($edition)=='th') {
 			foreach ($demoindex as $c => $v)
 				$demoindex[$c]['termeth'] = $demoindex[$c]['terme'];
 		}
 		// Gestion du cas particulier du Chinois en effet si la base est utf8mb4 l'ordre de tri par exemple en pinyin doit être
-		// dans une variable ayant ce collate.
+		// dans une variable ayant ce collate. Be careful that 'terme' could be already in traditional
 		if (lg_code($edition)=='zh') {
+		  spip_log("Demopaedia : remplacement en mémoire de demoindex terme par termezh  ". $variant, "demopaedia");
 			foreach ($demoindex as $c => $v)
 				$demoindex[$c]['termezh'] = $demoindex[$c]['terme'];
 		}
 		// On met à jour la base de données
 		sql_insertq_multi('spip_demodef',$demodef);
 		sql_insertq_multi('spip_demonotes',$demonotes);
+		if (lg_code($edition)=='zh') {
+		  spip_log("Demopaedia : copie de la memoire demoindex, eventuellement transformé, dans la table spip_demoindex  ". $variant, "demopaedia");
+		}
+
 		sql_insertq_multi('spip_demoindex',$demoindex);
-		if (count($demoinfo)>0)
-			sql_insertq_multi('spip_demoinfo',$demoinfo);
-		//spip_log("Demopaedia : l'édition $edition a été mise à jour.", "demopaedia");
-		spip_log("Demopaedia : l'édition $edition a été mise à jour.");
+		// once the table is created we create spip_demoindexzh or spip_demoindexzh_trad
+		if (lg_code($edition) == 'zh' ){
+		  // Feeds the table spip_demoindexzh or demoindexzh_trad from spip_demoindex for pinyin, bopop, stroke etc.
+		  // but doesn't change the main text.
+		  if( $variant == 'zh_hant'){
+		    spip_log("Demopaedia : generate_demoindex_from_python (deletes and creates table spip_demoindexzh_trad from table spip_demoindex ". $variant, "demopaedia");
+		  }else{
+		    spip_log("Demopaedia : generate_demoindex_from_python (deletes and creates table spip_demoindexzh from table spip_demoindex ". $variant, "demopaedia");
+		  }
+		  if (!generate_demoindex_from_python($edition, $variant)) {
+		    return false; // Fail early if Python call didn't work
+		  }
+		}
+
+		if (count($demoinfo)>0){
+		  sql_insertq_multi('spip_demoinfo',$demoinfo);
+		  if (lg_code($edition) == 'zh' ){
+		    spip_log("Demopaedia :  table spip_demoinfo created ". $variant, "demopaedia");
+		  }
+		}
+		if (lg_code($edition) == 'zh' ){
+		  spip_log("Demopaedia : l'édition $edition a été mise à jour.", "demopaedia");
+		}
 		// On invalide le cache
 		include_spip('inc/invalideur');
 		suivre_invalideur($edition);
@@ -568,6 +733,13 @@ function demopaedia_generer_pdf($edition){
 	touch(_DIR_DEMOPAEDIA_DICTIONARY . 'test.txt');
 	file_put_contents(_DIR_TMP . 'demopaedia_debug.txt', var_export($file_html_prince, true));
 
+	if (lg_code($edition) == 'zh' ){
+	  if( $variant == 'zh_hant'){
+	    spip_log("Demopaedia : demopaedia_generer_pdf traditional using recuperer_fond in html and creating $file_html_prince ". $variant, "demopaedia");
+	  }else{
+	    spip_log("Demopaedia : demopaedia_generer_pdf simplified using recuperer_fond in html and creating $file_html_prince ". $variant, "demopaedia");
+	  }
+	}
 	//if (!ecrire_fichier($file_html_prince,recuperer_fond('generate_dictionary', array('format' => 'prince', 'edition' => $edition)))) return false;
 	// Generate the HTML
 	$html = recuperer_fond('generate_dictionary', array(
@@ -577,7 +749,8 @@ function demopaedia_generer_pdf($edition){
 				 ));
 
 	if (lg_code($edition) == 'zh' and $variant == 'zh_hant') {
-	  $html = convert_simplified_to_traditional($html);
+	  /*   $html = convert_simplified_to_traditional($html); */
+	  spip_log("Demopaedia : demopaedia_generer_pdf zh_hant not transforming again but writing $file_html_prince ". $variant, "demopaedia");
 	}
 
 	if (!ecrire_fichier($file_html_prince, $html)) return false;
