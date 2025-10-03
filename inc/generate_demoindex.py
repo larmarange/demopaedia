@@ -40,7 +40,7 @@ if use_traditional:
 db_config = {
     "unix_socket": "/var/lib/mysql/mysql.sock",  # Change if needed
     "user": "root",  # Replace with your username
-    "password": "passwd",  # Replace with your password
+    "password": "ticsympatic",  # Replace with your password
     "database": "tools",
     "charset": "utf8mb4",
     "cursorclass":pymysql.cursors.DictCursor
@@ -784,49 +784,59 @@ override_pinyin = {
     "轉變增長": {"轉": "zhuǎn"},
     "轉變後階段": {"轉": "zhuǎn"},
     # Added by ko in traditional
-    "保留地": {"地": "dì"},
-    "地方": {"地": "dì"},
-    "地帶": {"地": "dì"},
-    "地區": {"地": "dì"},
-    "可耕地": {"地": "dì"},
-    "地圖": {"地": "dì"},
-    "來源地": {"地": "dì"},
-    "居住地": {"地": "dì"},
-    "地位": {"地": "dì"},
-    "遷出地": {"地": "dì"},
-    "遷入地": {"地": "dì"},
-    "現住地": {"地": "dì"},
-    "長住地": {"地": "dì"},
-    "出生地": {"地": "dì"},
-    "目的地": {"地": "dì"},
+    "保留地": {"地": "dì"}, #ST
+    "地方": {"地": "dì"},  #S 
+    "地帶": {"地": "dì"}, #S
+    "地區": {"地": "dì"}, #T
+    "可耕地": {"地": "dì"}, #S
+    "地圖": {"地": "dì"}, #T
+    "來源地": {"地": "dì"}, #T
+    "居住地": {"地": "dì"}, #S
+    "地位": {"地": "dì"}, #S
+    "遷出地": {"地": "dì"}, #T
+    "遷入地": {"地": "dì"}, #T
+    "現住地": {"地": "dì"}, #T
+    "長住地": {"地": "dì"}, #T
+    "出生地": {"地": "dì"}, #S
+    "目的地": {"地": "dì"}, #S
     # Added ko sep2025
     "人口更替": {"更": "gēng"}, #17.	P. 119, should be 人口更替ㄖㄣˊㄎㄡˇㄍㄥ-(1sr sound) ㄊㄧˋ
     "雙重計數": {"重": "chóng"}, # 22.	p.117, should be 雙重計數ㄕㄨㄤㄔㄨㄥˊㄐㄧˋㄕㄨˋ
-    "著床": {"著": "zhuó"}, # 23.	p. 116, should be 著床ㄓㄨㄛˊㄔㄨㄤˊdone
+    "双重计数": {"重": "chóng"}, # 22. changed in Simplified too 
+    "著床": {"著": "zhuó"}, # 23.	p. 116, should be 著床ㄓㄨㄛˊㄔㄨㄤˊdone OK in T
+    "着床": {"着": "zhuó"}, # 23.	p. 116 done OK in S 
     "省": {"省": "shěng"}, # 24.	p. 114, should be 省ㄕㄥˇdone
     "淨更替": {"更": "gēng"}, # 1.	p. 112, should be 淨更替ㄐㄧㄥˋㄍㄥ（1st sound）ㄊㄧˋ 710-4
+    "净更替": {"更": "gēng"}, # 1.	p. 112,  710-4
     #2 2nd sound
-    "長度": {"長": "cháng"},
-    "長住地": {"長": "cháng"},
-    "長工": {"長": "cháng"},
+    "長度": {"長": "cháng"}, # T 434-1
+    "长度": {"长": "cháng"}, # S
+    "長住地": {"長": "cháng"}, #T 212-3
+    "长住地": {"长": "cháng"}, # S 212-3
+    "長工": {"長": "cháng"},   # T 356-4
+    "长工": {"长": "cháng"},   # S 356-4
     # 801-5
-    "目的地": {"的": "dì"},
+    "目的地": {"的": "dì"},  # 801-5 T and S
     # 3rd sound
-    "累積": {"累": "lěi"},
-    "累积": {"累": "lěi"},
+    "累積": {"累": "lěi"},  #T 523-6
+    "累积": {"累": "lěi"}, #S 523-6
     # 結合終了510-2 third
-    "結合終了": {"了": "liǎo"},
-    "结合终了": {"了": "liǎo"},
+    # Changed to 婚姻终结 by Feinuo
+    #  "結合終了": {"了": "liǎo"},
+    #  "结合终了": {"了": "liǎo"},
     #集體宿舍（120-1),
-    "集體宿舍": {"宿": "sù"},
-    "集体宿舍": {"宿": "sù"},
+    "集體宿舍": {"宿": "sù"}, #T
+    "集体宿舍": {"宿": "sù"}, #S
     # 校should be ㄐㄧㄠˋ（4th sound) , such as 校訂
-    "校訂": {"校": "dìng"},
-    "校订": {"校": "dìng"},
+    "校訂": {"訂": "dìng"}, #T
+    "校订": {"订": "dìng"}, #S 130-5
     #"校訂": {"校": "dìng"},   # ⚠️ this one looks like a dict but you want "jiào" not "dìng"
+    "校訂": {"校": "jiào"},   # T
+    "校订": {"校": "jiào"},   # S
     #9) 少 should be ㄕㄠˋ(4th sound), such as 青少年 or 少青年
-    "青少年": {"少": "shào"},
-    "少青年": {"少": "shào"},
+    "青少年": {"少": "shào"}, #S 324-2 and 324-3
+    "少年": {"少": "shào"}, #S 324-2 and 324-3
+    "少青年": {"少": "shào"}, #S
     #10) 重 should be ㄔㄨㄥˊ（2nd sound), such as 人口重新分佈、重報、重複。
     #"人口重新分佈": {"重": "chóng"}, 分佈 should be replaced by 分布
     "人口重新分布": {"重": "chóng"},
@@ -839,7 +849,8 @@ override_pinyin = {
     "著床": {"床": "chuáng"},
     # Ko 16Aug
     # 1.     P. 105, 調整率（136-7）（adjusted rate）, 調 should be ㄊㄧㄠˊ（2nd sound）.
-    "調整率": {"調": "tiáo"},
+    "調整率": {"調": "tiáo"}, # Tra
+    "调整率": {"调": "tiáo"}, # Simpl （136-7）
     # 2.     P. 105, 地停留時間（801-8）should be just 停留時間
     # 3.     P. 105, 斷經（climacteric）(620-6), we tend to translate as 停經（ㄊㄧㄥˊㄐㄧㄙ-）。
     # 4.     P. 106, 臺式計算器 （desk calculator） (202-6), we tend to translate as 桌面計算機
@@ -849,10 +860,12 @@ override_pinyin = {
     #Done in main xml
     # 7.     P. 108, 勞動力參加比（labor force participation ratio）(350-6), we tend to translate as 勞動力參與比。Here, 與should be pronounced as ㄩˋ（4th sound）.
     #Done in main xml. 與 is 4th sound by default.
-    "勞動力參與比": {"與": "yù"},
+    "勞動力參與比": {"與": "yù"}, # 350-6 labor force participation ratio T
+    "劳动力参加比": {"加": "yù"}, # 350-6 labor force participation ratio S
     # 8.     P. 110, plan can be translated as計畫(noun) or 計劃(verb), most of the terms used in this dictionary are nouns, hence it is better to use 計畫
     # 9.     P. 113, 遷移偏好指數（818-2）(migration preference index), 好 should be pronounced as ㄏㄠˋ（4th sound）.
     # Not sure "遷移偏好指數": {"好":
+    # Correct in Simplified
     # Are you sure? ㄑㄧㄢ遷ㄧˊ移ㄆㄧㄢ偏ㄏㄠˇ好ㄓˇ指ㄕㄨˋ數
     # "遷移偏好指數": {"好": "hǎo"},
     # 10.  P.115, 中毒 (poisoning) (422-2), 中should be pronounced as ㄓㄨㄥˋ（4th sound）.
