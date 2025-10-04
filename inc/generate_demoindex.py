@@ -39,8 +39,8 @@ if use_traditional:
 # Database connection details
 db_config = {
     "unix_socket": "/var/lib/mysql/mysql.sock",  # Change if needed
-    "user": "root",  # Replace with your username
-    "password": "ticsympatic",  # Replace with your password
+    "user": "demopaedia",  # Replace with your username
+    "password": "pass",  # Replace with your password
     "database": "tools",
     "charset": "utf8mb4",
     "cursorclass":pymysql.cursors.DictCursor
