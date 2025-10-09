@@ -28,20 +28,27 @@
 		}			 
 		
 		@page{
-			size: 15.24cm 22.86cm;
-			margin: 2cm;
+			size:  15.24cm 22.86cm; /* 15.9cm 23.5cm; */
+	    	       /* margin: 2.6cm 2cm 2.6cm 2cm; */ /* was 2cm all top right bottom left */
+ 	  	       margin: 1.5cm 2cm 1.5cm 2cm; /* top right bottom left ;*/
+		       /*  margin using vertical-align: bottom;*/
+		       padding-bottom: 1em; /* 1em=0.423cm */ /* To compensate lower margin-top and vertical-align: bottom */
+	               padding-top: 1em;
+
 			@bottom {
 				content: "—   " counter(page) "   —"; 
 				font-family: #GET{polices};
-				font-size: 9pt;
+		                font-size: 9pt;
+		                vertical-align: top; /* To compensate lower margin-bottom */
 			}
 		}
 		@page:left {
-			@top-left {
+		        @top-left {
 				content: string(doctitle);
 				font-family: #GET{polices};
 				font-size: 9pt;
-				font-style: italic;
+		                font-style: italic;
+				vertical-align: bottom;
 			}
 		}
 		@page:right {
@@ -50,32 +57,35 @@
 				font-family: #GET{polices};
 				font-size: 9pt;
 				font-style: italic;
+				vertical-align: bottom;
 			}
 		}
 		@page:first{
-			@bottom { content: normal; }
-			@top-left { content:normal;}
-			@top-right { content:normal;}
+			@bottom { content: normal; vertical-align: top;}
+			@top-left { content:normal;vertical-align: bottom;}
+			@top-right { content:normal;vertical-align: bottom;}
 		}
 		@page:blank{
-			@bottom { content: normal;}
-			@top-left { content:normal;}
-			@top-right { content:normal;}
+			@bottom { content: normal; vertical-align: top;}
+			@top-left { content:normal;vertical-align: bottom;}
+			@top-right { content:normal;vertical-align: bottom;}
 		}
 		
 		@page index {
-			@top {content: string(chaptertitle); font-family: #GET{polices}; font-size: 9pt; font-style: italic;}
-			@top-left {content: string(indexinitials, start); font-family:#GET{polices}; font-size: 9pt; font-style: normal;}
-			@top-right {content: string(indexinitials, last); font-family: #GET{polices}; font-size: 9pt; font-style: normal;}
+			@top {content: string(chaptertitle); font-family: #GET{polices}; font-size: 9pt; font-style: italic;vertical-align: bottom;}
+			@top-left {content: string(indexinitials, start); font-family:#GET{polices}; font-size: 9pt; font-style: normal;vertical-align: bottom;}
+			@top-right {content: string(indexinitials, last); font-family: #GET{polices}; font-size: 9pt; font-style: normal;vertical-align: bottom;}
 	       }
 	       @page index-stroke {
 	               @top-left {
 	                 content: string(indexinitials, start);
 	                 /* stroke count: 二畫, 三畫, etc. */
+			 vertical-align: bottom;
 	               }
 	               @top-right {
 	                 content: string(indexchar, last);
 	                 /* first char in the last group: 人, 口, etc. */
+			 vertical-align: bottom;
 	               }
 	        }
 		body {
@@ -124,6 +134,7 @@
 			position:absolute;
 			bottom: 0;
 		}
+
 		h1 {
 			padding-top: 3cm;
 			margin-bottom: 0.5cm;
@@ -132,7 +143,7 @@
 			line-height: normal;
 			text-align:left;
 			padding-right: 1cm;
-			font-size:20pt;
+			font-size:19pt;
 			[(#ENV{edition}|lg_code|=={th}|oui)font-size:24pt;]
 			page-break-before: right;
 			string-set: chaptertitle content();
@@ -162,9 +173,14 @@
 		/* div.texte a[href ^="http:"]::after {content: " (" attr(href) ")";} */
 		ol, ul {margin: 0 0 0 1cm;}
 		li {margin: 0; padding:0.1cm 0;}
+		li.note {
+		        margin: 0; padding:0.1cm 0;
+		        [(#ENV{edition}|lg_code|=={zh}|oui) padding:0cm 0;] /*New */
+		}
 		ol.notes {
 			margin: 0.25cm 1cm 0 1cm; padding:0; font-size: 9pt;
 			[(#ENV{edition}|lg_code|=={th}|oui)font-size:10pt;]
+			[(#ENV{edition}|lg_code|=={zh}|oui)margin: 0.15cm 1cm 0 1cm; font-size: 8pt;page-break-before: avoid;] /*New */
 		}
 		ul.toc a::after { content: leader(" . ") target-counter(attr(href), page);}
 		ul.toc {
@@ -172,7 +188,7 @@
 			padding: 0;
 			list-style: none;
 		}
-		.asterisme {text-align:center; width:100%; margin-top: 1cm; font-size: 20pt;}
+		.asterisme {text-align:center; width:100%; margin-top: 1cm; font-size: 20pt;page-break-before: avoid;}
 		ul.index {
 			-moz-column-count: 2;
 			-moz-column-gap: 1cm;
@@ -216,33 +232,80 @@
 	</style>
 	[(#ENV{edition}|=={zh-ii}|oui)
 	<style type="text/css">
-		@page index {
-			size: 19cm 22.86cm; /* wider for zh-ii */
-			margin: 1.25cm;
-			@top {
-				content: string(chaptertitle);
-				font-family: Libertine, FreeSerif, serif;
-				font-size: 9pt;
-				font-style: italic;
-			}
-			@top-left {
-				content: string(indexinitials, start);
-			}
-			@top-right {
-				content: string(indexinitials, last);
-			}
-		}
-		ul.index {
-			-moz-column-count: 2;
-			-moz-column-gap: 1cm;
-			-webkit-column-count: 2;
-			-webkit-column-gap: 1cm;
-			column-count: 2;
-			column-gap: 0.75cm;
-			margin: 0;
-			padding: 0;
-			list-style: none;
-		}
+	  @page index {
+	      /*size: 19cm 22.86cm;*/ /* wider for zh-ii was 15.24cm 0.802*/
+	      /* margin: 2.6cm 1.25cm 2.6cm 1.25cm;*/ /* top right bottom left before vertical-align: bottom*/
+	      margin: 1.5cm 1.25cm 1.5cm 1.25cm; /* top right bottom left ; 232 pages looks similar to 2.6cm 1.25cm 2.6cm 1.25cm; */
+	      /* margin-top: 2.6cm; */
+	      /* margin-bottom: 2.6cm; */
+	      padding-bottom: 1em; /* 1em=0.423cm */
+	      padding-top: 1em;
+	      /*vertical-align: bottom;*/
+	      @top {
+		  content: string(chaptertitle);
+		  font-family: Libertine, FreeSerif, serif;
+		  font-size: 7pt;  /* was 9pt and 8pt; */
+		  font-style: italic;
+		  vertical-align: bottom;
+		  /* padding-bottom: 1em; */
+		  /* border-bottom: thin solid black; */
+		  /* margin-bottom: 0.1em; */
+	      }
+	      @bottom {vertical-align: top;}
+	      /* @bottom { */
+	      /* 	  padding-top: 0.3em; */
+	      /* 	  border-top: thin solid black; */
+	      /* 	  margin-top: 0.3em; */
+	      /* } */
+	      @top-left {
+		  content: string(indexinitials, start);
+		  vertical-align: bottom;
+	      }
+	      @top-right {
+		  content: string(indexinitials, last);
+		  vertical-align: bottom;
+	      }
+	      /* @top-center {  /\* Added last tighter spacing below heade *\/ */
+	      /* 	  content: element(header); */
+	      /* 	  vertical-align: bottom; */
+	      /* } */
+	      /* @bottom-center { */
+	      /* 	  content: counter(page); */
+	      /* 	  font-size: 9pt; */
+	      /* 	  vertical-align: top; */
+	      /* } */
+	      /* header {  /\* That last line (margin-bottom: 0.1em;) controls the gap under the running header. *\/ */
+	      /* 	  position: running(header); */
+	      /* 	  margin-bottom: 0.1em; */
+	      /* } */
+	  }
+	  ul.index {
+	      -moz-column-count: 2;
+	      -moz-column-gap: 0.5cm;  /* was 1cm and 0.75cm */
+	      -webkit-column-count: 2;
+	      -webkit-column-gap: 0.5cm; /* was 1cm and 0.75cm */
+	      column-count: 2;
+	      column-gap: 0.5cm;
+	      margin: 0;
+	      padding: 0;
+	      list-style: none;
+	      /* Prince by default balances columns at each page break.
+		 If you want continuous flow (less white space at the bottom of columns), add
+	     */
+	      prince-column-fill: auto;
+	      font-size: 7.8pt;
+	      line-height: 95%;  /* was 100% */
+	      
+	      
+	  }
+	  h2 {
+	      font-size: 13.5pt; /* 1em=12pt ;*/
+	      font-weight: bold;
+	      margin-top: 0.5em;
+	      margin-bottom: 0.2em;
+	      page-break-after: avoid;
+	      page-break-before: avoid;
+	  }
 	</style>
 	]
 </head>
