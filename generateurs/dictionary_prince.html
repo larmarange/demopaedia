@@ -347,7 +347,7 @@
 
 <div class="sommaire">
 	 <h1> [(#ENV{variant}|=={zh_hant}|?{
-	    [(#CONFIG{demopaedia-[(#EDITION)]/sommaire|convert_simplified_to_traditional})],
+	    [(#CONFIG{demopaedia-[(#EDITION)]/sommaire}|convert_simplified_to_traditional)],
 	    [(#CONFIG{demopaedia-[(#EDITION)]/sommaire})]
 	  })]</h1>
 	<ul class="toc">
