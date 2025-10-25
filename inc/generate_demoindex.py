@@ -39,7 +39,7 @@ if use_traditional:
 # Database connection details
 db_config = {
     "unix_socket": "/var/lib/mysql/mysql.sock",  # Change if needed
-    "user": "demopaedia",  # Replace with your username
+    "user": "root",  # Replace with your username
     "password": "pass",  # Replace with your password
     "database": "tools",
     "charset": "utf8mb4",
@@ -82,6 +82,10 @@ cursor.execute(f"ALTER TABLE `{tabledemo}` ADD COLUMN IF NOT EXISTS termezh_stro
 cursor.execute(f"ALTER TABLE `{tabledemo}` ADD COLUMN IF NOT EXISTS termezh_bopomofo VARCHAR(255)")
 cursor.execute(f"ALTER TABLE `{tabledemo}` ADD COLUMN IF NOT EXISTS termezh_firstchar_bopomofo VARCHAR(10)")
 cursor.execute(f"ALTER TABLE `{tabledemo}` ADD COLUMN IF NOT EXISTS termezh_bopomofo_sort_key VARCHAR(255)")
+cursor.execute(f"ALTER TABLE `{tabledemo}` ADD COLUMN IF NOT EXISTS termezh_radical_strokes VARCHAR(10) DEFAULT NULL")
+cursor.execute(f"ALTER TABLE `{tabledemo}` ADD COLUMN IF NOT EXISTS termezh_radical_separator VARCHAR(64) DEFAULT NULL")
+cursor.execute(f"ALTER TABLE `{tabledemo}` ADD COLUMN IF NOT EXISTS termezh_radical_num SMALLINT DEFAULT NULL")
+cursor.execute(f"ALTER TABLE `{tabledemo}` ADD COLUMN IF NOT EXISTS termezh_radical_residual SMALLINT")
 
 #####
 
@@ -129,6 +133,9 @@ else:
 # unihan_irgsources = "Unihan/Unihan_IRGSources.txt"
 unihan_readings = "/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/Unihan/Unihan_Readings.txt"
 unihan_irgsources = "/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/Unihan/Unihan_IRGSources.txt"
+unihan_radicalstrokes = "/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/Unihan/Unihan_RadicalStrokeCounts.txt"
+kangxi_radicals_txt = "/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/kangxi_radicals.txt"
+unihan_radicalstrokecounts_txt = "/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/Unihan/Unihan_RadicalStrokeCounts.txt"
 
 # bopomofo
 pinyin_to_bopomofo = {
@@ -717,6 +724,72 @@ with open(unihan_irgsources, 'r', encoding='utf-8') as file:
         if match:
             stroke_data[chr(int(match[1], 16))] = int(match[2])
 
+# ---------------------------------------------------------------------
+# 5. Example: process terms list
+# ---------------------------------------------------------------------
+# if __name__ == "__main__":
+#     sample_terms = ["人口", "國家", "教育", "水利", "電力", "醫院"]
+#     for term in sample_terms:
+#         key = make_radical_stroke_key(term)
+#         sep = make_radical_separator(term)
+#         print(f"{term:6s} → {key:>8s} → {sep}")
+
+#import re
+
+# === Load Kangxi radicals ===
+kangxi_radicals = {}
+kangxi_strokes = {}
+
+with open(kangxi_radicals_txt, "r", encoding="utf-8") as f:
+    for line in f:
+        if not line.strip() or line.startswith("#"):
+            continue
+        num, radical, strokes = line.strip().split("\t")
+        num = int(num)
+        strokes = int(strokes)
+        kangxi_radicals[num] = radical
+        kangxi_strokes[num] = strokes
+
+# === Load Unihan Kangxi data ===
+rs_kangxi = {}
+
+with open(unihan_radicalstrokecounts_txt, "r", encoding="utf-8") as f:
+    for line in f:
+        m = re.match(r"^U\+([0-9A-F]+)\s+kRSKangXi\s+(\d+)\.(\d+)$", line)
+        if m:
+            char = chr(int(m.group(1), 16))
+            radical_num = int(m.group(2))
+            residual = int(m.group(3))
+            rs_kangxi[char] = (radical_num, residual)
+            #print("unihan_dictionarylikedata_txt char radical_num residual: ", char,  "→",  radical_num ,   "→", residual )
+
+# === Function to compute Kangxi radical-stroke info ===
+def get_radical_stroke_info(term):
+    """Return (key, separator, radical_num, residual) for Kangxi order."""
+    if not term:
+        return "000_00", "無部首", 0, 0
+
+    first_char = term[0]
+
+    # get radical info from Unihan data
+    radical_num, residual = rs_kangxi.get(first_char, (0, 0))
+
+    # get actual radical character (from lookup table)
+    radical_char = kangxi_radicals.get(radical_num, "？")
+
+    # formatted key for sorting (zero-padded)
+    key = f"{radical_num:03d}_{residual:02d}"
+
+    # formatted separator label
+    separator = f"{radical_num:03d}部首 {radical_char}＋{residual}畫"
+
+    return key, separator, radical_num, residual
+
+# === Example ===
+for word in ["國家", "教育", "水利", "電力", "醫院", "人口"]:
+    key, sep, radical_num, residual = get_radical_stroke_info(word)
+    print(" get_radical_stroke_info bis : key, sep, radical_num, residual", word, "→", key, "→", sep, "→", radical_num, "→", residual)
+
 # Load pinyin data
 pinyin_data = {}
 tone_map = {'1': {'a': 'ā', 'e': 'ē', 'i': 'ī', 'o': 'ō', 'u': 'ū'},
@@ -1125,7 +1198,10 @@ for row in rows:
         characters = list(termezh)
     else:
         characters = list(terme)
-     
+        
+    #  Kangxi radical-stroke info    
+    radical_strokes, radical_separator, radical_num, radical_residual = get_radical_stroke_info(characters[0])
+
     # Get stroke counts for each character
     stroke_counts = [stroke_data.get(c, 0) for c in characters]
     
@@ -1159,7 +1235,7 @@ for row in rows:
     # cursor.execute("INSERT INTO spip_demoindexzh (terme, termeen, termezh_pinyin, termezh_diacrpinyin, termezh_HEX_strokes, termezh_strokes_separator, termezh_strokes) VALUES (%s, %s, %s, %s, %s, %s, %s)",
     #                (terme, termeen, pinyin, diacr_pinyin, hex_strokes, strokes_separator, strokes))
     #cursor.execute(f"INSERT INTO `{tabledemo}` (edition, section, numterme, entree, terme, termeen, maj, intexte, nouveau, termezh_strokes, termezh_pinyin, termezh_diacrpinyin, termezh_HEX_strokes, termezh_strokes_separator) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (edition, section, numterme, entree, terme, termeen, maj, intexte, nouveau, strokes, pinyin, diacr_pinyin, hex_strokes, strokes_separator))
-    cursor.execute(f"INSERT INTO `{tabledemo}` (edition, section, numterme, entree, terme, termezh, termeen, maj, intexte, nouveau, termezh_strokes, termezh_pinyin, termezh_diacrpinyin, termezh_HEX_strokes, termezh_strokes_separator, termezh_bopomofo, termezh_bopomofo_sort_key) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(edition, section, numterme, entree, terme, termezh, termeen, maj, intexte, nouveau, strokes, pinyin, diacr_pinyin, hex_strokes, strokes_separator, bopomofo, bopomofo_sort_key))
+    cursor.execute(f"INSERT INTO `{tabledemo}` (edition, section, numterme, entree, terme, termezh, termeen, maj, intexte, nouveau, termezh_strokes, termezh_pinyin, termezh_diacrpinyin, termezh_HEX_strokes, termezh_strokes_separator, termezh_bopomofo, termezh_bopomofo_sort_key, termezh_radical_strokes, termezh_radical_separator, termezh_radical_num, termezh_radical_residual) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",(edition, section, numterme, entree, terme, termezh, termeen, maj, intexte, nouveau, strokes, pinyin, diacr_pinyin, hex_strokes, strokes_separator, bopomofo, bopomofo_sort_key, radical_strokes, radical_separator, radical_num, radical_residual))
 
 # end loop
 
