@@ -192,7 +192,7 @@ function demopaedia_maj_edition($edition){
 		// Added for traditional Chinese if their is a variant
 	//Make sure OpenCC is installed (e.g., sudo yum install opencc or apt install opencc).
 	// Convert to Traditional if needed
-	if (lg_code($edition) == 'zh'){
+	if (lg_code($edition) == 'zh' || lg_code($edition) == 'ko'){
 	  if ( $variant == 'zh_hant') {  //
 	    spip_log("Demopaedia : applies simplified_to_traditional to the wiki (xml) ". $variant, "demopaedia");
 	    $xml = convert_simplified_to_traditional($xml);
@@ -264,7 +264,20 @@ function demopaedia_maj_edition($edition){
 			$texte = preg_replace('/EnglishEntry=/U','EnglishEntry:',$texte);
 			
 			// On traite les NonRefTerm
-			$texte = preg_replace('/\{\{NonRefTerm\|(.+)\}\}/U','<em>$1</em>',$texte);
+			//$texte = preg_replace('/\{\{NonRefTerm\|(.+)\}\}/U','<em>$1</em>',$texte);
+			// 1️⃣ Replace NonRefTerm with EnglishEntry
+                        $texte = preg_replace(
+			  '/\{\{NonRefTerm\|([^|}]+)\|EnglishEntry=([^}]+)\}\}/u',
+		          '<em class="nonrefterm">$1 ($2)</em>',
+		          $texte
+	                );
+
+                        // 2️⃣ Replace NonRefTerm without EnglishEntry
+                        $texte = preg_replace(
+                         '/\{\{NonRefTerm\|([^|}]+)\}\}/u',
+                         '<em class="nonrefterm">$1</em>',
+                         $texte
+                        );
 			
 			// On traite les RefNumber
 			$texte = preg_replace('/\{\{RefNumber\|([0-9]+)\|([0-9]+)\|([0-9]+)\}\}/U','$1$2-$3',$texte);
@@ -382,12 +395,15 @@ function demopaedia_maj_edition($edition){
 				}
 				// On remplace les TextTerm par leur version en HTML simplifié
 				// Avec EnglishEntry
-				//section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
-				//section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
-				// In Chinese we decided to not publish the English translation.
-				// English translation will be found only in the indexes
-				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ',$section);
-				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ',$section);
+				if (lg_code($edition)=='zh') {
+				  // In Chinese we decided to not publish the English translation.
+				  // English translation will be found only in the indexes
+				  $section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ',$section);
+		                  $section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ',$section);
+                                }else{
+				   $section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
+				   $section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\|EnglishEntry:([^}]*)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup> ($4) ',$section);
+                                }
 				// Sans EnglishEntry
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|nouveau=oui([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2★</sup>',$section);
 				$section = preg_replace('/\{TextTerm\|([^}]+)\|([0-9]+)\|([^}]*)\}/U','<strong class="textterm">$1</strong><sup class="textterm">$2</sup>',$section);
@@ -733,7 +749,7 @@ function demopaedia_generer_pdf($edition){
 	touch(_DIR_DEMOPAEDIA_DICTIONARY . 'test.txt');
 	file_put_contents(_DIR_TMP . 'demopaedia_debug.txt', var_export($file_html_prince, true));
 
-	if (lg_code($edition) == 'zh' ){
+	if (lg_code($edition) == 'zh' || lg_code($edition) == 'ko' ){
 	  if( $variant == 'zh_hant'){
 	    spip_log("Demopaedia : demopaedia_generer_pdf traditional using recuperer_fond in html and creating $file_html_prince ". $variant, "demopaedia");
 	  }else{
@@ -742,6 +758,10 @@ function demopaedia_generer_pdf($edition){
 	}
 	//if (!ecrire_fichier($file_html_prince,recuperer_fond('generate_dictionary', array('format' => 'prince', 'edition' => $edition)))) return false;
 	// Generate the HTML
+       // For Korean, no variant available — avoid polluting cache with wrong charset
+	if (preg_match('/^ko/', $edition)) {
+	  $variant = '';
+	}
 	$html = recuperer_fond('generate_dictionary', array(
 				 'format' => 'prince',
 				 'edition' => $edition,
