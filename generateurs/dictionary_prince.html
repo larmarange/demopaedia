@@ -408,6 +408,7 @@
                 [(#ENV{edition}|=={zh-ii}|oui)
                   [(#ENV{variant}|oui)
                     <li><a href="#index_bopomofo">依注音符號順序排列索引</a></li>
+                    <!-- <li><a href="#index_zh_radicalstrokes">依康熙部首及筆劃順序排列</a></li> -->
                     <li><a href="#index_english_strokes">依筆劃順序排列索引</a></li>
                     <li><a href="#index_english_bopomofo">依英文字母排序索引</a></li>
                   ]
@@ -534,8 +535,8 @@
 <div id="index_pinyin" class="index pinyin-index">
   <h1><a name="index"></a>按拼音顺序排列的[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by Pinyin</h1>
   <div class="information">
-    Four columns: (1) Chinese, (2) Pinyin transcription, (3) English (4) Unified number.<br/>
-    四栏内容：（1）中文，（2）拼音，（3）英文，（4）统一编号。</div>
+    Four columns: (1) Chinese, 「2」 Pinyin transcription, (3) English (4) Unified number.<br/>
+    四栏内容：（1）中文，「2」拼音，（3）英文，（4）统一编号。</div>
 
   <BOUCLE_group_pinyin(spip_demoindexzh)
     {si (#ENV{variant}|non)}
@@ -553,7 +554,7 @@
       {termezh_firstchar_pinyin=#TERMEZH_FIRSTCHAR_PINYIN}
       {par termezh_pinyin}>
 
-       <li class="[(#TERMEZH_PINYIN|initiale{#EDITION})][(#TERMEZH_PINYIN|initiale{#EDITION,1,'lower'})]"><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>  #TERME <span class="pinyin">#TERMEZH_DIACRPINYIN</span> [(#TERMEEN|ameliorer_index)][(#NOUVEAU|=={oui}|?{ ★,''})] </a>
+       <li class="[(#TERMEZH_PINYIN|initiale{#EDITION})][(#TERMEZH_PINYIN|initiale{#EDITION,1,'lower'})]"><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>  #TERME <span class="pinyin">「#TERMEZH_DIACRPINYIN」</span> [(#TERMEEN|ameliorer_index)][(#NOUVEAU|=={oui}|?{ ★,''})] </a>
        </li>
 
     </BOUCLE_items_pinyin>
@@ -637,6 +638,46 @@
 </div>
 </B_group_bopomofo>
 
+<!-- <\!-- Traditional index by Kangxi radical and strokes -\-> -->
+<!-- <B_group_radicalstrokes> -->
+<!-- <div id="index_zh_radicalstrokes" class="index bopomofo-index" style="prince-page: index-radical;"> -->
+<!--   <h1><a name="index"></a>依康熙部首及筆劃順序排列[(#CONFIG{demopaedia-[(#EDITION)]/index})] -->
+<!--       Index sorted by Kangxi radicals and strokes</h1> -->
+<!--   <div class="information"> -->
+<!--     四欄內容：（1）繁體中文，（2）注音，（3）英文 ，（4）統一編號。 -->
+<!--   </div> -->
+
+<!--   <BOUCLE_group_radicalstrokes(spip_demoindexzh_trad) -->
+<!--     {si #ENV{edition}|lg_code|=={zh}} -->
+<!--     {si (#ENV{variant}|oui)} -->
+<!--     {edition=#EDITION} -->
+<!--     {fusion termezh_radical_separator} -->
+<!--     {par termezh_radical_num, termezh_radical_strokes}> -->
+
+<!--     <h2 class="information">[(#TERMEZH_RADICAL_SEPARATOR)]</h2> -->
+<!--     <div class="section"> -->
+<!--       <ul class="index"> -->
+<!--         <BOUCLE_items_radicalstrokes(spip_demoindexzh_trad) -->
+<!--           {si (#ENV{variant}|oui)} -->
+<!--           {edition=#EDITION} -->
+<!--           {termezh_radical_separator=#TERMEZH_RADICAL_SEPARATOR} -->
+<!--           {par termezh_radical_strokes}> -->
+<!--           <li> -->
+<!--             <span style="string-set: indexinitials '#TERMEZH_RADICAL_SEPARATOR', indexchar '#TERMEZH|mb_substr{0,1}'; height: 0; overflow: hidden; display: block;"></span> -->
+<!--             <a href="##SECTION" -->
+<!--                title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]" -->
+<!--                [(#ENTREE|=={note}|oui)class="noteterm"]> -->
+<!--               #TERME -->
+<!--               <span class="bopomofo">(#TERMEZH_BOPOMOFO)</span> -->
+<!--               <span class="english">[(#TERMEEN|ameliorer_index)][(#NOUVEAU|=={oui}|?{ ★,''})]</span> -->
+<!--             </a> -->
+<!--           </li> -->
+<!--         </BOUCLE_items_radicalstrokes> -->
+<!--       </ul> -->
+<!--     </div> -->
+<!--   </BOUCLE_group_radicalstrokes> -->
+<!-- </div> -->
+<!-- </B_group_radicalstrokes> -->
 <!-- Traditional index by strokes -->
 <B_group_strokes>
 <div id="index_english_strokes" class="index bopomofo-index" style="prince-page: index-stroke;">
@@ -659,7 +700,7 @@
       {edition=#EDITION}
       {termezh_strokes_separator=#TERMEZH_STROKES_SEPARATOR}
       {par termezh_HEX_strokes}>
-      <li>  <span style="string-set: indexinitials '#TERMEZH_STROKES_SEPARATOR', indexchar '#TERMEZH|mb_substr{0,1}'; height: 0; overflow: hidden; display: block;"></span><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>  #TERME <span class="bopomofo">(#TERMEZH_BOPOMOFO)</span><span class="english"> [(#TERMEEN|ameliorer_index)][(#NOUVEAU|=={oui}|?{ ★,''})]</span> </a> </li>
+      <li>  <span style="string-set: indexinitials '#TERMEZH_STROKES_SEPARATOR', indexchar '#TERMEZH|mb_substr{0,1}'; height: 0; overflow: hidden; display: block;"></span><a href="##SECTION" title="#SECTION-#NUMTERME[(#ENTREE|=={note}|?{*,''})]"[(#ENTREE|=={note}|oui)class="noteterm"]>  #TERME <span class="bopomofo"> 「#TERMEZH_BOPOMOFO」</span><span class="english"> [(#TERMEEN|ameliorer_index)][(#NOUVEAU|=={oui}|?{ ★,''})]</span> </a> </li>
     </BOUCLE_items_strokes>
     </ul>
     </div>
@@ -674,8 +715,8 @@
   <div id="index_english_bopomofo" class="index english-index">
     <h1><a name="index english-index"></a>依英文字母排序[(#CONFIG{demopaedia-[(#EDITION)]/index})] Index sorted by English</h1>
     <div class="information">
-      Five columns: (1) English, (2) Traditional Chinese, (3) Zhuyin, (4) Pinyin , (5) Unified number.<br />
-      五欄內容：(1) 英文，(2) 繁體中文，(3) 注音，(4) 拼音，(5) 統一編號。
+      Five columns: (1) English, (2) Traditional Chinese,「3」 Bopomofo/Zhuyin, (4) Pinyin , (5) Unified number.<br />
+      五欄內容：(1) 英文，(2) 繁體中文，「3」 注音，(4) 拼音，(5) 統一編號。
     </div>
 
   <BOUCLE_groupent(spip_demoindex)
