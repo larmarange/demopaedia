@@ -724,6 +724,35 @@ function demopaedia_verifier_export(){
 		mkdir(_DIR_DEMOPAEDIA_DICTIONARY, 0775, true);
 }
 
+function demopaedia_generate_cover_front_html($filepath, $image_path) {
+    $html = <<<HTML
+<html>
+<head>
+<style>
+@page {
+    size: 6in 9in;
+    margin: 0;
+}
+body {
+    margin: 0;
+    padding: 0;
+}
+img {
+    width: 100%;
+    height: 100%;
+}
+</style>
+</head>
+<body>
+<img src="$image_path">
+</body>
+</html>
+HTML;
+
+    file_put_contents($filepath, $html);
+    return $filepath;
+}
+
 function demopaedia_generer_pdf($edition){
 	demopaedia_verifier_export();
 	include_spip('inc/flock');
@@ -743,6 +772,21 @@ function demopaedia_generer_pdf($edition){
 
 	$cover_back = find_in_path('covers/back.pdf');
 	$cover_front = find_in_path('covers/' . $edition . $suffix . '.pdf');
+	$cover_back_html =  _DIR_DEMOPAEDIA_DICTIONARY .'cover_back.html';
+	/* $cover_front_html = find_in_path('covers/cover_front-' . $edition . $suffix . '.html'); */
+	$cover_front_html = _DIR_DEMOPAEDIA_DICTIONARY .'cover_front-' . $edition . $suffix . '.html';
+	/* $cover_front_img  = find_in_path('covers/' . $edition . $suffix . '.png'); // or .png if image */
+	$cover_front_img  = $edition . $suffix . '.png'; // or .png if image
+
+	// Generate the cover_front HTML automatically
+	demopaedia_generate_cover_front_html($cover_front_html, $cover_front_img);
+
+	if (!$cover_front_html){
+	  spip_log("Demopaedia: $cover_front_html not found","demopaedia");
+	}
+	if (!$cover_back_html){
+	  spip_log("Demopaedia: $cover_back_html not found","demopaedia");
+	}
 
 	if (!$cover_front) $cover_front = find_in_path("covers/default-".ed_code($edition).".pdf");
 	// copy($file_html_prince, _DIR_TMP . 'debug-prince.html'); 
@@ -781,11 +825,19 @@ function demopaedia_generer_pdf($edition){
 		$file_html_prince = $file_html_swath;
 	}
 	exec('prince '.$file_html_prince.' -o '.$file_pdf_text, $out, $ret);
+
 	$nb_pages = getPDFPages($file_pdf_text);
-	if ($nb_pages % 2 == 0)   // Si nombre de pages paire
-		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '{},1' --papersize '{152.4mm,228.6mm}' --twoside -o $file_pdf");
-	else
-		exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '1' --papersize '{152.4mm,228.6mm}' --twoside -o $file_pdf");
+	if ($nb_pages % 2 == 0){  // Si nombre de pages paire
+	  spip_log("Demopaedia : demopaedia_generer_pdf paire using cover_front in html and creating $file_pdf ". $variant, "demopaedia");
+	  exec('prince '.$cover_front_html.' '.$file_html_prince.' '.$cover_back_html.' -o '.$file_pdf, $out, $ret);
+	  spip_log("prince $cover_front_html $file_html_prince $cover_back_html -o $file_pdf, $out, $ret", "demopaedia");
+	  /* exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '{},1' --papersize '{152.4mm,228.6mm}' --twoside -o $file_pdf"); */
+	}else{
+	  spip_log("Demopaedia : demopaedia_generer_pdf impaire using cover_front in html and creating $file.pdf ". $variant, "demopaedia");
+	  exec('prince '.$cover_front.html.' '.$file_html_prince.' '.$cover_back_html.' -o '.$file_pdf, $out, $ret);
+		/* exec("pdfjam $cover_front '1,{}' $file_pdf_text '-' $cover_back '1' --papersize '{152.4mm,228.6mm}' --twoside -o $file_pdf"); */
+	}
+	@unlink($cover_front_html);
 	return file_exists($file_pdf);
 }
 
