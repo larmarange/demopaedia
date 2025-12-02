@@ -16,6 +16,7 @@
 import re
 import pymysql
 import pymysql.cursors
+import os
 #import unidecode
 
 import argparse
@@ -36,21 +37,66 @@ if use_traditional:
     print("Conversion to Traditional Chinese will be applied.")
 
 
-# Database connection details
-db_config = {
-    "unix_socket": "/var/lib/mysql/mysql.sock",  # Change if needed
-    "user": "root",  # Replace with your username
-    "password": "pass",  # Replace with your password
-    "database": "tools",
-    "charset": "utf8mb4",
-    "cursorclass":pymysql.cursors.DictCursor
-}
+def load_spip_db_config(connect_php_path="../../config/connect.php"):
+    # Read the file
+    with open(connect_php_path, "r", encoding="utf8") as f:
+        content = f.read()
+
+    # Regex to capture arguments of spip_connect_db(...)
+    # Matches: spip_connect_db('host','port','user','pass','db',...)
+    pattern = r"spip_connect_db\(\s*'([^']*)'\s*,\s*'([^']*)'\s*,\s*'([^']*)'\s*,\s*'([^']*)'\s*,\s*'([^']*)'"
+
+    match = re.search(pattern, content)
+    if not match:
+        raise RuntimeError("Could not parse spip_connect_db() from connect.php")
+
+    host, port, user, password, database = match.groups()
+
+    # Convert empty port '' to None
+    port = int(port) if port.isdigit() else 3306
+
+    return {
+        "host": host if host else "localhost",
+        "port": port,
+        "user": user,
+        "password": password,
+        "database": database,
+        "charset": "utf8mb4",
+        "cursorclass": pymysql.cursors.DictCursor
+    }
+# # Database connection details
+# db_config = {
+#     "unix_socket": "/var/lib/mysql/mysql.sock",  # Change if needed
+#     "user": "toolq",  # Replace with your username
+#     "password": "*****",  # Replace with your password
+#     "database": "tools",
+#     "charset": "utf8mb4",
+#     "cursorclass":pymysql.cursors.DictCursor
+# }
 
 # def add_column_if_not_exists(cursor, table_name, column_name, column_def):
 #     cursor.execute(f"SHOW COLUMNS FROM `{table_name}` LIKE %s", (column_name,))
 #     result = cursor.fetchone()
 #     if not result:
 #         cursor.execute(f"ALTER TABLE `{table_name}` ADD COLUMN {column_name} {column_def}")
+
+#db_config = load_spip_db_config("/var/www/html/demopaediahead/demopaedia-mw28/html/tools/config/connect.php")
+#db_config = load_spip_db_config("../../config/connect.php")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+connect_php_path = os.path.join(BASE_DIR, "../../../../config/connect.php")
+
+db_config = load_spip_db_config(connect_php_path)
+
+#db_config = load_spip_db_config("../../../../config/connect.php")
+# Force Unix socket (SPIP default)
+db_config["unix_socket"] = "/var/lib/mysql/mysql.sock"
+db_config.pop("host", None)
+db_config.pop("port", None)
+
+#print("Loaded DB config:", db_config)
+safe_config = db_config.copy()
+safe_config["password"] = "********"
+print("Loaded DB config:", safe_config)
 
 # Connect to database
 conn = pymysql.connect(**db_config)
