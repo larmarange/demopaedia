@@ -18,6 +18,30 @@ import pymysql
 import pymysql.cursors
 import os
 #import unidecode
+import sys
+from datetime import datetime
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOGFILE = os.path.join(BASE_DIR, "../../../..", "tmp", "log", "generate_index.log")
+
+with open(LOGFILE, "w", encoding="utf-8") as f:
+    f.write(f"\n---- Run on {datetime.now()} ----\n")
+
+def log(msg):
+    """Append a log line to generate_index.log with timestamp."""
+    with open(LOGFILE, "a", encoding="utf-8") as f:
+        f.write(f"[{datetime.now()}] {msg}\n")
+
+class PrintToLog:
+    def write(self, msg):
+        msg = msg.strip()
+        if msg:
+            log(msg)
+    def flush(self):
+        pass
+
+sys.stdout = PrintToLog()
+sys.stderr = PrintToLog()
 
 import argparse
 
@@ -1099,7 +1123,7 @@ print(f"Loaded Pinyin: {len(pinyin_data)} entries")
 #####
 cursor.execute(f"SELECT edition, section, numterme, entree, terme, termeen, maj, intexte, nouveau FROM spip_demoindex WHERE edition = 'zh-ii'")
 
-print ("hello")
+print(f"hello\n")
 cedict_data = load_cedict("/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/cedict_ts.u8")
 # After loading cedict
 #cedict_data = load_cedict("/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/cedict_ts.u8")
