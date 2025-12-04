@@ -130,41 +130,44 @@ function chiffre_chinois($n) {
 }
 			
 function generate_demoindex_from_python($edition, $variant) {
-    //die("generate_demo_index $edition $variant");
+    // The base directory of your plugin
+    $base = _DIR_PLUGIN_DEMOPAEDIA . "inc/";
 
-    // Path to your shell script
-    $shell_script = '/var/www/html/demopaediahead/demopaedia-mw28/html/tools/plugins/auto/demopaedia/inc/generate_demoindex_from_shell.sh';
-  
+    // Python executable
+    $python = "/usr/bin/python3";
+
+    // Python script path
+    $script = $base . "generate_demoindex.py";
+
     // Build args
-      
     $args = ["--edition=$edition"];
     if ($variant === 'zh_hant') {
         $args[] = "--traditional";
     }
 
-    // Build the full command with escaped arguments
-    $cmd = escapeshellcmd($shell_script);
+    // Escape everything safely
+    $cmd = escapeshellcmd($python) . ' ' . escapeshellarg($script);
     foreach ($args as $arg) {
         $cmd .= ' ' . escapeshellarg($arg);
     }
-   // Add environment print for debug
-    /* $cmd = "whoami; id; $cmd 2>&1"; */
 
-    /* $output = shell_exec($cmd); */
-    /* die("CMD: $cmd\nOUTPUT:\n" . $output); */
+    // Force UTF-8
+    $cmd = "PYTHONIOENCODING=utf-8 " . $cmd;
 
-    // Run and capture output (including stderr)
+    // Execute and capture stdout+stderr
     $output = shell_exec("$cmd 2>&1");
-    
-    //die("TO generate_demo_index e=$edition v=$variant c=$cmd o=$output");
 
-    // Check output
-    if (strpos($output, 'Exception') !== false || strpos($output, 'Traceback') !== false) { 
-         die("generate_demoindex_from_python failed:\nCommand: $cmd\nOutput:\n$output"); 
-    } 
+    // Debug if needed:
+    // die("CMD: $cmd\n$out");
+
+    // Error detection
+    if (strpos($output, 'Exception') !== false || strpos($output, 'Traceback') !== false) {
+        die("generate_demoindex_from_python failed:\nCommand: $cmd\nOutput:\n$output");
+    }
 
     return true;
 }
+
 
 
 function demopaedia_maj_edition($edition){
